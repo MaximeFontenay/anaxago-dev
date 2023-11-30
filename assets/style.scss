@@ -6,10 +6,103 @@
     @font-face {
         font-family: Proxima;
         font-weight: 400;
-        src: url('/fonts/ProximaNova.otf') format("otf");
+        src: url('/fonts/Proxima.otf') format("otf");
     }
 }
 
 .text-balance {
     text-wrap: balance;
 }
+
+.tw-cta {
+    @apply cursor-pointer inline-block py-2 px-8 max-md:w-full max-md:max-w-[309px] text-center rounded-full transition duration-200 transition duration-200;
+  
+    &::after {
+      content: '';
+      display: inline-block;
+      height: 15px;
+      width: 0;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      opacity: 0;
+      transform: translate(0, 3px);
+      transition: transform 0.15s, width 0.15s, opacity 0.15s;
+    }
+  
+    &:hover::after {
+      transform: translate(10px, 3px);
+      width: 15px;
+      opacity: 1;
+    }
+  
+    &--thin {
+      @apply px-4
+    }
+  
+    &--tiny {
+      @apply text-mini py-1 px-4;
+  
+      &::after {
+        transform: translate(0, 1px);
+        height: 7.5px;
+      }
+  
+      &:hover::after {
+        transform: translate(5px, 1px);
+        width: 7.5px;
+      }
+    }
+  
+    &--fit {
+      @apply max-md:max-w-fit;
+    }
+  
+    &--primary {
+      @apply bg-secondary-light text-primary-dark hover:bg-[#F3E3C8];
+  
+      &::after {
+        background-image: url('assets/img/utilities/homepagev2-arrow-right-black.svg');
+      }
+    }
+  
+    &--secondary {
+      @apply bg-primary-dark text-primary-neutral hover:bg-[#0B273A];
+  
+      &::after {
+        background-image: url('assets/img/utilities/homepagev2-arrow-right-white.svg');
+      }
+    }
+  
+    &--tertiary {
+      @apply bg-primary-neutral text-primary-dark border border-solid border-primary-dark hover:bg-secondary-lighter/50;
+  
+      &::after {
+        background-image: url('assets/img/utilities/homepagev2-arrow-right-black.svg');
+      }
+    }
+  }
+  
+
+
+
+// #video {
+//     --video--width: 640;
+//     --video--height: 253;
+  
+
+//     position: relative;
+//     padding-bottom: calc(var(--video--height) / var(--video--width) * 100%); 
+//     overflow: hidden;
+//     max-width: 100%;
+//     width: 100%;
+//     height: auto;
+
+//     iframe, object, embed {
+//         position: absolute;
+//         inset: 0;
+//         min-height: 170%;
+//         min-width: 170%;
+//     }
+//   }
+  
+ 

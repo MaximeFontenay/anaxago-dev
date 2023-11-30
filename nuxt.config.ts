@@ -5,6 +5,8 @@ export default defineNuxtConfig({
     families: {
       Lora: true,
       Inter: true,
+      Proxima: true,
+      Poppins: true,
     }
   },
 })

@@ -1,0 +1,104 @@
+{% extends 'tw-layout.html.twig' %}
+
+{% block title %} {# TODO #} {% endblock %}
+{% block seo_description %} {# TODO #} {% endblock %}
+
+{% block body_attr %}
+    class="body-white heropage"
+{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  {{ encore_entry_link_tags('front/pages/life_insurance/free_management') }}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  {{ encore_entry_script_tags('front/pages/life_insurance/free_management') }}
+{% endblock %}
+
+{% block body %}
+
+
+    {# FAQ (TODO: 3 & 4 content) #}
+    <section class='py-10 md:pt-24 md:pb-28 bg-primary-dark text-primary-neutral'>
+        <div class='container max-lg:px-4'>
+          {% include 'components/accordion-homepagev2.html.twig' with {
+            uniqid: 'faq',
+            title: "<h2 class='mb-10 md:mb-20 font-lora text-h2 mx-auto text-center'>Questions fréquentes</h2>",
+            items: [
+                {
+                    name: "Il est très facile d'investir sur des projets immobiliers ou des valeurs non cotées ?",
+                    content: "Il est très facile d'investir sur des projets immobiliers ou des valeurs non cotées. Le suivi des investissements est très bien effectué avec des reportings reguliers.",
+                    opened: true,
+                },
+                {
+                    name: "Vous souhaitez récupérer tout ou partie des fonds investis ? ",
+                    content: "Il est très facile d'investir sur des projets immobiliers ou des valeurs non cotées. Le suivi des investissements est très bien effectué avec des reportings reguliers.",
+                    opened: true,
+                },
+                {
+                  name: "Il est très facile d'investir sur des projets immobiliers ou des valeurs non cotées ?",
+                  content: "En l'état actuel du droit, il n'est pas possible de transférer un contrat d'assurance-vie auprès d'un établissement différent, contrairement au PEA et aux produits d’épargne retraite.\nPour changer de courtier et d’assureur, il vous faut nécessairement effectuer un rachat total de votre contrat actuel afin d’en ouvrir un nouveau auprès de la compagnie de votre choix."
+                },
+                {
+                  name: "Il est très facile d'investir sur des projets immobiliers ou des valeurs non cotées ?",
+                  content: "Les primes investies sur un fonds euros, sont garanties par l'assureur. En cela votre risque de perte en capital est nul tant que l'assureur est en capacité de remplir cette garantie, c'est à dire tant qu'il n'est pas en état de faillite. Lorsque vous investissez en unités de compte en revanche, votre épargne est soumise aux fluctuations des marchés (financiers, et immobiliers principalement) et n'est donc pas garantie. Il existe à ce titre un risque de perte en capital si vos supports UC génèrent de la moins-value."
+                },
+            ]
+          }%}
+    
+          <div class='text-center'>
+            <a target="_blank" href='https://centre-aide.anaxago.com/knowledge' class='tw-arrow-button tw-arrow-button--white tw-arrow-button--underline mt-14 md:mt-24 mx-auto'>Accéder à la FAQ</a>
+          </div>
+        </div>
+    </section>
+
+    
+    {# BLOG POSTS #}
+    <section class='pt-10 md:pt-14 bg-secondary-neutral'>
+    <div class='max-lg:px-10 container flex flex-col'>
+        <h2 class='mb-10 md:mb-16 text-h3 font-lora md:text-h2 text-center'>
+        Tout comprendre de l'<span class='italic'>assurance vie</span>
+        </h2>
+
+        <div class='max-md:flex max-md:flex-col max-md:gap-4 md:grid md:grid-cols-2 lg:grid-cols-4 mb-14 md:border md:border-solid md:border-[#F3F0EC] rounded-lg'>
+        {% for blog in blogs %}
+            {% set pathOfBlog = path('cms_front_blog_show', {'categorySlug': blog.articleCategory.slug, 'slug': blog.slug}) %}
+            <a class='rotate-arrow-block py-7 cursor-pointer bg-primary-neutral hover:bg-secondary-light md:max-lg:border-b md:max-lg:border-solid md:max-lg:border-[#F3F0EC]' href='{{ pathOfBlog }}'>
+            {% set blogImageUrl = sonata_path(blog.image, 'normal') %}
+            <div class='h-full flex sm:max-md:flex-row flex-col px-7 border-r border-solid border-[#E7DAD073]'>
+                <img class='rounded-sm object-cover w-full h-24' loading="lazy" src="{{ blogImageUrl }}" alt="{{ blog.title }}"  width="230" height="100"/>
+
+                <div class='px-3.5 py-7'>
+                <p class='font-semibold text-2xs'>
+                    <span class='pr-2 mr-2 border-r border-solid border-black'>
+                    {{ blog.publicationDate| localizeddate('medium', "none", null, null, 'dd MMMM yyyy') }}
+                    </span>
+                    Actualités
+                </p>
+
+                <p class='mt-2.5 mb-1 font-semibold'>{{ blog.title }}</p>
+
+                <p class='text-xs'>{{ blog.description }}</p>
+                </div>
+
+                <img loading="lazy"
+                src="{{ versioned_asset('/assets/images/homepagev2-arrow-right-black.svg') }}"
+                class="rotate-arrow ml-auto mt-auto w-4 h-3 object-cover"
+                />
+            </div>
+            </a>
+        {% endfor %}
+        </div>
+
+        <a href="{{ path('cms_front_blog_list') }}" class='tw-arrow-button tw-arrow-button--underline inline-flex items-baseline mx-auto mb-20 text-l font-semibold'>Voir toutes nos actualités</a>
+
+    </div>
+    </section>
+    
+{% endblock %}
+
+{% block footer %}
+    {% include 'layout_parts/footer.html.twig' with {disclaimer: true, theme:"light"} %}
+{% endblock %}
