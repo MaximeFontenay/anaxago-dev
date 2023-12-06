@@ -17,19 +17,37 @@ onMounted(() => {
     // JS in backend/assets/js/front/pages/life_insurance/free_management.js
 
 
-    const videoPlayer = document.querySelector('#video')
+    const video = document.querySelector('#video')
     const playButton = document.querySelector('.play-button')
     const playIcon = document.querySelector('.play')
     const pauseIcon = document.querySelector('.pause')
 
 
-    playButton.addEventListener('click', () => {
-      playIcon.classList.toggle('hidden')
-      pauseIcon.classList.toggle('hidden')
+    function handleVideoState() {
+      if (video.paused) {
+        playIcon.classList.add('hidden')
+        pauseIcon.classList.remove('hidden')
+      } 
+      else {
+        pauseIcon.classList.add('hidden')
+        playIcon.classList.remove('hidden')
+      }
+    }
+    
+    video?.addEventListener('canplay', function() {
+      handleVideoState()
+    });
+
+    playButton?.addEventListener('click', () => {
+      handleVideoState()
+
+      if (video.paused) {
+        video.play();
+      } 
+      else {
+        video.pause();
+      }
     })
-
-
-    console.log(videoPlayer)
 
 });
 
@@ -44,96 +62,271 @@ onMounted(() => {
 <!-- Template in backend/templates/Front/Pages/LifeInsurance/free_management.html.twig -->
 
 <template>
-
-
-
   
-  <section id="offer" class="flex flex-col h-[100svh] max-h-[700px] !min-h-fit p-5 lg:pt-14 lg:pb-5 lg:px-20 bg-[url('/assets/img/hero.jpg')] bg-cover bg-right bg-no-repeat">
+<section id="offer" class="flex flex-col md:max-h-[670px] md:min-h-[670px] p-5 lg:pt-14 lg:pb-5 lg:px-16 bg-[url('/assets/img/life_insurancev3_hero.jpg')] bg-cover bg-[100%] md:bg-[50%] bg-no-repeat">
+  <div class="flex-1 flex flex-col md:flex-row justify-between items-stretch gap-5 lg:gap-16">
+    <div class="flex flex-col flex-1 lg:max-w-[490px] lg:mt-[80px] max-md:bg-white/95 rounded-xl p-4">
+      <p class="text-xl font-semibold">Anaxago Patrimony</p>
+      <h1 class="text-h1 leading-[58px] mt-2 mb-8">L’assurance vie de <span class="font-lora italic">la prochaine
+          décennie</span></h1>
+      <p class="text-justify leading-[28px] ">Un <b>contrat d'assurance-vie</b> permettant de bénéficier de l'expertise d'Anaxago tout
+        en disposant d'une poche de liquidité grâce au fonds en euros Netissima de Generali Vie.</p>
+    </div>
 
-    <div class="flex-1 flex flex-col md:flex-row justify-between items-stretch gap-5 lg:gap-16">
-      <div class="flex flex-col flex-1 lg:max-w-[490px] lg:mt-[80px] max-md:bg-secondary-neutral rounded-xl p-4">
-        <p>Anaxago Patrimony</p>
-        <h1 class="text-h1 leading-[58px] mt-4 mb-8 lg:mb-12">L’assurance vie de <span class="font-lora italic">la prochaine
-            décennie</span></h1>
-        <p class="text-justify leading-[28px] ">Un <b>contrat d'assurance-vie</b> permettant de bénéficier de l'expertise d'Anaxago tout
-          en disposant d'une poche de liquidité grâce au fonds en euros Netissima de Generali Vie.</p>
+    <div class="flex-1 rounded-xl p-4 bg-slate-500 w-full min-h-[100px] lg:max-w-[430px] max-md:mx-auto">
+    </div>
+  </div>
+
+  <p class="mt-3 text-center text-mini text-primary-dark/40">*Anaxago Value est un contrat libellé en euros et/ou en
+    unités de compte et/ou en Engagements croissance donnant lieu à la constitution d’une provision de diversification
+    (fonds croissance).</p>
+</section>
+
+<section class="px-5 pt-8 pb-5 lg:pt-14 lg:pb-8 lg:pl-20 bg-secondary-neutral">
+  <div class="flex flex-col xl:flex-row justify-between items-center gap-5 lg:gap-[50px] xl:gap-[100px]">
+    <div class="flex flex-col flex-1 xl:max-w-[380px] mx-auto">
+      <h2 class="text-h2 leading-[48px] mb-10">Un contrat dédié à <br class="hidden xl:block"> <span class="font-lora italic">l’immobilier d’avenir</span></h2>
+      <p class="border border-[#F2ECE5] w-full text-center md:w-fit py-3 px-5 rounded-lg mb-6">Objectif de
+        rendement du FCPR : <b>7% / an*</b></p>
+      <p class="text-justify text-m">
+        Le contrat d’assurance vie Anaxago Value est le seul contrat vous permettant d’investir dans le FCPR Anaxago
+        Society 2023, offrant une exposition au marché de la réhabilitation immobilière et classé article 8 au sens de
+        la réglementation SFDR.
+        <br><br>
+        Le fonds en euros Netissima, de Generali Vie, offre également une poche de liquidité à votre contrat d’assurance
+        vie dans la limite de 40%*.
+      </p>
+      
+      <div class="max-md:text-center mt-5">
+        <a href="#offer" class='tw-cta tw-cta--secondary font-semibold'>Découvrir l'offre</a>
       </div>
+      <p class="md:hidden text-mini mt-2 text-center text-primary-dark/40">
+          *Objectif de rentabilité annuel, net de frais d'Anaxago Patrimony concernant le FCPR Anaxago Society 2023, avant
+          fiscalité et prélèvements. Ce taux ne présente pas une garantie de performance. Plus le taux est élevé, plus le
+          risque est important. **L'investissement sur le fonds en euros Netissima est conditionné à un investissement minimum
+          de 40% sur les supports en unités de compte.
+      </p>
+    </div>
+    <div class="hidden group/wrapper md:flex md:flex-row items-stretch gap-1 hover:gap-0 duration-300 min-h-[300px] lg:gap-2 flex-1 w-full max-h-[700px] max-w-[785px] h-[700px]">
+      <div class="group/item group-hover/wrapper:grow-0 overflow-hidden hover:!grow duration-300 flex-1 rounded-md bg-slate-500 relative">
+          <div class="w-full h-full flex items-stretch">
+            <img src="@/assets/img/life_insurancev3_realestate-1.png" alt="realestate-1" class="w-[388px] min-w-[388px] max-w-[388px] group-hover/item:min-w-[250px] group-hover/item:max-w-[300px] duration-300 h-full object-cover object-left">
+            <div class="bg-secondary-neutral border-l border-[#F2ECE5] p-8">
+              <h4 class="text-justify text-xl font-semibold mb-8">Anaxago Value - Society 2023</h4>
+              <p class="text-justify">Un contrat qui donne accès au dernier fonds de private equity immobilier de la gamme Anaxago Society, ayant pour vocation de permettre une exposition au marché de la réhabilitation immobilière, de la promotion et de l’immobilier géré, en ciblant des actifs bénéficiant d’un effet de rareté.</p>
+              <ul class="border border-[#F2ECE5] rounded-l px-4 py-2 mt-10 mb-8">
+                <li class="flex items-center my-4 gap-3">
+                  <svg class="min-w-[15px]" width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.3501 1.21521L5.45762 9.10995L1.87012 5.52143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <p class="text-s">Taille du fonds cible : 50 millions d’euros</p>
+                </li>
+                <li class="flex items-center my-4 gap-3">
+                  <svg class="min-w-[15px]" width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.3501 1.21521L5.45762 9.10995L1.87012 5.52143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <p class="text-s">Centré sur la recherche de la <b>performance</b></p>
+                </li>
+                <li class="flex items-center my-4 gap-3">
+                  <svg class="min-w-[15px]" width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.3501 1.21521L5.45762 9.10995L1.87012 5.52143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <p class="text-s"><b>Allocation diversifiée</b>, visant à saisir les opportunités du marché immobilier français</p>
+                </li>
+                <li class="flex items-center my-4 gap-3">
+                  <svg class="min-w-[15px]" width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.3501 1.21521L5.45762 9.10995L1.87012 5.52143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <p class="text-s">Classé article 8 au sens de la réglementation SFDR</p>
+                </li>
+              </ul>
+              <div class="grid grid-cols-2 gap-2 w-full mt-4">
+                <a href="#offer" class='tw-cta tw-cta--secondary font-semibold max-lg:w-full'>Découvrir l'offre</a>
+                <a
+                  href="https://meetings.hubspot.com/contact-anaxago/anaxago-value"
+                  class="tw-cta tw-cta--tertiary font-semibold max-lg:w-full"
+                  target="_blank"
+                >
+                  Découvrir le fonds
+                </a>
+              </div>
+            </div>
 
-      <div class="flex-1 rounded-xl p-4 bg-slate-500 w-full lg:max-w-[430px] max-md:mx-auto">
+            <div class="group-hover/item:!bg-none duration-200 absolute inset-0 pt-4 pb-8 px-8 flex flex-col pointer-events-none" style="background: linear-gradient(0deg,rgba(0, 4, 7, 0.85) 6.52%,rgba(0, 4, 7, 0.72) 21%,rgba(0, 4, 7, 0.64) 36.61%,rgba(0, 4, 7, 0) 61.77%);">
+              <svg class="group-hover/item:rotate-180 duration-200 ml-auto translate-x-4" width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="group-hover/item:fill-black" fill-rule="evenodd" clip-rule="evenodd" d="M28.7599 22.1395L20.6033 13.5556C20.3179 13.2554 19.8432 13.2433 19.5429 13.5286C19.2427 13.8139 19.2306 14.2886 19.5159 14.5889L27.1847 22.6594L19.5159 30.7299C19.2306 31.0302 19.2427 31.5049 19.5429 31.7902C19.8432 32.0756 20.3179 32.0634 20.6033 31.7632L28.7599 23.1793C29.0366 22.8919 29.0405 22.4348 28.763 22.1428L28.7599 22.1395Z" fill="white"/>
+                <path class="group-hover/item:fill-black" d="M28.7599 22.1395L28.4699 22.4151L28.4699 22.4151L28.7599 22.1395ZM20.6033 13.5556L20.3133 13.8312L20.3133 13.8312L20.6033 13.5556ZM19.5429 13.5286L19.2674 13.2386L19.2674 13.2386L19.5429 13.5286ZM19.5159 14.5889L19.2259 14.8644L19.2259 14.8644L19.5159 14.5889ZM27.1847 22.6594L27.4747 22.9349C27.6214 22.7805 27.6214 22.5383 27.4747 22.3839L27.1847 22.6594ZM19.5159 30.7299L19.8059 31.0055H19.8059L19.5159 30.7299ZM19.5429 31.7902L19.8185 31.5003H19.8185L19.5429 31.7902ZM20.6033 31.7632L20.8932 32.0387H20.8932L20.6033 31.7632ZM28.7599 23.1793L28.4718 22.9018L28.4699 22.9037L28.7599 23.1793ZM28.763 22.1428L29.053 21.8672L29.053 21.8672L28.763 22.1428ZM29.0499 21.864L20.8932 13.2801L20.3133 13.8312L28.4699 22.4151L29.0499 21.864ZM20.8932 13.2801C20.4557 12.8197 19.7278 12.8011 19.2674 13.2386L19.8185 13.8185C19.9586 13.6854 20.1801 13.691 20.3133 13.8312L20.8932 13.2801ZM19.2674 13.2386C18.807 13.6761 18.7884 14.404 19.2259 14.8644L19.8059 14.3134C19.6727 14.1732 19.6784 13.9517 19.8185 13.8185L19.2674 13.2386ZM19.2259 14.8644L26.8947 22.9349L27.4747 22.3839L19.8059 14.3134L19.2259 14.8644ZM19.8059 31.0055L27.4747 22.9349L26.8947 22.3839L19.2259 30.4544L19.8059 31.0055ZM19.8185 31.5003C19.6784 31.3671 19.6727 31.1456 19.8059 31.0055L19.2259 30.4544C18.7884 30.9148 18.807 31.6427 19.2674 32.0802L19.8185 31.5003ZM20.3133 31.4876C20.1801 31.6278 19.9586 31.6334 19.8185 31.5003L19.2674 32.0802C19.7278 32.5177 20.4557 32.4991 20.8932 32.0387L20.3133 31.4876ZM28.4699 22.9037L20.3133 31.4876L20.8932 32.0387L29.0499 23.4548L28.4699 22.9037ZM29.048 23.4567C29.4725 23.016 29.4786 22.3151 29.053 21.8672L28.473 22.4183C28.6025 22.5545 28.6007 22.7679 28.4718 22.9018L29.048 23.4567ZM29.053 21.8672L29.0499 21.864L28.4699 22.4151L28.473 22.4183L29.053 21.8672Z" fill="white"/>
+              </svg>      
+              <div class="mt-auto text-white group-hover/wrapper:opacity-0 group-hover/wrapper:min-w-[300px] duration-100 group-hover/item:!min-w-full overflow-hidden max-h-[350px]">
+                <h3 class="text-xl font-bold">L’expertise d’Anaxago</h3>
+                <p class="mt-4 text-m text-justify">Anaxago Value vous donne accès au dernier millésime de la gamme Anaxago Society ; un fonds de dette privée et de private equity immobilier.</p>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="group/item group-hover/wrapper:grow-0 overflow-hidden hover:!grow duration-300 flex-1 rounded-md bg-slate-500 relative">
+          <div class="w-full h-full">
+            <img src="@/assets/img/life_insurancev3_realestate-2.png" alt="realestate-2" class="w-[388px] min-w-[388px] max-w-[388px] h-full object-cover">
+            <div class="absolute inset-0 pt-4 pb-8 px-8 flex flex-col" style="background: linear-gradient(0deg,rgba(0, 4, 7, 0.85) 6.52%,rgba(0, 4, 7, 0.72) 21%,rgba(0, 4, 7, 0.64) 36.61%,rgba(0, 4, 7, 0) 61.77%);">
+              <svg class="group-hover/item:rotate-180 duration-200 ml-auto translate-x-4" width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="group-hover/item:fill-black" fill-rule="evenodd" clip-rule="evenodd" d="M28.7599 22.1395L20.6033 13.5556C20.3179 13.2554 19.8432 13.2433 19.5429 13.5286C19.2427 13.8139 19.2306 14.2886 19.5159 14.5889L27.1847 22.6594L19.5159 30.7299C19.2306 31.0302 19.2427 31.5049 19.5429 31.7902C19.8432 32.0756 20.3179 32.0634 20.6033 31.7632L28.7599 23.1793C29.0366 22.8919 29.0405 22.4348 28.763 22.1428L28.7599 22.1395Z" fill="white"/>
+                <path class="group-hover/item:fill-black" d="M28.7599 22.1395L28.4699 22.4151L28.4699 22.4151L28.7599 22.1395ZM20.6033 13.5556L20.3133 13.8312L20.3133 13.8312L20.6033 13.5556ZM19.5429 13.5286L19.2674 13.2386L19.2674 13.2386L19.5429 13.5286ZM19.5159 14.5889L19.2259 14.8644L19.2259 14.8644L19.5159 14.5889ZM27.1847 22.6594L27.4747 22.9349C27.6214 22.7805 27.6214 22.5383 27.4747 22.3839L27.1847 22.6594ZM19.5159 30.7299L19.8059 31.0055H19.8059L19.5159 30.7299ZM19.5429 31.7902L19.8185 31.5003H19.8185L19.5429 31.7902ZM20.6033 31.7632L20.8932 32.0387H20.8932L20.6033 31.7632ZM28.7599 23.1793L28.4718 22.9018L28.4699 22.9037L28.7599 23.1793ZM28.763 22.1428L29.053 21.8672L29.053 21.8672L28.763 22.1428ZM29.0499 21.864L20.8932 13.2801L20.3133 13.8312L28.4699 22.4151L29.0499 21.864ZM20.8932 13.2801C20.4557 12.8197 19.7278 12.8011 19.2674 13.2386L19.8185 13.8185C19.9586 13.6854 20.1801 13.691 20.3133 13.8312L20.8932 13.2801ZM19.2674 13.2386C18.807 13.6761 18.7884 14.404 19.2259 14.8644L19.8059 14.3134C19.6727 14.1732 19.6784 13.9517 19.8185 13.8185L19.2674 13.2386ZM19.2259 14.8644L26.8947 22.9349L27.4747 22.3839L19.8059 14.3134L19.2259 14.8644ZM19.8059 31.0055L27.4747 22.9349L26.8947 22.3839L19.2259 30.4544L19.8059 31.0055ZM19.8185 31.5003C19.6784 31.3671 19.6727 31.1456 19.8059 31.0055L19.2259 30.4544C18.7884 30.9148 18.807 31.6427 19.2674 32.0802L19.8185 31.5003ZM20.3133 31.4876C20.1801 31.6278 19.9586 31.6334 19.8185 31.5003L19.2674 32.0802C19.7278 32.5177 20.4557 32.4991 20.8932 32.0387L20.3133 31.4876ZM28.4699 22.9037L20.3133 31.4876L20.8932 32.0387L29.0499 23.4548L28.4699 22.9037ZM29.048 23.4567C29.4725 23.016 29.4786 22.3151 29.053 21.8672L28.473 22.4183C28.6025 22.5545 28.6007 22.7679 28.4718 22.9018L29.048 23.4567ZM29.053 21.8672L29.0499 21.864L28.4699 22.4151L28.473 22.4183L29.053 21.8672Z" fill="white"/>
+              </svg>      
+              <div class="mt-auto text-white group-hover/wrapper:opacity-0 group-hover/item:!opacity-100 group-hover/wrapper:min-w-[300px] duration-200 group-hover/item:!min-w-full">
+                <h3 class="text-xl font-bold">L’expertise d’Anaxago</h3>
+                <p class="mt-4 text-m text-justify">Anaxago Value vous donne accès au dernier millésime de la gamme Anaxago Society ; un fonds de dette privée et de private equity immobilier.</p>
+              </div>
+            </div>
+          </div>
+          <div class="group/overlay w-full h-full flex absolute z-10 inset-0 opacity-0 group-hover/item:opacity-100 group-hover/item:duration-300 duration-100">
+            <svg class="group-hover/overlay:rotate-180 duration-200 ml-auto absolute right-4 top-4" width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="group-hover/item:fill-black" fill-rule="evenodd" clip-rule="evenodd" d="M28.7599 22.1395L20.6033 13.5556C20.3179 13.2554 19.8432 13.2433 19.5429 13.5286C19.2427 13.8139 19.2306 14.2886 19.5159 14.5889L27.1847 22.6594L19.5159 30.7299C19.2306 31.0302 19.2427 31.5049 19.5429 31.7902C19.8432 32.0756 20.3179 32.0634 20.6033 31.7632L28.7599 23.1793C29.0366 22.8919 29.0405 22.4348 28.763 22.1428L28.7599 22.1395Z" fill="white"/>
+                <path class="group-hover/item:fill-black" d="M28.7599 22.1395L28.4699 22.4151L28.4699 22.4151L28.7599 22.1395ZM20.6033 13.5556L20.3133 13.8312L20.3133 13.8312L20.6033 13.5556ZM19.5429 13.5286L19.2674 13.2386L19.2674 13.2386L19.5429 13.5286ZM19.5159 14.5889L19.2259 14.8644L19.2259 14.8644L19.5159 14.5889ZM27.1847 22.6594L27.4747 22.9349C27.6214 22.7805 27.6214 22.5383 27.4747 22.3839L27.1847 22.6594ZM19.5159 30.7299L19.8059 31.0055H19.8059L19.5159 30.7299ZM19.5429 31.7902L19.8185 31.5003H19.8185L19.5429 31.7902ZM20.6033 31.7632L20.8932 32.0387H20.8932L20.6033 31.7632ZM28.7599 23.1793L28.4718 22.9018L28.4699 22.9037L28.7599 23.1793ZM28.763 22.1428L29.053 21.8672L29.053 21.8672L28.763 22.1428ZM29.0499 21.864L20.8932 13.2801L20.3133 13.8312L28.4699 22.4151L29.0499 21.864ZM20.8932 13.2801C20.4557 12.8197 19.7278 12.8011 19.2674 13.2386L19.8185 13.8185C19.9586 13.6854 20.1801 13.691 20.3133 13.8312L20.8932 13.2801ZM19.2674 13.2386C18.807 13.6761 18.7884 14.404 19.2259 14.8644L19.8059 14.3134C19.6727 14.1732 19.6784 13.9517 19.8185 13.8185L19.2674 13.2386ZM19.2259 14.8644L26.8947 22.9349L27.4747 22.3839L19.8059 14.3134L19.2259 14.8644ZM19.8059 31.0055L27.4747 22.9349L26.8947 22.3839L19.2259 30.4544L19.8059 31.0055ZM19.8185 31.5003C19.6784 31.3671 19.6727 31.1456 19.8059 31.0055L19.2259 30.4544C18.7884 30.9148 18.807 31.6427 19.2674 32.0802L19.8185 31.5003ZM20.3133 31.4876C20.1801 31.6278 19.9586 31.6334 19.8185 31.5003L19.2674 32.0802C19.7278 32.5177 20.4557 32.4991 20.8932 32.0387L20.3133 31.4876ZM28.4699 22.9037L20.3133 31.4876L20.8932 32.0387L29.0499 23.4548L28.4699 22.9037ZM29.048 23.4567C29.4725 23.016 29.4786 22.3151 29.053 21.8672L28.473 22.4183C28.6025 22.5545 28.6007 22.7679 28.4718 22.9018L29.048 23.4567ZM29.053 21.8672L29.0499 21.864L28.4699 22.4151L28.473 22.4183L29.053 21.8672Z" fill="white"/>
+            </svg>    
+            <div class="flex-1 max-w-fit">
+              <img src="@/assets/img/life_insurancev3_realestate-2-stats.png" alt="Statistics" class="w-full h-full object-contain">
+            </div>
+            <div class="flex-1 bg-secondary-neutral border-l border-[#F2ECE5] p-8">
+              <h4 class="text-justify text-xl font-semibold mb-8">Un fonds en euros attractif</h4>
+              <p class="text-justify">Netissima, conçu par l’assureur Generali, est un fonds en euros avec une composante immobilière supérieure à celle des fonds en euros classiques.</p>
+              <ul class="border border-[#F2ECE5] rounded-l px-4 py-2 mt-10 mb-8">
+                <li class="flex items-center my-4 gap-3">
+                  <svg class="min-w-[15px]" width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.3501 1.21521L5.45762 9.10995L1.87012 5.52143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <p class="text-s">Constitué d’<b>obligations et d’emprunts d’État</b> à l’instar d’un fonds en euros classique</p>
+                </li>
+                <li class="flex items-center my-4 gap-3">
+                  <svg class="min-w-[15px]" width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.3501 1.21521L5.45762 9.10995L1.87012 5.52143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <p class="text-s"><b>Diversification</b> de votre épargne avec un portefeuille immobilier</p>
+                </li>
+                <li class="flex items-center my-4 gap-3">
+                  <svg class="min-w-[15px]" width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.3501 1.21521L5.45762 9.10995L1.87012 5.52143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <p class="text-s">Rendement net <b>majoré à hauteur de 4,36%* maximum</b> jusqu'en 2024</p>
+                </li>
+              </ul>
+              <p class="text-mini lg:text-s text-muted text-justify mx-auto">Le taux affiché n’est pas garanti et n’est pas contractuel. *Hypothèse d’un rendement de base 2023 similaire à celui de 2022 : 1,43%. Ajout du coefficient multiplicateur de 200% car la part en UC est > 60% : 1,43%*200% = 2,86%. Ajout de 1% pour une souscription faite avant le 31/07/2023 : 2,86% + 1% = 3,86%. Brut de frais de gestion de 0,85% / an.</p>
+              <a href="#offer" class='tw-cta tw-cta--secondary font-semibold max-lg:w-full mt-4'>Découvrir l'offre</a>
+            </div>
+          </div>
       </div>
     </div>
 
-    <p class="mt-3 text-center text-mini text-primary-dark/40">*Anaxago Value est un contrat libellé en euros et/ou en
-      unités de compte et/ou en Engagements croissance donnant lieu à la constitution d’une provision de diversification
-      (fonds croissance).</p>
-  </section>
-
-  <section class="p-3 lg:pt-14 lg:pb-8 lg:pl-20 bg-secondary-neutral">
-    <div class="flex flex-col lg:flex-row justify-between items-center gap-5 lg:gap-16 ">
-      <div class="flex flex-col flex-1 lg:max-w-[380px]">
-        <h2 class="text-h2 leading-[48px] mb-10">Un contrat dédié à <br> <span class="font-lora italic">l’immobilier
-            d’avenir</span></h2>
-        <p class="border border-secondary-light w-full text-center md:w-fit py-3 px-5 rounded-lg mb-6">Objectif de
-          rendement du FCPR : <b>7% / an*</b></p>
-        <p class="text-justify text-m">
-          Le contrat d’assurance vie Anaxago Value est le seul contrat vous permettant d’investir dans le FCPR Anaxago
-          Society 2023, offrant une exposition au marché de la réhabilitation immobilière et classé article 8 au sens de
-          la réglementation SFDR.
-          <br><br>
-          Le fonds en euros Netissima, de Generali Vie, offre également une poche de liquidité à votre contrat d’assurance
-          vie dans la limite de 40%*.
-        </p>
-        
-        <div class="max-md:text-center mt-5">
-          <a href="#offer" class='tw-cta tw-cta--secondary '>Découvrir l'offre</a>
+    <div class="md:hidden flex flex-col gap-4 w-full">
+      <div class="flex flex-col items-stretch">     
+        <img src="@/assets/img/life_insurancev3_realestate-1.png" alt="realestate-1" class="w-full h-[300px] object-cover">
+          <div class="bg-secondary-neutral p-5">
+            <h4 class="text-justify text-xl font-semibold mb-4">Anaxago Value - Society 2023</h4>
+            <p class="text-justify">Un contrat qui donne accès au dernier fonds de private equity immobilier de la gamme Anaxago Society, ayant pour vocation de permettre une exposition au marché de la réhabilitation immobilière, de la promotion et de l’immobilier géré, en ciblant des actifs bénéficiant d’un effet de rareté.</p>
+            <ul class="border border-[#F2ECE5] rounded-l px-4 py-2 mt-4 mb-2">
+              <li class="flex items-center my-4 gap-3">
+                <svg class="min-w-[15px]" width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13.3501 1.21521L5.45762 9.10995L1.87012 5.52143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p class="text-s">Taille du fonds cible : 50 millions d’euros</p>
+              </li>
+              <li class="flex items-center my-4 gap-3">
+                <svg class="min-w-[15px]" width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13.3501 1.21521L5.45762 9.10995L1.87012 5.52143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p class="text-s">Centré sur la recherche de la <b>performance</b></p>
+              </li>
+              <li class="flex items-center my-4 gap-3">
+                <svg class="min-w-[15px]" width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13.3501 1.21521L5.45762 9.10995L1.87012 5.52143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p class="text-s"><b>Allocation diversifiée</b>, visant à saisir les opportunités du marché immobilier français</p>
+              </li>
+              <li class="flex items-center my-4 gap-3">
+                <svg class="min-w-[15px]" width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13.3501 1.21521L5.45762 9.10995L1.87012 5.52143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p class="text-s">Classé article 8 au sens de la réglementation SFDR</p>
+              </li>
+            </ul>
+            <div class="grid md:grid-cols-2 gap-2 w-full mt-2 place-items-center">
+              <a href="#offer" class='tw-cta tw-cta--secondary font-semibold max-lg:w-full'>Découvrir l'offre</a>
+              <a
+                href="https://meetings.hubspot.com/contact-anaxago/anaxago-value"
+                class="tw-cta tw-cta--tertiary font-semibold max-lg:w-full"
+                target="_blank"
+              >
+                Découvrir le fonds
+              </a>
+            </div>
+          </div>
+      </div> 
+      <div class="flex flex-col items-stretch">
+        <img src="@/assets/img/life_insurancev3_realestate-2-stats-hz.png" alt="" class="w-full h-full max-h-[300px] mx-auto object-contain">
+        <div class=" bg-secondary-neutral  p-5">
+          <h4 class="text-justify text-xl font-semibold mb-4">Un fonds en euros attractif</h4>
+          <p class="text-justify">Netissima, conçu par l’assureur Generali, est un fonds en euros avec une composante immobilière supérieure à celle des fonds en euros classiques.</p>
+          <ul class="border border-[#F2ECE5] rounded-l px-4 py-2 mt-4 mb-2">
+            <li class="flex items-center my-4 gap-3">
+              <svg class="min-w-[15px]" width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.3501 1.21521L5.45762 9.10995L1.87012 5.52143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <p class="text-s">Constitué d’<b>obligations et d’emprunts d’État</b> à l’instar d’un fonds en euros classique</p>
+            </li>
+            <li class="flex items-center my-4 gap-3">
+              <svg class="min-w-[15px]" width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.3501 1.21521L5.45762 9.10995L1.87012 5.52143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <p class="text-s"><b>Diversification</b> de votre épargne avec un portefeuille immobilier</p>
+            </li>
+            <li class="flex items-center my-4 gap-3">
+              <svg class="min-w-[15px]" width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.3501 1.21521L5.45762 9.10995L1.87012 5.52143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <p class="text-s">Rendement net <b>majoré à hauteur de 4,36%* maximum</b> jusqu'en 2024</p>
+            </li>
+          </ul>
+          <p class="text-mini lg:text-s text-muted text-justify mx-auto">Le taux affiché n’est pas garanti et n’est pas contractuel. *Hypothèse d’un rendement de base 2023 similaire à celui de 2022 : 1,43%. Ajout du coefficient multiplicateur de 200% car la part en UC est > 60% : 1,43%*200% = 2,86%. Ajout de 1% pour une souscription faite avant le 31/07/2023 : 2,86% + 1% = 3,86%. Brut de frais de gestion de 0,85% / an.</p>
+          <a href="#offer" class='tw-cta tw-cta--secondary font-semibold !block w-full mt-4 mx-auto'>Découvrir l'offre</a>
         </div>
-       
-      </div>
-      <div class="flex flex-col md:flex-row items-stretch gap-1 min-h-[300px] lg:gap-2 flex-1 w-full lg:max-w-[800px] lg:h-[700px]">
-        <div class="flex-1 rounded-md bg-slate-500 "></div>
-        <div class="flex-1 rounded-md bg-slate-500 "></div>
       </div>
     </div>
+    
+  </div>
 
-    <p class="text-mini lg:text-s mt-2 lg:mt-8 text-center text-primary-dark/40">
-      *Objectif de rentabilité annuel, net de frais d'Anaxago Patrimony concernant le FCPR Anaxago Society 2023, avant
-      fiscalité et prélèvements. Ce taux ne présente pas une garantie de performance. Plus le taux est élevé, plus le
-      risque est important. **L'investissement sur le fonds en euros Netissima est conditionné à un investissement minimum
-      de 40% sur les supports en unités de compte.
-    </p>
-  </section>
+  <p class="hidden md:block text-mini lg:text-s mt-2 lg:mt-8 text-center text-primary-dark/40">
+    *Objectif de rentabilité annuel, net de frais d'Anaxago Patrimony concernant le FCPR Anaxago Society 2023, avant
+    fiscalité et prélèvements. Ce taux ne présente pas une garantie de performance. Plus le taux est élevé, plus le
+    risque est important. **L'investissement sur le fonds en euros Netissima est conditionné à un investissement minimum
+    de 40% sur les supports en unités de compte.
+  </p>
+</section>
 
-  <section class="bg-primary-dark text-white">
-    <div class="flex flex-col lg:flex-row items-stretch relative">
-      <div class="play-button cursor-pointer absolute z-10 top-[300px] left-1/2 -translate-y-1/2 lg:inset-x-1/2 -translate-x-1/2 lg:translate-y-1/2 w-[64px] h-[64px] p-4 lg:w-[100px] lg:h-[100px] lg:p-8 bg-white rounded-full flex justify-center items-center duration-300 hover:opacity-90">
-        <svg class="play w-full h-full translate-x-1" width="30" height="35" viewBox="0 0 30 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M29.668 17.5007L0.917969 34.0995V0.901831L29.668 17.5007Z" fill="#031E31"/>
-        </svg>
-        <svg class="pause hidden w-full h-full" width="24" height="36" viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 0H10V36H0V0Z" fill="#031E31"/>
-          <path d="M14 0H24V36H14V0Z" fill="#031E31"/>
-        </svg>
-      </div>
-      <div class="flex items-stretch flex-1 min-h-[300px] lg:max-w-[50%] relative overflow-hidden">
-      <div id="video" class="bg-slate-400 select-none absolute inset-0">
-        <iframe 
-          class="w-full h-full"
-          src="https://player.vimeo.com/video/877150472?h=cad5111f8d" 
-          frameborder="0" 
-          controls="0"
-          title="0"
-          sidedock="0"
-          allowfullscreen
-          style="position: absolute; width: 100%; height: 100%; object-fit: cover;"
-        >
-        </iframe>
+<section class="bg-primary-dark text-white">
+  <div class="flex flex-col lg:flex-row items-stretch relative">
+    <!--
+    <div class="play-button cursor-pointer absolute z-10 top-[300px] left-1/2 -translate-y-1/2 lg:inset-x-1/2 -translate-x-1/2 lg:translate-y-1/2 w-[64px] h-[64px] p-4 lg:w-[100px] lg:h-[100px] lg:top-[50px] lg:p-8 bg-white rounded-full flex justify-center items-center duration-300 hover:bg-secondary-dark">
+      <svg class="play w-full h-full translate-x-1" width="30" height="35" viewBox="0 0 30 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M29.668 17.5007L0.917969 34.0995V0.901831L29.668 17.5007Z" fill="#031E31"/>
+      </svg>
+      <svg class="pause w-full h-full" width="24" height="36" viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 0H10V36H0V0Z" fill="#031E31"/>
+        <path d="M14 0H24V36H14V0Z" fill="#031E31"/>
+      </svg>
+    </div>-->
+    <div class="flex items-stretch flex-1 min-h-[300px] max-lg:max-h-[300px] lg:max-w-[50%] relative overflow-hidden">
+      <div class="w-full relative">
+        <img class="object-cover w-full h-full object-bottom" src="@/assets/img/life_insurancev3_video_placeholder.png" alt="Buildings">
+      <!--
+        <video id="video" class="w-full h-full object-cover" autoplay muted loop poster="@/assets/img/life_insurancev3_video_placeholder.png">
+            <source src="@/assets/video/video.mp4" type="video/mp4">
+        </video>-->
       </div>
     </div>
-    <div class="flex flex-col flex-1 lg:max-w-[50%] items-stretch gap-8 px-5 pb-10 pt-16 md:p-20">
+    <div class="flex flex-col flex-1 lg:max-w-[50%] items-stretch gap-8 p-5 pt-16 md:p-20 md:pb-10">
         <h2 class="font-bold text-xl">Une offre en gestion libre vous permettant de <br class="hidden xl:block"> piloter vous même
           votre contrat d’assurance vie</h2>
         <ul class="flex flex-col flex-1 items-stretch gap-4">
-          <li class="flex max-md:flex-col items-center gap-6 px-6 py-5 border border-gray-dark/25">
+          <li class="flex max-md:flex-col items-center gap-6 px-6 py-5 border border-[#233A4A]">
             <div class="flex items-center justify-center w-[64px] min-w-[64px] lg:w-[48px] lg:min-w-[48px] aspect-square p-3 bg-primary-light rounded-full">
               <svg xmlns="http://www.w3.org/2000/svg" width="23" height="18" viewBox="0 0 23 18" fill="none">
                 <path
@@ -145,11 +338,11 @@ onMounted(() => {
               </svg>
             </div>
 
-            <p><b>Parcours 100% en ligne</b> : pilotage en toute liberté de votre éparge. Ouverture, versements, suivi,
-              rachats et avances* effectués en ligne sur votre compte Anaxago.</p>
+            <p class="font-light"><span class="font-semibold">Parcours 100% en ligne</span> : pilotage en toute liberté de votre éparge. Ouverture, versements, suivi,
+              rachats et avances* effectuées en ligne sur votre compte Anaxago.</p>
           </li>
 
-          <li class="flex max-md:flex-col items-center gap-6 px-6 py-5 border border-gray-dark/25">
+          <li class="flex max-md:flex-col items-center gap-6 px-6 py-5 border border-[#233A4A]">
               <div class="flex items-center justify-center w-[64px] min-w-[64px] lg:w-[48px] lg:min-w-[48px] aspect-square p-3 bg-primary-light rounded-full">
 
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="0 0 16 18" fill="none">
@@ -171,10 +364,10 @@ onMounted(() => {
               </svg>
             </div>
 
-            <p><b>Diversification de votre épargne</b> : accès à plus de 300 supports en unités de comptes (actions françaises ou internationales, obligations, OPC indiciels (ETF)).</p>
+            <p class="font-light"><span class="font-semibold">Diversification de votre épargne</span> : accès à plus de 300 supports en unités de comptes (actions françaises ou internationales, obligations, OPC indiciels (ETF)).</p>
           </li>
 
-          <li class="flex max-md:flex-col items-center gap-6 px-6 py-5 border border-gray-dark/25">
+          <li class="flex max-md:flex-col items-center gap-6 px-6 py-5 border border-[#233A4A]">
               <div class="flex items-center justify-center w-[64px] min-w-[64px] lg:w-[48px] lg:min-w-[48px] aspect-square p-3 bg-primary-light rounded-full">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="20" viewBox="0 0 15 20" fill="none">
                   <path d="M0.141963 6.26959C0.137595 6.08377 0.144146 5.89795 0.15834 5.71259C0.215659 4.98477 0.422554 4.28739 0.782301 3.62181C1.6339 2.04804 3.26122 0.841816 5.23737 0.320255C5.59821 0.224848 5.96614 0.154428 6.34063 0.107633C6.73968 0.0581122 7.14037 0.0340332 7.54379 0.0399394C7.79599 0.043574 8.04711 0.0581122 8.29822 0.0830999C8.98387 0.150794 9.64331 0.298448 10.2782 0.523791C11.8433 1.07943 13.1409 2.08756 13.9161 3.34876C14.2201 3.84397 14.4385 4.36371 14.5706 4.9089C14.6197 5.11243 14.6557 5.31824 14.6792 5.52541C14.7076 5.77302 14.7174 6.02062 14.7092 6.26913C14.7038 6.4445 14.6983 6.62032 14.6863 6.79524C14.6732 6.98469 14.6497 7.17323 14.6203 7.36132C14.5695 7.68571 14.4958 8.00646 14.3932 8.32221C14.1792 8.98098 13.8347 9.58931 13.3707 10.1509C13.1463 10.4221 12.9029 10.681 12.649 10.9332C12.4187 11.1622 12.1861 11.3898 11.9568 11.6197C11.7308 11.8464 11.5174 12.0813 11.323 12.3284C10.9027 12.8631 10.6166 13.4433 10.4682 14.0707C10.4136 14.3006 10.3754 14.5319 10.3513 14.7654C10.3301 14.9726 10.3213 15.1802 10.3213 15.3883C10.3213 15.4946 10.2891 15.5927 10.2039 15.674C10.0675 15.8044 9.89442 15.8535 9.69353 15.8108C9.4921 15.7681 9.37091 15.6545 9.3256 15.4859C9.31741 15.4551 9.31796 15.4219 9.31796 15.3896C9.31796 15.1675 9.32614 14.9458 9.34689 14.7245C9.3649 14.5314 9.39056 14.3388 9.42604 14.1475C9.57016 13.3697 9.88405 12.6446 10.395 11.9804C10.6199 11.6874 10.8699 11.4098 11.1353 11.1422C11.3804 10.8946 11.6298 10.6502 11.8766 10.4035C12.1261 10.1536 12.3641 9.89598 12.5786 9.62429C13.0224 9.06185 13.3298 8.45124 13.5012 7.79338C13.5569 7.5803 13.6 7.36587 13.6316 7.14915C13.689 6.75571 13.7124 6.36091 13.7004 5.96519C13.6786 5.22465 13.4755 4.51954 13.0917 3.85124C12.3559 2.57051 11.0419 1.60144 9.42604 1.14712C9.10397 1.05671 8.77533 0.98947 8.43961 0.944493C8.06785 0.894517 7.69337 0.869075 7.3167 0.876344C5.89245 0.903604 4.61669 1.28069 3.50251 2.01987C2.46039 2.71089 1.75837 3.59546 1.38443 4.65947C1.30036 4.89799 1.2414 5.14106 1.20046 5.38684C1.15242 5.67534 1.13823 5.96519 1.14314 6.25641C1.14751 6.49448 1.16225 6.73254 1.19009 6.96924C1.23867 7.38585 1.32711 7.79611 1.47013 8.19773C1.66938 8.7579 1.97618 9.27447 2.37632 9.75378C2.59796 10.0191 2.84088 10.2708 3.09199 10.517C3.35839 10.7787 3.62697 11.0391 3.88245 11.3085C4.14285 11.5829 4.38632 11.8664 4.59813 12.1685C4.94313 12.6601 5.18715 13.1844 5.33563 13.74C5.40223 13.9903 5.45082 14.2429 5.48357 14.4978C5.52124 14.7931 5.53925 15.0893 5.5398 15.386C5.5398 15.4305 5.53598 15.4746 5.52124 15.5177C5.44973 15.7195 5.23628 15.8131 5.06159 15.8194C4.78919 15.8294 4.54244 15.6536 4.53589 15.406C4.53207 15.2606 4.5288 15.1157 4.5217 14.9703C4.51024 14.7404 4.47912 14.5119 4.43599 14.2847C4.37922 13.9894 4.29515 13.6996 4.17888 13.4165C3.996 12.9704 3.73342 12.5583 3.40971 12.1721C3.20445 11.9268 2.97899 11.6946 2.74808 11.4657C2.49697 11.2167 2.24421 10.9695 1.99692 10.7178C1.70323 10.4194 1.43356 10.1063 1.19773 9.77331C0.831431 9.2572 0.569946 8.70566 0.402902 8.12322C0.328114 7.86198 0.271886 7.59802 0.23149 7.33179C0.201465 7.13371 0.177992 6.93471 0.167074 6.73527C0.158885 6.57989 0.150697 6.42497 0.142509 6.26959H0.141963Z" fill="white"/>
@@ -183,15 +376,15 @@ onMounted(() => {
                 </svg>
               </div>
 
-              <p><b>Fiscalité avantageuse</b> : tant que l’épargne est investie ; exonération d’imposition. Fiscalité allégée après 8 ans de détention.</p>
+              <p class="font-light"><span class="font-semibold">Fiscalité avantageuse</span> : tant que l’épargne est investie ; exonération d’imposition. Fiscalité allégée après 8 ans de détention.</p>
           </li>
         </ul>
 
         <div class="flex flex-col items-center lg:items-stretch max-md:justify-center md:flex-row lg:flex-col xl:flex-row gap-3 mt-4">
-          <a href="#offer" class='tw-cta tw-cta--primary max-lg:w-full'>Découvrir l'offre</a>
+          <a href="#offer" class='tw-cta tw-cta--primary font-semibold max-lg:w-full'>Découvrir l'offre</a>
           <a
               href="https://meetings.hubspot.com/contact-anaxago/anaxago-value"
-              class="tw-cta tw-cta--tertiary max-lg:w-full border !border-white !bg-transparent !text-white hover:!text-primary-light hover:!bg-white"
+              class="tw-cta tw-cta--tertiary font-semibold max-lg:w-full border !border-white !bg-transparent !text-white hover:!text-primary-light hover:!bg-white"
               target="_blank"
             >
                 <span>Être rappelé par un conseiller</span>
@@ -200,7 +393,7 @@ onMounted(() => {
 
         <p class="text-mini text-gray-dark/90 lg:text-s">*Les modalités de souscription, consultation et gestion en ligne du contrat sont précisées dans la Note d’Information valant Conditions Générales du contrat d’assurance vie Anaxago Value. </p>
     </div>
-  </div>
+</div>
 </section>
 
 <section class="p-5 md:px-20 lg:pt-14 lg:pb-8 lg:px-20">
@@ -209,32 +402,37 @@ onMounted(() => {
         
         <ul class="grid grid-cols-2 gap-7 lg:grid-cols-4 lg:gap-14">
            <li>
-            <p class="text-[28px] font-medium mb-3 leading-8">0%</p>
-            <p class="text-muted bg-secondary-neutral w-full px-2 py-1 border border-secondary-light rounded-md">de frais d’entrée</p>
+            <p class="text-[28px] font-semibold mb-3 leading-8">0%</p>
+            <p class="text-muted bg-secondary-neutral w-full px-2 py-1 border border-[#F2ECE5] rounded-md">de frais d’entrée</p>
            </li>
            <li>
-            <p class="text-[28px] font-medium mb-3 leading-8">0%</p>
-            <p class="text-muted bg-secondary-neutral w-full px-2 py-1 border border-secondary-light rounded-md">de frais d’arbitrage</p>
+            <p class="text-[28px] font-semibold mb-3 leading-8">0%</p>
+            <p class="text-muted bg-secondary-neutral w-full px-2 py-1 border border-[#F2ECE5] rounded-md">de frais d’arbitrage</p>
            </li>
            <li>
-            <p class="text-[28px] font-medium mb-3 leading-8">0,85%</p>
-            <p class="text-muted bg-secondary-neutral w-full px-2 py-1 border border-secondary-light rounded-md">de frais de gestion</p>
+            <p class="text-[28px] font-semibold mb-3 leading-8">0,85%</p>
+            <p class="text-muted bg-secondary-neutral w-full px-2 py-1 border border-[#F2ECE5] rounded-md">de frais de gestion</p>
            </li>
            <li>
-            <p class="text-[28px] font-medium mb-3 leading-8">0%</p>
-            <p class="text-muted bg-secondary-neutral w-full px-2 py-1 border border-secondary-light rounded-md">de frais de sortie</p>
+            <p class="text-[28px] font-semibold mb-3 leading-8">0%</p>
+            <p class="text-muted bg-secondary-neutral w-full px-2 py-1 border border-[#F2ECE5] rounded-md">de frais de sortie</p>
            </li>
         </ul>
 
         <div class="grid max-lg:w-full max-md:place-items-center md:grid-cols-2 gap-3 mt-4 mx-auto">
-          <a href="#offer" class='tw-cta tw-cta--secondary max-lg:w-full whitespace-nowrap flex-1'>Découvrir l'offre</a>
+          <a 
+              href="#offer" 
+              class='tw-cta tw-cta--secondary font-semibold max-lg:w-full lg:w-[310px] whitespace-nowrap flex-1'
+            >
+                Découvrir l'offre
+          </a>
        
           <a
               href="https://meetings.hubspot.com/contact-anaxago/anaxago-value"
-              class="tw-cta tw-cta--tertiary max-lg:w-full flex-1 whitespace-nowrap "
+              class="tw-cta tw-cta--tertiary font-semibold max-lg:w-full flex-1 lg:w-[310px] whitespace-nowrap "
               target="_blank"
             >
-                <span>Être rappelé par un conseiller</span>
+                Être rappelé par un conseiller
             </a>
         </div>
 
@@ -246,20 +444,20 @@ onMounted(() => {
 </section>
 
 <section class="bg-primary-dark text-white">
-    <div class="flex flex-col items-stretch pb-10">
+    <div class="flex flex-col items-stretch pb-5 lg:pb-10">
 
       <div class="flex items-stretch min-h-[150px] md:min-h-[300px]">
-        <div class="bg-[url('/assets/img/partnership.jpg')] bg-cover bg-right bg-no-repeat w-full"></div>
+        <div class="bg-[url('/assets/img/life_insurancev3_partnership.jpg')] bg-cover bg-right bg-no-repeat w-full"></div>
       </div>
       <div class="flex flex-col md:justify-center md:flex-row items-start gap-6 py-8 px-6 lg:pt-20 lg:pb-10 lg:px-20">
-        <img class="object-contain " src="@/assets/img/generali_logo.png" alt="geneli's logo'">
-        <div class="flex flex-col items-stretch gap-8 border-l border-white/25 pl-6">
+        <img class="object-contain " src="@/assets/img/life_insurancev3_generali.svg" alt="geneli's logo'">
+        <div class="flex flex-col items-stretch gap-8 border-l border-[#415461] pl-6">
           <h2 class="font-lora text-h2">Un partenaire de premier rang</h2>
 
-          <div class="flex flex-col gap-4 text-m">
+          <div class="flex flex-col gap-2 text-m">
             <p>Nous avons développé cette offre afin de mêler recherche de performance, investissements sectoriels forts et fiscalité avantageuse.</p>
             <p>Notre contrat d’assurance vie a été développé avec Generali Vie, l’assureur n°3 en Europe*.</p>
-            <p class="font-bold text-m mt-3">Vous avez besoin de liquidités ?</p>
+            <p class="font-bold text-m mt-3 -mb-2">Vous avez besoin de liquidités ?</p>
             <ul class="ml-2 pl-2">
               <li class="list-disc">Demande de virement simplifiée, fonds sur votre compte bancaire en 48  heures**</li>
               <li class="list-disc">Nantissement de votre contrat pour obtenir un crédit en quelques clics (en savoir plus)</li>
@@ -274,7 +472,7 @@ onMounted(() => {
 </section>
 
 <section class="p-5 lg:pt-20 lg:pb-10 flex flex-col gap-8 justify-center">
-  <article class="flex flex-col md:flex-row rounded-xl overflow-hidden bg-secondary-neutral text-primary-light lg:max-w-[980px] mx-auto">
+  <article class="flex flex-col max-sm:w-full sm:flex-row rounded-xl overflow-hidden bg-secondary-neutral text-primary-light lg:max-w-[980px] mx-auto">
       <div class="flex-2 flex flex-col justify-between max-md:items-center p-6 lg:py-16 lg:px-10">
           <h3 class="text-xl font-semibold mb-4">Vous souhaitez plus d’informations ?</h3>
           <p>Prenez contact avec votre conseiller dédié</p>
@@ -283,18 +481,23 @@ onMounted(() => {
             <li class="list-disc">Sur rendez-vous le soir et le week-end</li>
           </ul>
 
-          <a href="{{ path('anaxago_hubspot_meeting_relation_clientele_privee') }}" class="tw-cta tw-cta--secondary w-fit">Prendre rendez-vous</a>
+          <a href="{{ path('anaxago_hubspot_meeting_relation_clientele_privee') }}" class="tw-cta tw-cta--secondary font-semibold w-fit min-w-[290px]">Prendre rendez-vous</a>
 
           <p class="text-center text-muted mt-3">Par téléphone au +33 1 84 17 41 76 </p>
       </div>
 
-      <div class="flex-1 rounded-tr-md rounded-br-md overflow-hidden">
-        <img class="h-full w-full object-cover max-md:max-h-[300px] object-left-top" src="@/assets/img/alexandre.png" alt="alexandre picture" />
+      <div class="flex-1 relative">
+        <div class="absolute inset-0 py-8 px-10 flex flex-col pointer-events-none text-white" style="background: linear-gradient(0deg, rgba(3, 4, 14, 0.85) 6.52%, rgba(3, 4, 14, 0.72) 21%, rgba(3, 4, 14, 0.64) 36.61%, rgba(3, 4, 14, 0.00) 61.77%)">
+          <h3 class="text-xl font-bold mt-auto">Alexandre Trigo</h3>
+          <p class="text-s font-semibold">Relations Investisseurs</p>
+        </div>
+        <img class="h-full w-full object-cover max-md:max-h-[300px] object-left-top" src="@/assets/img/life_insurancev3_alexandre.png" alt="alexandre picture" />
       </div>
   </article>
   <p class="text-muted text-mini md:text-s text-center max-w-[80%] mx-auto">Les images disponibles sur cette page ne sont pas contractuelles et ne correspondent pas nécessairement aux investissements faits à travers Anaxago Value.</p>
 </section>
 
+<!-- TODO Remove div -->
 <div class="pb-[200px]"></div>
 
 </template>
