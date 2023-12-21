@@ -64,7 +64,7 @@ onMounted(() => {
 
 <section class="sticky top-0 left-0 bg-white px-5 py-4 w-full xl:max-h-[84px] z-[500]">
   <div class="flex justify-between items-center md:items-start lg:items-center flex-col lg:flex-row max-md:gap-3 max-w-[1184px] mx-auto">
-    <div class="flex max-md:w-full flex-col lg:flex-row">
+    <div class="flex max-md:w-full flex-col">
       <p class="text-[#0E332B] text-m font-bold">AXClimat I</p>
       <p class="text-[#0E332B] text-s pb-[1.5px]">Le meilleur du private equity européen dédié à la décarbonation</p>
     </div>
