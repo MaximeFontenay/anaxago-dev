@@ -14,10 +14,20 @@ onMounted(() => {
 
     // JS in backend/assets/js/front/pages/life_insurance/free_management.js
 
+  const fixedSubNav = document.querySelector('.sub-nav')
   const tabs = [...document.querySelectorAll('.tabs > div')]
   const slides = [...document.querySelectorAll('.slide')]
   const slideBgs = [...document.querySelectorAll('.slide-bg')]
   const sliderContainer = document.querySelector('.slide-container')
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 500) {
+      fixedSubNav.style.cssText = `opacity: 1; pointer-events: all; transform: translateY(0)`
+    } else {
+      fixedSubNav.style.cssText = `opacity: 0; pointer-events: none; transform: translateY(-100%)`
+    }
+  });
+  
 
 	function hideSlides() {
 		slides.forEach(slide => slide.style.cssText = `opacity: 0; pointer-events: none`)
@@ -60,17 +70,17 @@ onMounted(() => {
 <!-- Template in backend/templates/Front/Pages/LifeInsurance/free_management.html.twig -->
 
 <template>
+<div class="sticky top-0 left-0 h-[60px] z-[1100] bg-secondary-light w-full"></div>
 
-
-<section class="sticky top-0 left-0 bg-white px-5 py-4 w-full xl:max-h-[84px] z-[500]">
+<section class="sub-nav duration-300 opacity-0 pointer-none -translate-y-full fixed top-[60px] left-0 bg-white px-5 py-4 w-full xl:max-h-[84px] z-[6]">
   <div class="flex justify-between items-center md:items-start lg:items-center flex-col lg:flex-row max-md:gap-3 max-w-[1184px] mx-auto">
-    <div class="flex max-md:w-full flex-col">
+    <div class="hidden md:flex max-md:w-full flex-col">
       <p class="text-[#0E332B] text-m font-bold">AXClimat I</p>
       <p class="text-[#0E332B] text-s pb-[1.5px]">Le meilleur du private equity européen dédié à la décarbonation</p>
     </div>
 	  <div class="flex items-center w-full max-sm:flex-col md:ml-auto md:mt-4 lg:mt-0 lg:ml-0 gap-2 lg:gap-4 md:max-w-[650px]">
-		  <a href="#" class="tw-cta tw-cta--secondary !py-[11px] !font-semibold max-lg:ml-auto !border-2 !border-[#0E332B] whitespace-nowrap !bg-transparent hover:!bg-[#0E332B] !text-[#0E332B] hover:!text-white w-full max-md:!max-w-full md:!max-w-[330px]">Être rappelé par un conseiller</a>
-		  <a href="#" class="tw-cta tw-cta--secondary !py-[11px] !font-semibold max-lg:ml-auto !border-2 border-[#0E332B] hover:border-[#10392f] !bg-[#0E332B] hover:!bg-[#10392f] whitespace-nowrap text-white !w-full max-md:!max-w-full md:max-w-[330px]">Accéder à la documentation</a>
+		  <a href="https://share.hsforms.com/1SrQQ3Wv0TqmrD9p1zaZmwQ1fcvu" class="tw-cta tw-cta--secondary !p-0 !font-semibold max-lg:ml-auto !border border-[#0E332B] hover:border-[#10392f] !bg-[#0E332B] hover:!bg-[#10392f] whitespace-nowrap text-white !w-full h-[45px] !py-[10px] max-md:!max-w-full md:!max-w-[278px]">Accéder à la documentation</a>
+		  <a href="https://meetings.hubspot.com/contact-anaxago/axclimat" class="tw-cta tw-cta--tertiary !p-0 !font-semibold max-lg:ml-auto !border !border-[#0E332B] whitespace-nowrap w-full h-[45px] !py-[10px] max-md:!max-w-full md:!max-w-[278px]">Être rappelé par un conseiller</a>
 	  </div>
   </div>
 </section>
@@ -81,12 +91,12 @@ onMounted(() => {
     <div class="flex-1 flex flex-col lg:flex-row justify-between items-start gap-6 w-full">
       <div class="flex flex-col text-white lg:max-w-[650px]">
         <p class="text-xl font-semibold mb-3">AxClimat I</p>
-        <h1 class="text-h1 font-lora leading-[58px] mt-2 mb:mb-6 md:mb-8">Le meilleur du private equity <br class="hidden lg:block"> européen dédié à la <i>décarbonation</i></h1>
+        <h1 class="text-h1 font-lora leading-[58px] mt-2 mb:mb-6 md:mb-8">Accédez aux gérants européens de 1er plan du private equity à <i>impact</i></h1>
         <p class="text-m lg:max-w-[600px] text-justify">Un <b>fonds européen</b> visant les fonds de private equity dédié à la décarbonation et la transition énergétique</p>
-        <div class="flex max-md:flex-col gap-4 md:gap-6 items-stretch text-center mt-8 pt-6 w-full lg:w-fit" style="border-top: solid 1px rgba(255, 255, 255, 0.50)">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 items-stretch text-center mt-8 pt-6 w-full lg:w-fit" style="border-top: solid 1px rgba(255, 255, 255, 0.50)">
             <div class="flex flex-col items-center justify-center flex-1">
-              <p class="text-xl font-semibold">> 12%</p>
-              <p class="font-semibold bg-white/30 backdrop-blur-sm whitespace-nowrap w-full px-5 py-1 rounded-full">TRI cible net</p>
+              <p class="text-xl font-semibold">Article 9</p>
+              <p class="font-semibold bg-white/30 backdrop-blur-sm whitespace-nowrap w-full px-5 py-1 rounded-full">classification SFDR</p>
             </div>
             <div class="flex flex-col items-center justify-center flex-1">
               <p class="text-xl font-semibold">100 000€</p>
@@ -102,7 +112,7 @@ onMounted(() => {
       <article class="flex flex-col justify-center items-center text-center rounded-xl p-6 md:min-w-[400px] max-lg:mt-8 max-lg:mx-auto max-md:w-full lg:mt-8 lg:px-10 lg:py-8 bg-white">
         <h2 class="font-xl mb-5 text-[#0E332B] font-semibold">Vous voulez en savoir plus ?</h2>
         <p class="font-m mb-9 text-[#0E2333]">Le fonds est <span class="font-semibold">ouvert sur invitation</span> dans <br> un premier temps.</p>
-        <a href="#" class="tw-cta tw-cta--secondary !py-[11px] !font-semibold !bg-[#0E332B] hover:!bg-[#10392f] text-white w-full">Envoyer ma demande</a>
+        <a href="https://share.hsforms.com/1SrQQ3Wv0TqmrD9p1zaZmwQ1fcvu" class="tw-cta tw-cta--secondary !py-[11px] !px-0  !font-semibold !bg-[#0E332B] hover:!bg-[#10392f] text-white w-full">Envoyer ma demande</a>
       </article>
     </div>
   </div>
@@ -117,7 +127,7 @@ onMounted(() => {
           <svg class="w-[45px] min-w-[45px] h-[45px] min-h-[45px]" width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M18.1537 46C17.5936 45.9425 17.019 45.8995 16.4589 45.8133C9.21993 44.7648 4.04924 40.9299 1.34899 34.1505C-2.83065 23.7086 3.07255 12.1463 13.9454 9.30247C18.6708 8.06725 23.2382 8.65613 27.5471 11.0404C28.0499 11.3133 28.5382 11.6149 29.1414 11.9596C29.0696 11.3133 29.0122 10.7388 28.9547 10.1643C28.8398 9.23065 28.7249 8.29706 28.61 7.36346C28.5526 6.97566 28.6675 6.65967 28.9404 6.37241C30.7645 4.40468 32.5742 2.43694 34.3839 0.454844C34.6568 0.153221 34.9441 -0.0765879 35.375 0.0239533C35.7772 0.124495 35.8777 0.454844 35.9782 0.799557C36.4809 2.52312 36.9837 4.26105 37.4864 5.98461C37.5294 6.12824 37.5869 6.27187 37.6444 6.48732C37.9172 6.22878 38.1471 6.0277 38.3769 5.79789C39.253 4.93611 40.1148 4.05996 40.9909 3.19818C41.4218 2.76729 41.8671 2.73857 42.2118 3.08328C42.5421 3.41363 42.5134 3.88761 42.0969 4.30414C41.0197 5.39573 39.9281 6.47295 38.8365 7.55018C38.7072 7.66508 38.5349 7.7369 38.3912 7.82308C38.42 7.88053 38.463 7.93798 38.4918 7.99543C38.6354 8.05289 38.779 8.11034 38.9227 8.15343C40.6893 8.6705 42.4703 9.18756 44.2513 9.70463C44.6104 9.80517 44.9551 9.93444 45.0557 10.351C45.1562 10.7675 44.912 11.0404 44.6391 11.2989C42.6858 13.1087 40.718 14.9184 38.779 16.7282C38.42 17.0585 38.0322 17.1734 37.5582 17.1016C36.4953 16.9436 35.4468 16.8143 34.3839 16.6851C34.226 16.6707 34.068 16.6851 33.8525 16.6851C34.0105 16.958 34.1541 17.1734 34.2978 17.4032C38.7503 24.5129 37.9173 33.8058 32.2008 39.9532C28.7393 43.6732 24.4447 45.6697 19.3459 45.8995C19.1735 45.8995 19.0155 45.9569 18.8432 46H18.1681H18.1537ZM26.7572 19.8162C31.2815 24.8289 30.0032 31.9242 26.0965 35.4575C21.9168 39.235 15.6402 39.4505 11.4462 35.8453C6.57713 31.6657 6.59149 25.346 9.26301 21.2525C10.7568 18.9544 12.825 17.3601 15.4966 16.6276C19.1448 15.6366 22.4626 16.3834 25.4214 18.581C26.8434 17.1734 28.2078 15.7946 29.5867 14.4157C24.5453 9.58973 14.6061 8.09597 7.33837 14.5162C-0.0873157 21.1089 -0.302761 32.5993 6.80694 39.5797C13.5576 46.2011 24.9043 45.842 31.2097 38.7036C37.7018 31.3354 36.3948 21.2094 30.8219 15.5073C29.4862 16.9436 28.136 18.3655 26.7715 19.8306L26.7572 19.8162ZM25.3783 20.7929C25.2922 20.9365 25.206 21.0945 25.0911 21.2238C23.3962 22.9186 21.7158 24.6135 20.0209 26.3083C19.5182 26.811 19.0155 27.3424 18.4697 27.802C18.2686 27.96 17.8808 28.0749 17.6654 27.9888C17.4356 27.9026 17.177 27.5722 17.1627 27.3281C17.1483 27.0839 17.3494 26.7535 17.5361 26.5668C19.5757 24.4986 21.6439 22.459 23.6979 20.4051C23.9133 20.204 24.1 19.9742 24.3011 19.7588C20.7103 16.8861 14.8646 16.9723 11.3169 21.1807C7.88416 25.2598 8.47305 31.3497 12.6383 34.725C16.7605 38.0572 22.7499 37.3678 26.0247 33.1882C29.4431 28.8362 28.0642 23.2633 25.3783 20.8073V20.7929ZM42.7289 10.8968C40.9335 10.3797 39.253 9.89135 37.5869 9.38865C37.1991 9.27374 36.9693 9.35992 36.7108 9.63282C35.3606 11.0117 33.9961 12.3618 32.6173 13.7263C32.3875 13.9561 32.1146 14.1428 31.8991 14.3152C32.1577 14.861 32.5455 14.9184 32.9189 14.9615C34.2978 15.1339 35.6766 15.2775 37.0411 15.4929C37.5438 15.5791 37.8742 15.4355 38.2332 15.1051C39.2674 14.1141 40.3302 13.1518 41.3787 12.1751C41.8096 11.7729 42.2262 11.3707 42.7289 10.9111V10.8968ZM30.8794 13.1805C30.9799 13.123 31.0374 13.0943 31.0804 13.0512C32.7609 11.3851 34.4558 9.70463 36.1219 8.02416C36.2368 7.90925 36.2942 7.62199 36.2368 7.43528C35.9352 6.32932 35.6048 5.23773 35.2888 4.13178C35.1165 3.55726 34.9585 2.98274 34.7717 2.37949C34.6712 2.4513 34.6138 2.48003 34.5707 2.52312C33.1487 4.07433 31.7268 5.61117 30.3192 7.17674C30.2187 7.29164 30.1756 7.52145 30.1899 7.69381C30.2761 8.58432 30.391 9.46046 30.4916 10.351C30.6065 11.2702 30.7357 12.2038 30.865 13.1661L30.8794 13.1805Z" fill="#2A403A"/>
           </svg>
-          <h3 class="text-xl font-bold mt-4 mb-6">TRI cible > 12% (net de tous frais)</h3>
+          <h3 class="text-xl font-bold mt-4 mb-6">TRI cible (non garanti) > 12% net de tous frais</h3>
           <p>Sélection des meilleurs gérants européens pour accéder aux meilleures performances financières et extra-financières</p>
           <br>
           <p>Fonds de private equity et infrastructure :</p>
@@ -137,21 +147,20 @@ onMounted(() => {
           <h3 class="text-xl font-bold mt-4 mb-6">Objectif net zéro carbone</h3>
 
           <div class="flex max-md:flex-col gap-4 md:gap-6 items-stretch font-semibold font-m mb-6">
-            <div class="w-fit">
+            <div class="w-fit flex-1">
               <p>Trois secteurs clés :</p>
-              <ul class="pl-6">
-                <li class="list-disc">Décarbonation de l'industrie</li>
-                <li class="list-disc">Énergies renouvelables</li>
-                <li class="list-disc">Economie circulaire</li>
+              <ul class="pl-6 list-disc">
+                <li class="">Décarbonation de l'industrie</li>
+                <li class="">Énergies renouvelables</li>
+                <li class="">Economie circulaire</li>
               </ul>
             </div>
             <div class="block min-h-[1px] max-md:bg-[#DFE3EA]" style="border-right: 1px dashed #DFE3EA;"></div>
-            <div class="w-fit">
+            <div class="w-fit flex-1">
               <p>Trois indicateurs précis : </p>
-              <ul class="pl-6">
-                <li class="list-disc">Tonnes de CO2 évitées, </li>
-                <li class="list-disc">Réduction des TCO2 émises,</li>
-                <li class="list-disc">MW installés </li>
+              <ul class="pl-6 list-disc">
+                <li class="">Tonnes de CO2 évitées, </li>
+                <li class="">MW installés en capacité de production d'énergie renouvelable</li>
               </ul>
             </div>
           </div>
@@ -159,13 +168,13 @@ onMounted(() => {
           <p>
             La nouvelle révolution industrielle soutenue par une réglementation européenne 
             croissante pour atteindre le Net Zéro Carbone :
+            <br>
             <b>≈ 1 000 milliards€/ an d’ici 2030</b>
           </p>
         </article>
       </div>
-
-      <a href="#" class="tw-cta tw-cta--secondary !py-[11px] !font-semibold !bg-[#0E332B] hover:!bg-[#10392f] text-white w-full max-w-[300px] mt-8">Accéder à la documentation</a>
-  </div>
+      <p class="text-xs text-black/50 mt-6 lg:mt-12 lg:text-[15px]">*L’objectif de rendement communiqué à titre indicatif n’est ni contractuel ni garanti. Il existe un risque d’illiquidité et de perte en capital.</p>  
+    </div>
 </section>
 
 <section class="lg:flex relative bg-[#1E3C35] text-white">
@@ -173,7 +182,7 @@ onMounted(() => {
   <div class="max-w-[1184px] px-5 mx-auto flex items-stretch justify-center w-full">
     <div class="flex flex-col py-10 lg:py-16 px lg:max-w-[60%] lg:ml-auto">
       <h2 class="text-h2 font-lora text-center mb-6">Les <i>éléments clés</i> d’AxClimat I</h2>
-      <div class="bg-white text-black rounded-lg text-l p-6 lg:p-10" style="border: 1px solid #E4EBF5">
+      <div class="bg-white text-black rounded-lg text-l px-14 py-10" style="border: 1px solid #E4EBF5">
         <ul class="max-lg:list-disc mb-4">
           <li class="lg:flex items-center gap-2">
             <svg class="max-lg:hidden" width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -185,19 +194,13 @@ onMounted(() => {
             <svg class="max-lg:hidden" width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="2.5" cy="2.5" r="2.5" fill="#0E2333" fill-opacity="0.15"/>
             </svg>
-            Objectif de TRI cible net de frais* (non garanti) : <b>12%/an</b>
+            Durée de vie du fonds* : <b>10 ans, prorogeable 2x 1 an</b>
           </li>
           <li class="lg:flex items-center gap-2">
             <svg class="max-lg:hidden" width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="2.5" cy="2.5" r="2.5" fill="#0E2333" fill-opacity="0.15"/>
             </svg>
-            Durée de vie du fonds* : <b>0 ans, prorogeable 2x 1 an</b>
-          </li>
-          <li class="lg:flex items-center gap-2">
-            <svg class="max-lg:hidden" width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="2.5" cy="2.5" r="2.5" fill="#0E2333" fill-opacity="0.15"/>
-            </svg>
-            Distribution des intérêts : <b>à partir de la 6ème année</b>
+            Distribution de la plus-value : <b>à partir de la 6ème année</b>
           </li>
           <li class="lg:flex items-center gap-2">
             <svg class="max-lg:hidden" width="5" height="5" viewBox="0 0 5 5" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -251,9 +254,9 @@ onMounted(() => {
               Souscription minimum :
             </dt>
             <dd class="space-y-1">
-              <div>Parts A : <span class="font-bold">100 000€</span></div>
+              <div>Parts A : <span class="font-bold">1 000 000€</span></div>
               <div>Parts B : <span class="font-bold">100 000€</span></div>
-              <div>Parts I : <span class="font-bold">1 000 000€</span></div>
+              <div>Parts I : <span class="font-bold">2 000 000€</span></div>
             </dd>
           </div>
           <div class="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-2" style="border-top: 1px dotted #DFE3EA">
@@ -264,9 +267,9 @@ onMounted(() => {
               Frais d’entrée :
             </dt>
             <dd class="space-y-1">
-              <div>Parts A : <span class="font-bold">3%</span></div>
-              <div>Parts B : <span class="font-bold">3%</span></div>
-              <div>Parts I : <span class="font-bold">0%</span></div>
+              <div>Parts A : <span class="font-bold">1.5%</span></div>
+              <div>Parts B : <span class="font-bold">2%</span></div>
+              <div>Parts I : <span class="font-bold">1%</span></div>
             </dd>
           </div>
           <div class="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-2" style="border-top: 1px dotted #DFE3EA">
@@ -277,9 +280,10 @@ onMounted(() => {
               Frais de gestion récurrents :
             </dt>
             <dd class="space-y-1">
-              <div>Parts A : <span class="font-bold">1,3%/an</span></div>
-              <div>Parts B : <span class="font-bold">1,7%/an</span></div>
-              <div>Parts I : <span class="font-bold">1%/an</span></div>
+              <div>Parts A : <span class="font-bold">1,3%/an***</span></div>
+              <div>Parts B : <span class="font-bold">1,7%/an***</span></div>
+              <div>Parts I : <span class="font-bold">1%/an***</span></div>
+              <div>Parts D <i>(assurance vie)</i> : <span class="font-bold">1,70%/an***</span></div>
             </dd>
           </div>
         </dl>
@@ -288,6 +292,8 @@ onMounted(() => {
         *Les taux et horizons indiqués ne présentent pas une garantie de performance. L’attention des souscripteurs est attirée sur le fait que votre argent est bloqué pendant une durée de 10 années soit jusqu’en 2034 et au plus tard jusqu’en 2036, sauf en cas de déblocage anticipé par le Règlement.
         <br>
         **Article 9 du règlement européen SFDR (Sustainable Finance Disclosure Regulation) ; Fonds qui promeuvent des caractéristiques environnementales ou sociales.
+        <br>
+        ***Frais de gestion de N à N+5, puis dégressivité de 0,1 point/an à partir de la 6ème année, sauf pour l’assurance vie.
       </p>
     </div>
   </div>
@@ -335,7 +341,7 @@ onMounted(() => {
             </ul>
             <p>Le solaire et l'éolien se révèlent être les technologies les plus pertinentes et dont le potentiel est le plus important pour <span class="font-semibold">réduire les émissions de CO2</span> (dernier rapport du Giec).</p>
           </div>
-          <a href="#" class="tw-cta tw-cta--secondary !block max-md:mx-auto !py-[11px] !font-semibold !bg-[#0E332B] hover:!bg-[#10392f] text-white w-full max-w-[300px] mt-6 lg:mt-10">Accéder à la documentation</a>
+          <a href="https://share.hsforms.com/1SrQQ3Wv0TqmrD9p1zaZmwQ1fcvu" class="tw-cta tw-cta--secondary !block max-md:mx-auto !py-[11px] !px-0  !font-semibold !bg-[#0E332B] hover:!bg-[#10392f] text-white w-full max-w-[278px] mt-6 lg:mt-10">Accéder à la documentation</a>
         </div>
         <div>
           <img src="@/assets/img/axclimat/axclimat_stats-1.png" alt="Energy Statistics" class="w-full object-contain" draggable="false" decoding="async">
@@ -357,9 +363,8 @@ onMounted(() => {
               <li><b>Réduire les émissions de gaz à effet de serre</b> (entreprises en transition)</li>
               <li><b>Éviter les émissions de gaz à effet de serre</b> (entreprises alignées)</li>
             </ul>
-            <p>Le solaire et l'éolien se révèlent être les technologies les plus pertinentes et dont le potentiel est le plus important pour <span class="font-semibold">réduire les émissions de CO2</span> (dernier rapport du Giec).</p>
           </div>
-          <a href="#" class="tw-cta tw-cta--secondary !block max-md:mx-auto !py-[11px] !font-semibold !bg-[#0E332B] hover:!bg-[#10392f] text-white w-full max-w-[300px] mt-6 lg:mt-10">Accéder à la documentation</a>
+          <a href="https://share.hsforms.com/1SrQQ3Wv0TqmrD9p1zaZmwQ1fcvu" class="tw-cta tw-cta--secondary !block max-md:mx-auto !py-[11px] !px-0  !font-semibold !bg-[#0E332B] hover:!bg-[#10392f] text-white w-full max-w-[278px] mt-6 lg:mt-10">Accéder à la documentation</a>
         </div>
         <div>
           <img src="@/assets/img/axclimat/axclimat_stats-2.png" alt="Sectors Statistics" class="w-full object-contain" draggable="false" decoding="async">
@@ -384,7 +389,7 @@ onMounted(() => {
               <li><b>31 % des aliments</b> sont gaspillés le long de la chaîne de valeur</li> 
             </ul>
           </div>
-          <a href="#" class="tw-cta tw-cta--secondary !block max-md:mx-auto !py-[11px] !font-semibold !bg-[#0E332B] hover:!bg-[#10392f] text-white w-full max-w-[300px] mt-6 lg:mt-10">Accéder à la documentation</a>
+          <a href="https://share.hsforms.com/1SrQQ3Wv0TqmrD9p1zaZmwQ1fcvu" class="tw-cta tw-cta--secondary !block max-md:mx-auto !py-[11px] !px-0  !font-semibold !bg-[#0E332B] hover:!bg-[#10392f] text-white w-full max-w-[278px] mt-6 lg:mt-10">Accéder à la documentation</a>
         </div>
         <div>
           <img src="@/assets/img/axclimat/axclimat_stats-3.png" alt="Circular Statistics" class="w-full object-contain" draggable="false" decoding="async">
@@ -399,7 +404,7 @@ onMounted(() => {
   <div class="max-w-[1184px] px-5 mx-auto flex items-stretch justify-center w-full">
     <div class="flex flex-col py-10 lg:py-16 px lg:max-w-[60%] lg:ml-auto">
       <h2 class="text-h2 font-lora text-left mb-6">
-        La <i>surperformance</i> du private <br class="hidden md:block"> equity européen 
+        La <i>performance</i> du private <br class="hidden md:block"> equity européen 
       </h2>
 
       <p class="mb-8">Les fonds de fonds de private equity représentent le meilleur couple risque/rendement du marché européen.</p>
@@ -441,7 +446,7 @@ onMounted(() => {
         </ul>
       </div>
 
-      <a href="#" class="tw-cta tw-cta--secondary max-md:mx-auto !py-[11px] !font-semibold !bg-[#0E332B] hover:!bg-[#10392f] text-white w-full max-w-[300px]">Accéder à la documentation</a>
+      <a href="https://share.hsforms.com/1SrQQ3Wv0TqmrD9p1zaZmwQ1fcvu" class="tw-cta tw-cta--secondary max-md:mx-auto !py-[11px] !px-0  !font-semibold !bg-[#0E332B] hover:!bg-[#10392f] text-white w-full max-w-[278px]">Accéder à la documentation</a>
       
     </div>
   </div>
@@ -452,6 +457,7 @@ onMounted(() => {
     <h2 class="text-h2 font-lora mb-6">La composition du portefeuille</h2>
     <img src="@/assets/img/axclimat/axclimat_wallet-graph.png" alt="wallet statistics" class="hidden sm:block w-full object-contain" draggable="false" decoding="async">
     <img src="@/assets/img/axclimat/axclimat_wallet-graph-mobile.png" alt="wallet statistics" class="sm:hidden w-full max-h-[1000px] object-contain" draggable="false" decoding="async">
+    <p class="text-xs text-black/50 mt-6 lg:mt-12 lg:text-[15px]">*L’objectif de rendement communiqué à titre indicatif n’est ni contractuel ni garanti. Il existe un risque d’illiquidité et de perte en capital.</p>  
   </div>
 </section>
 
@@ -468,7 +474,7 @@ onMounted(() => {
             <li>Buyout majoritaire très opérationnel</li>
             <li>Spin-off d’une société de gestion réputée</li>
             <li>80% des membres seniors de l’équipe travaillent ensemble depuis +8 ans</li>
-            <li>1er deal en portefeuille</li>
+            <li>2 deals en portefeuille</li>
             <li>Fonds sursouscrit - closing final fin 2023</li>
           </ul>
         </div>
@@ -522,12 +528,12 @@ onMounted(() => {
   <article class="bg-white flex flex-col justify-center items-center text-center rounded-xl p-6 max-w-[700px] mx-auto lg:px-10 lg:py-8">
       <h2 class="font-xl mb-5 text-[#0E332B] font-semibold">Vous voulez en savoir plus ?</h2>
       <p class="font-m mb-5 text-[#0E2333]">Le fonds est <span class="font-semibold">ouvert sur invitation</span> dans un premier temps.</p>
-      <a href="#" class="tw-cta tw-cta--secondary !py-[11px] !font-semibold !bg-[#00B67A] hover:!bg-[#0cae78] text-white w-full">Envoyer ma demande</a>
+      <a href="https://share.hsforms.com/1SrQQ3Wv0TqmrD9p1zaZmwQ1fcvu" class="tw-cta tw-cta--secondary !py-[11px] !px-0  !font-semibold !bg-[#00B67A] hover:!bg-[#0cae78] text-white w-full max-w-[325px] mx-auto">Envoyer ma demande</a>
   </article>
 </section>
 
 <!-- TODO Remove div -->
-<div class="pb-[2000px]"></div>
+<div class="pb-[1000px]"></div>
 
   <NuxtPage />
 </template>
