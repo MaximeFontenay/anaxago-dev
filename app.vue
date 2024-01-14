@@ -41,8 +41,6 @@ onMounted(() => {
   carouselsControls.forEach(control => {
     control.addEventListener('click', function () {
       const carousel = this.parentElement.nextElementSibling
-    
-      console.log(carousel)
       const carouselItems = carousel.querySelectorAll('article')
       const carouselItemWidth = carouselItems[0].offsetWidth
 
@@ -52,7 +50,6 @@ onMounted(() => {
           behavior: 'smooth'
         })
       } else {
-        console.log('right');
         carousel.scrollBy({
           left: carouselItemWidth,
           behavior: 'smooth'
@@ -75,10 +72,8 @@ onMounted(() => {
           }
         }
       })
-      
     })
   })
-
 
 
 
