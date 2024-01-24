@@ -11,9 +11,7 @@ useHead({
 
 
 onMounted(() => {
-
   // JS in backend/assets/js/front/pages/life_insurance/free_management.js
-
 
   // Flex cards 
   const flexCards = document.querySelectorAll('.flex-cards')
@@ -27,174 +25,22 @@ onMounted(() => {
   })
 
 
-
-  // Accordions  
-  const accordionTriggers = document.querySelectorAll('[data-toggle-accordion]')
-  accordionTriggers.forEach(trigger => {
-    trigger.addEventListener('click', function (e) {
-      const accordionContent = this.nextElementSibling
-
-      this.querySelector('svg').classList.toggle('scale-y-[-1]')
-      accordionContent.classList.toggle('active')
-
-      if (accordionContent.classList.contains('active')) {
-        accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px'
-      } else {
-        accordionContent.style.maxHeight = null
-      }
-    })
-  })
-
-
-  // Carousels
-  const carouselsControls = document.querySelectorAll('[data-carousel-control]')
-  carouselsControls.forEach(control => {
-    control.addEventListener('click', function () {
-      const carousel = this.parentElement.nextElementSibling
-      const carouselItems = carousel.querySelectorAll('article')
-      const carouselItemWidth = carouselItems[0].offsetWidth
-
-      if (this.dataset.carouselControl === 'left') {
-        carousel.scrollBy({
-          left: -carouselItemWidth,
-          behavior: 'smooth'
-        })
-      } else {
-        carousel.scrollBy({
-          left: carouselItemWidth,
-          behavior: 'smooth'
-        })
-      }
-
-      carousel.addEventListener('scroll', function () {
-        if(control.dataset.carouselControl === 'left') {
-          if (carousel.scrollLeft === 0) {
-            control.classList.add(...['!opacity-20', '!pointer-events-none'])
-          } else {
-            control.classList.remove(...['!opacity-20', '!pointer-events-none'])
-          }
-        }
-        else if(control.dataset.carouselControl === 'right') {
-          if (carousel.scrollLeft + carousel.offsetWidth === carousel.scrollWidth) {
-            control.classList.add(...['!opacity-20', '!pointer-events-none'])
-          } else {
-            control.classList.remove(...['!opacity-20', '!pointer-events-none'])
-          }
-        }
-      })
-    })
-  })
-
-
-  // Sticky element: aside navbar
-  const scrollViewerHandler = document.querySelector('.scroll-viewer div')
-  const sticky = document.querySelector('aside.sticky')
-
-  const scrollViewerObserver = new IntersectionObserver(function (entries) {
-    if (entries[0].isIntersecting === true) {
-      sticky.classList.add('isSticky')
-      const stickyParentHeight = sticky.parentElement.offsetHeight
-
-      // on window scroll, if sticky element has class isSticky, calculate the percentage of the scroll position based on the height of the parent element
-      window.addEventListener('scroll', function () {
-        const scrollPosition = window.scrollY
-        const scrollPercentage = (scrollPosition / stickyParentHeight) * 100
-
-        // 35px is the height of scrollViewerHandler : not a magic number
-        scrollViewerHandler.style.top = scrollPercentage - 20 + '%'
-      })
-    } else {
-      sticky.classList.remove('isSticky')
-    }
-  }, {
-    rootMargin: '60px 0px 0px 0px',
-    threshold: [.95],
-  });
-
-  scrollViewerObserver.observe(sticky)
-
-  const stickySections = document.querySelectorAll('[data-sticky-section]')
-  const stickySectionsNavItem = sticky.querySelectorAll('nav ol li')
-
-  const stickySectionsObserver = new IntersectionObserver(function (entries) {
-    entries.forEach(entry => {
-      if (entry.isIntersecting === true) {
-        stickySections.forEach(item => {
-          item.classList.remove('active')
-        })
-        entry.target.classList.add('active')
-
-        sticky.querySelector('nav ol').scrollTo({
-          left: stickySectionsNavItem[entry.target.dataset.stickySection - 1].offsetLeft - 20,
-          behavior: 'smooth'
-        })
-
-        stickySectionsNavItem.forEach(item => {
-          item.classList.remove('text-secondary-dark')
-        })
-        stickySectionsNavItem[entry.target.dataset.stickySection - 1].classList.add('text-secondary-dark')
-      }
-    })
-  }, {
-    rootMargin: '-33% 0px -66% 0px',
-    threshold: [0],
-  });
-
-  stickySections.forEach(item => {
-    stickySectionsObserver.observe(item)
-  })
-
-
-  // Video
-  const video = document.querySelector('#video')
-  const playButton = document.querySelector('.play-button')
-  const playIcon = document.querySelector('.play')
-  const pauseIcon = document.querySelector('.pause')
-
-  function handleVideoState() {
-    playButton.classList.remove('opacity-0')
-    playIcon.classList.toggle('hidden')
-    pauseIcon.classList.toggle('hidden')
-
-    if (video.paused) {
-      video.play()
-      setTimeout(() => {
-        playButton.classList.add('opacity-0')
-      }, 1000);
-    } else {
-      video.pause()
-    }
-  }
-
-  video?.addEventListener('canplay', function () {
-    handleVideoState()
-  });
-
-  playButton?.addEventListener('click', () => {
-    handleVideoState()
-    console.log('click');
-
-  })
-
 });
-
 </script>
 
 
 <style scoped lang="scss">
 @import 'assets/style.scss';
 
-.scrollbar-hide{
-  -ms-overflow-style: none; 
-  scrollbar-width: none;  
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
     display: none;
   }
 }
 </style>
-
-
 <!-- Template in backend/templates/Front/Pages/LifeInsurance/free_management.html.twig -->
 
 <template>
@@ -206,10 +52,11 @@ onMounted(() => {
       <img class="h-full w-full inset-0 z-[-1] absolute object-cover object-left pointer-events-none"
         src="@/assets/img/venture_capital/venture_hero.png" alt="hero background image" draggable="false"
         decoding="async">
-      <div class="flex flex-col justify-center items-center mx-auto text-black lg:max-w-[750px]">
-        <p class="text-xl text-center font-semibold mb-3">Investir / Venture Capital</p>
-        <h1 class="text-h1 font-lora leading-[58px] mt-2 max-lg:text-center mb:mb-6">Investissez dans les secteurs qui <br>
-          façonneront le <i>monde de demain</i></h1>
+      <div class="flex flex-col justify-center items-center mx-auto text-black text-center lg:max-w-[750px]">
+        <p class="text-xl text-center mb-3">Success stories</p>
+        <h1 class="text-h1 font-lora leading-[58px] mt-2 max-lg:text-center mb:mb-6">
+          Des <i>opportunités uniques</i> dans l’immobilier et l’innovation depuis 2012
+        </h1>
         <a href="https://www.anaxago.com/operations-en-cours?type=investissement-participatif&product=innovation"
           class="tw-cta tw-cta--secondary max-md:mx-auto text-white w-full !py-3 max-w-[287px] mt-6 lg:mt-10">
           Découvrir nos opportunités
@@ -218,89 +65,75 @@ onMounted(() => {
     </div>
   </section>
 
-  <section class="relative bg-white py-8 lg:py-16">
-    <div class="max-w-[1184px] px-5 mx-auto w-full">
-      <ul class="grid grid-cols-1 gap-4 justify-center items-center place-items-center md:gap-8 lg:gap-20 md:grid-cols-3">
-        <li class="flex justify-center items-center flex-col gap-2 w-[250px]">
-          <p class="text-[28px] font-medium">Clubdeal</p>
-          <p class="flex justify-center items-center text-center text-s text-[#8E837A] bg-secondary-neutral py-1 px-10 w-full" style="border: solid 1px #F2ECE5">
-            Mode d’investissement</p>
-        </li>
-        <li class="flex justify-center items-center flex-col gap-2 w-[250px]">
-          <p class="text-[28px] font-medium">> 5 ans*</p>
-          <p class="flex justify-center items-center text-center text-s text-[#8E837A] bg-secondary-neutral py-1 px-10 w-full" style="border: solid 1px #F2ECE5">
-            Horizon</p>
-        </li>
-        <li class="flex justify-center items-center flex-col gap-2 w-[250px]">
-          <p class="text-[28px] font-medium">x 2,5*</p>
-          <p class="flex justify-center items-center text-center text-s text-[#8E837A] bg-secondary-neutral py-1 px-10 w-full" style="border: solid 1px #F2ECE5">
-            Multiple cible</p>
-        </li>
-      </ul>
-      <p class="text-center text-muted text-xs mt-6 lg:mt-10">*Ces données sont fournies à titre indicatif et ne
-        présentent pas de
-        garantie de performance. Plus le taux est élevé, plus le risque de perte en capital ou d’impayé des intérêts est
-        important.</p>
-    </div>
-
-  </section>
 
   <section class="bg-secondary-neutral relative py-6 md:py-10 lg:py-16"
     style="border-top: 1px solid #F2ECE5;border-bottom: 1px solid #F2ECE5;">
     <div class="max-w-[1184px] px-5 mx-auto flex max-lg:flex-col justify-center w-full gap-8 lg:gap-16">
-      <h2 class="text-h2 font-lora">Qu'est-ce que le <br> <span class="whitespace-nowrap"><i>Venture Capital</i> ?</span></h2>
-      <p class="text-black text-m lg:text-l">
-        Le Venture Capital, ou Capital-Risque, est une activité d'investissement dans des entreprises en phase de
-        démarrage ou de développement précoce. Les investisseurs en capital-risque injectent des capitaux dans ces jeunes
-        entreprises afin de stimuler leur croissance et leur développement. Ce type de financement est particulièrement
-        adapté aux entreprises innovantes à fort potentiel de croissance.
-        <br> <br>
-        Le Venture Capital est considéré comme une activité risquée en raison de l'instabilité économique et de
-        l'incertitude entourant les jeunes entreprises. Il permet en contrepartie de viser des rendements élevés pour les
-        investisseurs lors de la cession de leurs participations.
+      <h2 class="text-h2 font-lora lg:basis-1/2">Découvrez quelques <i>opérations phares</i> financées avec Anaxago</h2>
+      <p class="text-black text-justify text-m lg:text-l lg:basis-1/2">
+        En plus de 10 ans, Anaxago a financé plus de <span class="font-semibold">350 projets dans l’immobilier</span> et
+        le venture capital avec <span class="font-semibold">plus de 15
+          000 investisseurs</span> à ses côtés. Ce sont plus de <span class="font-semibold">850 M€ investis</span> dans
+        l’économie réelle au profit de projets de
+        réhabilitation, de rénovation énergétique ou encore pour accompagner les entrepreneurs qui pensent et bâtissent le
+        monde de demain.
       </p>
     </div>
+  </section>
+
+  <section class="max-lg:flex lg:flex bg-white px-5 py-14 lg:py-16 overflow-y-clip mx-auto max-lg:flex-col-reverse max-xl:items-start lg:justify-end">
+    <h2 class="text-h2 font-lora lg:basis-1/2">L’<i>immobilier</i> chez Anaxago</h2>
     <div class="group select-none max-w-[1184px] mx-auto flex lg:justify-center w-full gap-4 max-lg:pb-4 lg:gap-2 mt-10 lg:mt-20 px-5 max-lg:overflow-x-scroll">
-      <article class="active flex-cards group/card flex items-stretch max-lg:flex-col rounded bg-white min-w-[240px] lg:max-w-[650px] lg:max-h-[250px] overflow-clip">
+      <article
+        class="active flex-cards group/card flex items-stretch max-lg:flex-col rounded bg-white min-w-[240px] lg:max-w-[650px] lg:max-h-[250px] overflow-clip">
         <div class="min-w-[250px] w-full max-lg:max-h-[250px] lg:max-w-[250px] h-full overflow-clip">
           <img class="h-full w-full object-cover object-left pointer-events-none"
             src="@/assets/img/venture_capital/venture_health-tech.png" alt="health tech" draggable="false"
             decoding="async">
         </div>
-        <div class="flex flex-col gap-4 text-black max-lg:p-6 lg:py-8 text-m lg:text-l lg:max-w-[0px] duration-500 ease-in-out group-[.active]/card:lg:px-12 group-[.active]/card:max-w-[900px]">
+        <div
+          class="flex flex-col gap-4 text-black max-lg:p-6 lg:py-8 text-m lg:text-l lg:max-w-[0px] duration-500 ease-in-out group-[.active]/card:lg:px-12 group-[.active]/card:max-w-[900px]">
           <h3 class="line-clamp-1 font-semibold text-[18px]">Health Tech</h3>
-          <p class="text-xs line-clamp-3 overflow-clip">Rendre les systèmes de santé plus efficaces et faciliter le travail du personnel médical.</p>
-          <p style="border-top: solid 1px rgba(0,0,0,.5)" class="text-[12px] line-clamp-2 leading-5 mt-auto italic pt-4 text-black/50 font-medium">
+          <p class="text-xs line-clamp-3 overflow-clip">Rendre les systèmes de santé plus efficaces et faciliter le
+            travail du personnel médical.</p>
+          <p style="border-top: solid 1px rgba(0,0,0,.5)"
+            class="text-[12px] line-clamp-2 leading-5 mt-auto italic pt-4 text-black/50 font-medium">
             Des secteurs porteurs : Une spécialisation dans trois thématiques d’avenir.
           </p>
         </div>
       </article>
-      <article class="flex-cards group/card flex items-stretch max-lg:flex-col rounded bg-white min-w-[240px] lg:max-w-[650px] lg:max-h-[250px] overflow-clip">
+      <article
+        class="flex-cards group/card flex items-stretch max-lg:flex-col rounded bg-white min-w-[240px] lg:max-w-[650px] lg:max-h-[250px] overflow-clip">
         <div class="min-w-[250px] w-full max-lg:max-h-[250px] lg:max-w-[250px] h-full overflow-clip">
           <img class="h-full w-full object-cover object-left pointer-events-none"
             src="@/assets/img/venture_capital/venture_climate-tech.png" alt="climate tech" draggable="false"
             decoding="async">
         </div>
-        <div class="flex flex-col gap-4 text-black max-lg:p-6 lg:py-8 text-m lg:text-l lg:max-w-[0px] duration-500 ease-in-out group-[.active]/card:lg:px-12 group-[.active]/card:max-w-[900px]">
+        <div
+          class="flex flex-col gap-4 text-black max-lg:p-6 lg:py-8 text-m lg:text-l lg:max-w-[0px] duration-500 ease-in-out group-[.active]/card:lg:px-12 group-[.active]/card:max-w-[900px]">
           <h3 class="line-clamp-1 font-semibold text-[18px]">Climate Tech</h3>
           <p class="text-xs line-clamp-3 overflow-clip">Apporter une réponse concrète aux enjeux liés au réchauffement
             climatique grâce à l’innovation.</p>
-          <p style="border-top: solid 1px rgba(0,0,0,.5)" class="text-[12px] line-clamp-2 leading-5 mt-auto italic pt-4 text-black/50 font-medium">
+          <p style="border-top: solid 1px rgba(0,0,0,.5)"
+            class="text-[12px] line-clamp-2 leading-5 mt-auto italic pt-4 text-black/50 font-medium">
             Des secteurs porteurs : Une spécialisation dans trois thématiques d’avenir.
           </p>
         </div>
       </article>
-      <article class="flex-cards group/card flex items-stretch max-lg:flex-col rounded bg-white min-w-[240px] lg:max-w-[650px] lg:max-h-[250px] overflow-clip">
+      <article
+        class="flex-cards group/card flex items-stretch max-lg:flex-col rounded bg-white min-w-[240px] lg:max-w-[650px] lg:max-h-[250px] overflow-clip">
         <div class="min-w-[250px] w-full max-lg:max-h-[250px] lg:max-w-[250px] h-full overflow-clip">
           <img class="h-full w-full object-cover object-left pointer-events-none"
             src="@/assets/img/venture_capital/venture_property-tech.png" alt="property tech" draggable="false"
             decoding="async">
         </div>
-        <div class="flex flex-col gap-4 text-black max-lg:p-6 lg:py-8 text-m lg:text-l lg:max-w-[0px] duration-500 ease-in-out group-[.active]/card:lg:px-12 group-[.active]/card:max-w-[900px]">
+        <div
+          class="flex flex-col gap-4 text-black max-lg:p-6 lg:py-8 text-m lg:text-l lg:max-w-[0px] duration-500 ease-in-out group-[.active]/card:lg:px-12 group-[.active]/card:max-w-[900px]">
           <h3 class="line-clamp-1 font-semibold text-[18px]">Enterprise Tech</h3>
           <p class="text-xs line-clamp-3 overflow-clip">Accompagner la transformation digitale, enjeu de compétitivité
             pour les entreprises</p>
-          <p style="border-top: solid 1px rgba(0,0,0,.5)" class="text-[12px] line-clamp-2 leading-5 mt-auto italic pt-4 text-black/50 font-medium">
+          <p style="border-top: solid 1px rgba(0,0,0,.5)"
+            class="text-[12px] line-clamp-2 leading-5 mt-auto italic pt-4 text-black/50 font-medium">
             Des secteurs porteurs : Une spécialisation dans trois thématiques d’avenir.
           </p>
         </div>
@@ -308,237 +141,67 @@ onMounted(() => {
     </div>
   </section>
 
-  <section class="bg-primary-dark text-white py-6 md:py-10 lg:py-16">
-    <div class="max-w-[1184px] px-5 mx-auto flex max-lg:flex-col justify-center items-center w-full gap-8 lg:gap-16">
-      <div class="flex items-stretch w-full lg:max-w-[50%] relative overflow-clip">
-        <div class="group h-fit w-full relative select-none">
-          <div class="play-button group-hover:!opacity-100 cursor-pointer absolute z-10 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-[64px] h-[64px] p-4 lg:w-[100px] lg:h-[100px] lg:p-8 bg-white rounded-full flex justify-center items-center duration-300 hover:bg-secondary-dark">
-            <svg class="play w-full h-full translate-x-1" width="30" height="35" viewBox="0 0 30 35" fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path d="M29.668 17.5007L0.917969 34.0995V0.901831L29.668 17.5007Z" fill="#031E31" />
-            </svg>
-            <svg class="pause hidden w-full h-full" width="24" height="36" viewBox="0 0 24 36" fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 0H10V36H0V0Z" fill="#031E31" />
-              <path d="M14 0H24V36H14V0Z" fill="#031E31" />
-            </svg>
-          </div>
-          <video class="max-lg:max-h-[300px] mx-auto rounded-lg" id="video" src="@/assets/img/venture_capital/venture_video.mp4"></video>
-        </div>
-      </div>
-
-      <ul class="flex flex-col gap-8 items-stretch lg:max-w-[400px]">
-        <li class="flex items-center gap-8 px-6 py-5" style="border: solid 1px rgba(255,255,255,.1)">
-          <svg class="min-w-[50px] max-w-[50px]" width="50" height="50" viewBox="0 0 50 50" fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <rect width="50" height="50" rx="25" fill="#0B273A" />
-            <path d="M27.0827 27.082H22.916V36.457H27.0827V27.082Z" stroke="white" stroke-linecap="round"
-              stroke-linejoin="round" />
-            <path d="M34.8952 19.791H30.7285V36.4577H34.8952V19.791Z" stroke="white" stroke-linecap="round"
-              stroke-linejoin="round" />
-            <path d="M19.2702 31.25H15.1035V36.4583H19.2702V31.25Z" stroke="white" stroke-linecap="round"
-              stroke-linejoin="round" />
-            <path d="M34.8965 13.5417L34.8965 15.625L32.8132 17.1875L30.7298 15.625L30.7298 13.5417L34.8965 13.5417Z"
-              stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-          <div class="flex flex-col">
-            <p class="font-black">Dynamisme</p>
-            <p class="">Des opportunités centrées sur la recherche de performance pour dynamiser votre portefeuille</p>
-          </div>
-        </li>
-        <li class="flex items-center gap-8 px-6 py-5" style="border: solid 1px rgba(255,255,255,.1)">
-          <svg class="min-w-[50px] max-w-[50px]" width="50" height="50" viewBox="0 0 50 50" fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <rect width="50" height="50" rx="25" fill="#0B273A" />
-            <g clip-path="url(#clip0_1604_14505)">
-              <path d="M27.7344 14.4531H23.0469V19.1406H27.7344V14.4531Z" stroke="white" stroke-linecap="round"
-                stroke-linejoin="round" />
-              <path d="M25.3906 22.2656V28.5156" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M16.0156 28.5156V25.3906H34.7656V28.5156" stroke="white" stroke-linecap="round"
-                stroke-linejoin="round" />
-              <path
-                d="M16.0156 36.3281C17.31 36.3281 18.3594 35.2788 18.3594 33.9844C18.3594 32.69 17.31 31.6406 16.0156 31.6406C14.7212 31.6406 13.6719 32.69 13.6719 33.9844C13.6719 35.2788 14.7212 36.3281 16.0156 36.3281Z"
-                stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-              <path
-                d="M25.3906 36.3281C26.685 36.3281 27.7344 35.2788 27.7344 33.9844C27.7344 32.69 26.685 31.6406 25.3906 31.6406C24.0962 31.6406 23.0469 32.69 23.0469 33.9844C23.0469 35.2788 24.0962 36.3281 25.3906 36.3281Z"
-                stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-              <path
-                d="M34.7656 36.3281C36.06 36.3281 37.1094 35.2788 37.1094 33.9844C37.1094 32.69 36.06 31.6406 34.7656 31.6406C33.4712 31.6406 32.4219 32.69 32.4219 33.9844C32.4219 35.2788 33.4712 36.3281 34.7656 36.3281Z"
-                stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-            </g>
-            <defs>
-              <clipPath id="clip0_1604_14505">
-                <rect width="25" height="25" fill="white" transform="translate(12.5 12.5)" />
-              </clipPath>
-            </defs>
-          </svg>
-          <div class="flex flex-col">
-            <p class="font-black">Diversification</p>
-            <p class="">De l’amorçage au développement, investissez dans des entreprises à différent niveau de maturité
-            </p>
-          </div>
-        </li>
-        <li class="flex items-center gap-8 px-6 py-5" style="border: solid 1px rgba(255,255,255,.1)">
-          <svg class="min-w-[50px] max-w-[50px]" width="50" height="50" viewBox="0 0 50 50" fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <rect width="50" height="50" rx="25" fill="#0B273A" />
-            <path
-              d="M21.0652 23.4137C20.6891 22.6211 19.8809 22.0703 18.9453 22.0703H15.8203C14.5258 22.0703 13.4766 23.1195 13.4766 24.4141V27.5391L15.0391 28.3203L15.4297 33.7891H19.7266"
-              stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-            <path
-              d="M17.3828 19.7266C18.6772 19.7266 19.7266 18.6772 19.7266 17.3828C19.7266 16.0884 18.6772 15.0391 17.3828 15.0391C16.0884 15.0391 15.0391 16.0884 15.0391 17.3828C15.0391 18.6772 16.0884 19.7266 17.3828 19.7266Z"
-              stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-            <path
-              d="M29.3262 23.4137C29.7023 22.6211 30.5105 22.0703 31.4461 22.0703H34.5711C35.8656 22.0703 36.9148 23.1195 36.9148 24.4141V27.5391L35.3523 28.3203L34.9617 33.7891H30.6648"
-              stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-            <path
-              d="M33.0078 19.7266C34.3022 19.7266 35.3516 18.6772 35.3516 17.3828C35.3516 16.0884 34.3022 15.0391 33.0078 15.0391C31.7134 15.0391 30.6641 16.0884 30.6641 17.3828C30.6641 18.6772 31.7134 19.7266 33.0078 19.7266Z"
-              stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-            <path
-              d="M27.5391 36.9141H22.8516L22.4609 30.6641L20.5078 30.2734V25.1953C20.5078 23.4695 21.907 22.0703 23.6328 22.0703H26.7578C28.4836 22.0703 29.8828 23.4695 29.8828 25.1953V30.2734L27.9297 30.6641L27.5391 36.9141Z"
-              stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-            <path
-              d="M25.1953 19.7266C26.9212 19.7266 28.3203 18.3275 28.3203 16.6016C28.3203 14.8757 26.9212 13.4766 25.1953 13.4766C23.4694 13.4766 22.0703 14.8757 22.0703 16.6016C22.0703 18.3275 23.4694 19.7266 25.1953 19.7266Z"
-              stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-          <div class="flex flex-col">
-            <p class="font-black">Co-investissement</p>
-            <p class="">Des opportunités aux côtés et dans les mêmes conditions que les acteurs professionnels de
-              l’investissement</p>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="max-lg:flex lg:flex bg-white px-5 py-14 lg:py-16 overflow-y-clip mx-auto max-lg:flex-col-reverse max-xl:items-start lg:justify-end">
-      <div class="group/container select-none flex gap-4 justify-end max-md:flex-col max-lg:mx-auto lg:items-center xl:items-stretch max-lg:w-full lg:w-1/2 max-w-[732px] pointer-events-none">
-        <article class="group-hover/container:w-0 group-hover/container:px-0 hover:!px-6 px-6 hover:!w-full group/card relative flex flex-col justify-between rounded-md py-4 bg-primary-dark/10 max-lg:w-full min-h-[300px] lg:min-h-[500px] overflow-clip w-[250px] lg:w-1/2 max-h-full md:max-h-[350px] max-lg:min-h-[350px] duration-500 pointer-events-auto">
-          <img class="h-full w-[800px] max-w-[800px] object-cover object-left pointer-events-none absolute bottom-0 left-0 z-[1]"
-            src="@/assets/img/venture_capital/venture_agriodor-bg.webp" alt="agriodor" draggable="false" decoding="async">
-          <div class="flex justify-between flex-col gap-6 relative h-full z-[2] flex-1">
-            <div class="flex justify-between items-center w-full">
-              <p class="whitespace-nowrap text-[12px] text-white font-medium flex items-center gap-2 bg-white/25 backdrop-blur-sm rounded-full select-none py-2 px-6">
-                <svg class="min-w-[13px]" width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M6.90175 11.1258H5.96364C6.03126 11.1204 6.09927 11.1155 6.16142 11.1109C4.59791 11.0059 3.28182 10.3844 2.24638 9.22564C1.20625 8.06155 0.767294 6.68748 0.886121 5.15209C0.994395 3.75043 1.59166 2.55799 2.63413 1.60043C3.67465 0.644788 4.91999 0.140145 6.3553 0.109874C6.3252 0.106425 6.2951 0.105276 6.265 0.10336C6.20051 0.0991451 6.13562 0.094547 6.07113 0.090332C6.35764 0.090332 6.64455 0.090332 6.93106 0.090332C6.8439 0.0941638 6.75673 0.0979956 6.66956 0.10221C6.64924 0.102977 6.6293 0.10451 6.60898 0.106042C8.07008 0.147808 9.33301 0.663181 10.3802 1.65446C11.4289 2.64727 11.9937 3.87075 12.0864 5.29617C12.0907 5.26206 12.0957 5.22451 12.1004 5.18658V6.01041C12.095 5.9855 12.0895 5.96021 12.0844 5.9353C11.9871 7.32777 11.4488 8.52749 10.4369 9.51264C9.42604 10.497 8.20259 11.0208 6.79191 11.1105C6.82122 11.1147 6.86149 11.1201 6.90175 11.1258ZM5.4254 7.83241C5.55009 7.83931 5.6439 7.79256 5.72637 7.71976C5.94566 7.52664 6.16377 7.33275 6.38266 7.13924C6.73445 6.82811 7.08624 6.51697 7.43842 6.20659C7.7351 5.94488 8.03217 5.68432 8.32884 5.42261C8.70292 5.0927 9.0766 4.76278 9.45067 4.43287C9.59451 4.30566 9.74187 4.18227 9.88181 4.05084C9.99321 3.94624 10.0249 3.81251 9.98383 3.66767C9.94435 3.52819 9.84936 3.43699 9.70513 3.40021C9.55699 3.36227 9.43034 3.40289 9.31855 3.50252C8.97575 3.80676 8.63138 4.10947 8.2878 4.41256C7.64168 4.98273 6.99556 5.55289 6.34904 6.12306C6.05745 6.38056 5.76585 6.63767 5.47465 6.89554C5.45276 6.91509 5.43869 6.92428 5.41132 6.89976C5.05133 6.58096 4.69015 6.26369 4.32937 5.94527C4.09836 5.74142 3.86774 5.5368 3.63713 5.33218C3.4839 5.19654 3.24547 5.18849 3.10201 5.31532C2.91713 5.47856 2.91517 5.74103 3.09967 5.90542C3.2439 6.03455 3.39048 6.16138 3.5355 6.28936C4.0753 6.76565 4.6151 7.24155 5.15374 7.71899C5.23465 7.79064 5.32494 7.83356 5.4254 7.83203V7.83241Z" fill="white"/>
-                </svg>
-                Opération financée</p>
-              <svg class="group-hover/card:scale-x-[-1] max-lg:hidden duration-200" width="47" height="47" viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M29.1267 22.8546L20.9703 14.2433C20.6855 13.9426 20.2108 13.9297 19.91 14.2145C19.6093 14.4994 19.5964 14.9741 19.8813 15.2748L27.5525 23.3739L19.8813 31.473C19.5964 31.7737 19.6093 32.2484 19.91 32.5332C20.2108 32.8181 20.6855 32.8052 20.9703 32.5045L29.1266 23.8932C29.3475 23.6634 29.3942 23.3253 29.2621 23.0497C29.2284 22.9795 29.1833 22.9135 29.1267 22.8546Z" fill="white"/>
-                <path d="M29.1267 22.8546L28.8363 23.1297L28.8383 23.1318L29.1267 22.8546ZM20.9703 14.2433L21.2607 13.9682L21.2607 13.9682L20.9703 14.2433ZM19.91 14.2145L20.1851 14.5049L20.1851 14.5049L19.91 14.2145ZM19.8813 15.2748L19.5909 15.5499L19.5909 15.5499L19.8813 15.2748ZM27.5525 23.3739L27.8429 23.6489C27.989 23.4947 27.989 23.2531 27.8429 23.0988L27.5525 23.3739ZM19.8813 31.473L20.1717 31.748H20.1717L19.8813 31.473ZM19.91 32.5332L20.1851 32.2428L20.1851 32.2428L19.91 32.5332ZM20.9703 32.5045L20.6799 32.2294H20.6799L20.9703 32.5045ZM29.1266 23.8932L28.8383 23.616L28.8362 23.6181L29.1266 23.8932ZM29.2621 23.0497L28.9013 23.2225L28.9014 23.2226L29.2621 23.0497ZM29.4171 22.5795L21.2607 13.9682L20.6799 14.5184L28.8363 23.1297L29.4171 22.5795ZM21.2607 13.9682C20.824 13.5071 20.0961 13.4873 19.635 13.9241L20.1851 14.5049C20.3254 14.372 20.547 14.378 20.6799 14.5184L21.2607 13.9682ZM19.635 13.9241C19.1738 14.3609 19.1541 15.0887 19.5909 15.5499L20.1717 14.9997C20.0387 14.8594 20.0448 14.6379 20.1851 14.5049L19.635 13.9241ZM19.5909 15.5499L27.2621 23.6489L27.8429 23.0988L20.1717 14.9997L19.5909 15.5499ZM20.1717 31.748L27.8429 23.6489L27.2621 23.0988L19.5909 31.1979L20.1717 31.748ZM20.1851 32.2428C20.0448 32.1099 20.0387 31.8884 20.1717 31.748L19.5909 31.1979C19.1541 31.659 19.1738 32.3869 19.635 32.8236L20.1851 32.2428ZM20.6799 32.2294C20.547 32.3697 20.3254 32.3757 20.1851 32.2428L19.635 32.8236C20.0961 33.2604 20.824 33.2406 21.2607 32.7795L20.6799 32.2294ZM28.8362 23.6181L20.6799 32.2294L21.2607 32.7795L29.4171 24.1683L28.8362 23.6181ZM29.415 24.1704C29.7543 23.8174 29.8252 23.2991 29.6228 22.8768L28.9014 23.2226C28.9632 23.3515 28.9406 23.5095 28.8383 23.616L29.415 24.1704ZM28.8383 23.1318C28.8649 23.1595 28.8858 23.1901 28.9013 23.2225L29.6229 22.877C29.5711 22.7689 29.5017 22.6675 29.4151 22.5775L28.8383 23.1318Z" fill="white"/>
-              </svg>
-            </div>
-            <img class="pointer-events-none min-w-[180px] max-w-[180px] select-none"
-              src="@/assets/img/venture_capital/venture_agriodor.svg" alt="agriodor" draggable="false" decoding="async">
-          </div>
-          <div class="group-hover/card:opacity-100 flex flex-col justify-stretch items-end gap-4 lg:absolute bottom-4 right-4 z-[3] lg:opacity-0 duration-300">
-            <div class="lg:w-full flex items-center gap-2 text-white bg-white/25 rounded-md backdrop-blur-sm py-1 pr-1 pl-6" style="border: solid 1px rgba(255,255,255,.1)">
-              <div class="flex flex-col">
-                <p class="text-[12px]">Note ESG</p>
-                <p class="text-[12px] font-bold">8,3</p>
-                <p class="text-[8px]">Note d’engagement</p>
-              </div>
-              <div class="flex items-start gap-2">
-                <img src="@/assets/img/venture_capital/venture_agriodor-stats.svg" alt="rising note">
-                <div data-tooltip="Ce score donné par Anaxago permet de mesurer l’engagement du projet en faveur de critères ESG (Environnement, Société, Gouvernance)">
-                  <img src="@/assets/img/venture_capital/tooltip.svg" alt="">
-                </div>
-              </div>
-            </div>
-            <div class="lg:w-full flex items-center gap-2 text-white bg-white/25 rounded-md backdrop-blur-sm py-1 pr-1 pl-6" style="border: solid 1px rgba(255,255,255,.1)">
-              <div class="flex flex-col">
-                <p class="text-[12px]">Investissement CapHorn</p>
-                <p class="text-[12px] font-bold">1 500 000 €</p>
-                <p class="text-[8px]">Levée de fonds de 5 000 000€</p>
-              </div>
-            </div>
-          </div>
-        </article>
-        <article class="group-hover/container:w-0 group-hover/container:px-0 hover:!px-6 px-6 hover:!w-full group/card relative flex flex-col justify-between rounded-md py-4 bg-primary-dark/10 max-lg:w-full min-h-[300px] lg:min-h-[500px] overflow-clip w-[250px] lg:w-1/2 max-h-full md:max-h-[350px] max-lg:min-h-[350px] duration-500 pointer-events-auto">
-          <img class="h-full w-[800px] max-w-[800px] object-cover object-right pointer-events-none absolute bottom-0 right-0 z-[1]"
-            src="@/assets/img/venture_capital/venture_ganymed-bg.webp" alt="ganymed" draggable="false" decoding="async">
-          <div class="flex justify-between flex-col gap-6 relative h-full z-[2] flex-1">
-            <div class="flex justify-between items-center w-full">
-              <p class="whitespace-nowrap text-[12px] text-white font-medium flex items-center gap-2 bg-white/25 backdrop-blur-sm rounded-full select-none py-2 px-6">
-                <svg class="min-w-[13px]" width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M6.90175 11.1258H5.96364C6.03126 11.1204 6.09927 11.1155 6.16142 11.1109C4.59791 11.0059 3.28182 10.3844 2.24638 9.22564C1.20625 8.06155 0.767294 6.68748 0.886121 5.15209C0.994395 3.75043 1.59166 2.55799 2.63413 1.60043C3.67465 0.644788 4.91999 0.140145 6.3553 0.109874C6.3252 0.106425 6.2951 0.105276 6.265 0.10336C6.20051 0.0991451 6.13562 0.094547 6.07113 0.090332C6.35764 0.090332 6.64455 0.090332 6.93106 0.090332C6.8439 0.0941638 6.75673 0.0979956 6.66956 0.10221C6.64924 0.102977 6.6293 0.10451 6.60898 0.106042C8.07008 0.147808 9.33301 0.663181 10.3802 1.65446C11.4289 2.64727 11.9937 3.87075 12.0864 5.29617C12.0907 5.26206 12.0957 5.22451 12.1004 5.18658V6.01041C12.095 5.9855 12.0895 5.96021 12.0844 5.9353C11.9871 7.32777 11.4488 8.52749 10.4369 9.51264C9.42604 10.497 8.20259 11.0208 6.79191 11.1105C6.82122 11.1147 6.86149 11.1201 6.90175 11.1258ZM5.4254 7.83241C5.55009 7.83931 5.6439 7.79256 5.72637 7.71976C5.94566 7.52664 6.16377 7.33275 6.38266 7.13924C6.73445 6.82811 7.08624 6.51697 7.43842 6.20659C7.7351 5.94488 8.03217 5.68432 8.32884 5.42261C8.70292 5.0927 9.0766 4.76278 9.45067 4.43287C9.59451 4.30566 9.74187 4.18227 9.88181 4.05084C9.99321 3.94624 10.0249 3.81251 9.98383 3.66767C9.94435 3.52819 9.84936 3.43699 9.70513 3.40021C9.55699 3.36227 9.43034 3.40289 9.31855 3.50252C8.97575 3.80676 8.63138 4.10947 8.2878 4.41256C7.64168 4.98273 6.99556 5.55289 6.34904 6.12306C6.05745 6.38056 5.76585 6.63767 5.47465 6.89554C5.45276 6.91509 5.43869 6.92428 5.41132 6.89976C5.05133 6.58096 4.69015 6.26369 4.32937 5.94527C4.09836 5.74142 3.86774 5.5368 3.63713 5.33218C3.4839 5.19654 3.24547 5.18849 3.10201 5.31532C2.91713 5.47856 2.91517 5.74103 3.09967 5.90542C3.2439 6.03455 3.39048 6.16138 3.5355 6.28936C4.0753 6.76565 4.6151 7.24155 5.15374 7.71899C5.23465 7.79064 5.32494 7.83356 5.4254 7.83203V7.83241Z" fill="white"/>
-                </svg>
-                Opération financée
-              </p>
-              <svg class="group-hover/card:scale-x-[-1] max-lg:hidden duration-200" width="47" height="47" viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M29.1267 22.8546L20.9703 14.2433C20.6855 13.9426 20.2108 13.9297 19.91 14.2145C19.6093 14.4994 19.5964 14.9741 19.8813 15.2748L27.5525 23.3739L19.8813 31.473C19.5964 31.7737 19.6093 32.2484 19.91 32.5332C20.2108 32.8181 20.6855 32.8052 20.9703 32.5045L29.1266 23.8932C29.3475 23.6634 29.3942 23.3253 29.2621 23.0497C29.2284 22.9795 29.1833 22.9135 29.1267 22.8546Z" fill="white"/>
-                <path d="M29.1267 22.8546L28.8363 23.1297L28.8383 23.1318L29.1267 22.8546ZM20.9703 14.2433L21.2607 13.9682L21.2607 13.9682L20.9703 14.2433ZM19.91 14.2145L20.1851 14.5049L20.1851 14.5049L19.91 14.2145ZM19.8813 15.2748L19.5909 15.5499L19.5909 15.5499L19.8813 15.2748ZM27.5525 23.3739L27.8429 23.6489C27.989 23.4947 27.989 23.2531 27.8429 23.0988L27.5525 23.3739ZM19.8813 31.473L20.1717 31.748H20.1717L19.8813 31.473ZM19.91 32.5332L20.1851 32.2428L20.1851 32.2428L19.91 32.5332ZM20.9703 32.5045L20.6799 32.2294H20.6799L20.9703 32.5045ZM29.1266 23.8932L28.8383 23.616L28.8362 23.6181L29.1266 23.8932ZM29.2621 23.0497L28.9013 23.2225L28.9014 23.2226L29.2621 23.0497ZM29.4171 22.5795L21.2607 13.9682L20.6799 14.5184L28.8363 23.1297L29.4171 22.5795ZM21.2607 13.9682C20.824 13.5071 20.0961 13.4873 19.635 13.9241L20.1851 14.5049C20.3254 14.372 20.547 14.378 20.6799 14.5184L21.2607 13.9682ZM19.635 13.9241C19.1738 14.3609 19.1541 15.0887 19.5909 15.5499L20.1717 14.9997C20.0387 14.8594 20.0448 14.6379 20.1851 14.5049L19.635 13.9241ZM19.5909 15.5499L27.2621 23.6489L27.8429 23.0988L20.1717 14.9997L19.5909 15.5499ZM20.1717 31.748L27.8429 23.6489L27.2621 23.0988L19.5909 31.1979L20.1717 31.748ZM20.1851 32.2428C20.0448 32.1099 20.0387 31.8884 20.1717 31.748L19.5909 31.1979C19.1541 31.659 19.1738 32.3869 19.635 32.8236L20.1851 32.2428ZM20.6799 32.2294C20.547 32.3697 20.3254 32.3757 20.1851 32.2428L19.635 32.8236C20.0961 33.2604 20.824 33.2406 21.2607 32.7795L20.6799 32.2294ZM28.8362 23.6181L20.6799 32.2294L21.2607 32.7795L29.4171 24.1683L28.8362 23.6181ZM29.415 24.1704C29.7543 23.8174 29.8252 23.2991 29.6228 22.8768L28.9014 23.2226C28.9632 23.3515 28.9406 23.5095 28.8383 23.616L29.415 24.1704ZM28.8383 23.1318C28.8649 23.1595 28.8858 23.1901 28.9013 23.2225L29.6229 22.877C29.5711 22.7689 29.5017 22.6675 29.4151 22.5775L28.8383 23.1318Z" fill="white"/>
-              </svg>
-            </div>
-            <img class="pointer-events-none min-w-[180px] max-w-[180px] select-none"
-              src="@/assets/img/venture_capital/venture_ganymed.svg" alt="ganymed" draggable="false" decoding="async">
-          </div>
-          <div class="group-hover/card:opacity-100 flex flex-col justify-stretch items-end gap-4 lg:absolute bottom-4 right-4 z-[3] lg:opacity-0 duration-300 ">
-            <div class="lg:w-full flex items-center gap-2 text-white bg-white/25 rounded-md backdrop-blur-sm py-1 pr-1 pl-6" style="border: solid 1px rgba(255,255,255,.1)">
-              <div class="flex flex-col">
-                <p class="text-[12px]">Note ESG</p>
-                <p class="text-[12px] font-bold">6,7</p>
-                <p class="text-[8px]">Note d’engagement</p>
-              </div>
-              <div class="flex items-start gap-2">
-                <img src="@/assets/img/venture_capital/venture_ganymed-stats.svg" alt="rising note">
-                <div data-tooltip="Ce score donné par Anaxago permet de mesurer l’engagement du projet en faveur de critères ESG (Environnement, Société, Gouvernance)">
-                  <img src="@/assets/img/venture_capital/tooltip.svg" alt="">
-                </div>
-              </div>
-            </div>
-            <div class="lg:w-full flex items-center gap-2 text-white bg-white/25 rounded-md backdrop-blur-sm py-1 pr-1 pl-6" style="border: solid 1px rgba(255,255,255,.1)">
-              <div class="flex flex-col">
-                <p class="text-[12px]">Investissement CapHorn</p>
-                <p class="text-[12px] font-bold">4 000 000 €</p>
-                <p class="text-[8px]">Levée de fonds de 15 000 000€</p>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
-      <div class="lg:pt-10 lg:w-1/2 lg:px-8 2xl:px-[96px] max-lg:mb-10">
-        <p class="font-semibold text-m mb-4">Venture Capital</p>
-        <h2 class="text-h2 font-lora font-medium italic uppercase mb-6 lg:mb-8">Investir dans des entreprises à conviction</h2>
-        <p class="text-justify text-m">Investir dans une start-up, c’est s’associer à une aventure humaine, une gageure d’innovation, de talents et de maitrise financière et juridique. L’enjeu est d’accompagner ceux qui pensent et bâtissent notre monde de demain.</p>
-        <p style="border: solid 1px #F8EBD6" class="h-[60px] rounded-md font-semibold text-m flex items-center justify-center w-[140px] text-center select-none my-8 max-md:mx-auto lg:my-12">Equity</p>
-        <a href="https://www.anaxago.com/operations-en-cours?type=investissement-participatif&product=innovation" class="tw-cta tw-cta--secondary !block w-full !py-3 max-w-[287px] mb-8 max-lg:mx-auto">Découvrir nos opportunités</a>
-        <p class="text-muted text-s">Objectif de rendement annuel cible. Ces données sont fournies à titre indicatif et ne présentent pas de garantie de performance.</p>
-      </div>
-  </section>
-
   <section>
     <div class="flex max-lg:flex-col lg:items-stretch mx-auto w-full">
-      <h2 class="lg:hidden text-h2 font-lora font-medium italic uppercase pt-12 px-8 bg-primary-dark text-white lg:mb-20">Le guide du Venture Capital</h2>
+      <h2 class="lg:hidden text-h2 font-lora font-medium italic uppercase pt-12 px-8 bg-primary-dark text-white lg:mb-20">
+        Le guide du Venture Capital</h2>
 
-      <aside class="flex justify-end sticky top-[60px] left-0 z-[10] w-full px-7 py-7 max-md:pb-4 lg:max-w-[36%] lg:min-w-[36%] lg:h-[calc(100vh-60px)] lg:py-20 bg-primary-dark text-white">
+      <aside
+        class="flex justify-end sticky top-[60px] left-0 z-[10] w-full px-7 py-7 max-md:pb-4 lg:max-w-[36%] lg:min-w-[36%] lg:h-[calc(100vh-60px)] lg:py-20 bg-primary-dark text-white">
         <div class="lg:max-w-[360px]">
-          <h2 class="max-lg:hidden text-h2 font-lora font-medium italic uppercase lg:mb-20">Le guide du <br> Venture Capital</h2>
-          <nav class="max-lg:sticky max-lg:top-[60px] flex items-stretch gap-6 max-lg:w-screen max-lg:-mx-7 max-lg:flex-col">
-            <div class="hidden lg:block scroll-viewer bg-white/20 max-w-[2px] w-[2px] min-w-[2px] relative rounded-full overflow-clip max-md:order-2">
+          <h2 class="max-lg:hidden text-h2 font-lora font-medium italic uppercase lg:mb-20">Le guide du <br> Venture
+            Capital</h2>
+          <nav
+            class="max-lg:sticky max-lg:top-[60px] flex items-stretch gap-6 max-lg:w-screen max-lg:-mx-7 max-lg:flex-col">
+            <div
+              class="hidden lg:block scroll-viewer bg-white/20 max-w-[2px] w-[2px] min-w-[2px] relative rounded-full overflow-clip max-md:order-2">
               <div class="bg-secondary-dark w-full h-[35px] rounded-full absolute top-0 left-0 -translate-y-1/2"></div>
             </div>
-            <ol class="flex gap-1 justify-start list-decimal scroll-pl-12 snap-x snap-mandatory max-lg:overflow-x-scroll max-lg:overflow-y-clip max-lg:pb-4 max-lg:gap-10 max-lg:px-8 lg:flex-col lg:pl-5">
-              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit"><a href="#venture-1">Le développement du Capital-Risque</a></li>
-              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit"><a href="#venture-2">Différence entre le Capital-Risque et le Capital-Investissement</a></li>
-              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit"><a href="#venture-3">Capital-Risque : les points clés à retenir</a></li>
-              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit"><a href="#venture-4">Les autres formes de Capital-Investissement</a></li>
-              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit"><a href="#venture-5">Les stades de maturités d’une startup</a></li>
-              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit"><a href="#venture-6">Comment fonctionne le Capital-Risque</a></li>
-              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit"><a href="#venture-7">L’histoire du Capital-Risque</a></li>
-              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit"><a href="#venture-8">Les acteurs du Capital-Risque</a></li>
-              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit"><a href="#venture-9">Pourquoi Investir dans une startup</a></li>
-              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit"><a href="#venture-10">Une fiscalité attractive</a></li>
-              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit"><a href="#venture-11">Les risques</a></li>
+            <ol
+              class="flex gap-1 justify-start list-decimal scroll-pl-12 snap-x snap-mandatory max-lg:overflow-x-scroll max-lg:overflow-y-clip max-lg:pb-4 max-lg:gap-10 max-lg:px-8 lg:flex-col lg:pl-5">
+              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit">
+                <a href="#venture-1">Le développement du Capital-Risque</a>
+              </li>
+              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit">
+                <a href="#venture-2">Différence entre le Capital-Risque et le Capital-Investissement</a>
+              </li>
+              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit">
+                <a href="#venture-3">Capital-Risque : les points clés à retenir</a>
+              </li>
+              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit">
+                <a href="#venture-4">Les autres formes de Capital-Investissement</a>
+              </li>
+              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit">
+                <a href="#venture-5">Les stades de maturités d’une startup</a>
+              </li>
+              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit">
+                <a href="#venture-6">Comment fonctionne le Capital-Risque</a>
+              </li>
+              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit">
+                <a href="#venture-7">L’histoire du Capital-Risque</a>
+              </li>
+              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit">
+                <a href="#venture-8">Les acteurs du Capital-Risque</a>
+              </li>
+              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit">
+                <a href="#venture-9">Pourquoi Investir dans une startup</a>
+              </li>
+              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit">
+                <a href="#venture-10">Une fiscalité attractive</a>
+              </li>
+              <li class="snap-start duration-200 hover:text-secondary-dark text-s max-lg:max-w-[225px] max-lg:min-w-fit">
+                <a href="#venture-11">Les risques</a>
+              </li>
             </ol>
           </nav>
         </div>
       </aside>
       <div class="w-full lg:max-w-[64%] overflow-clip">
-        <div data-sticky-section="1" id="venture-1" class="px-8 py-10 w-full lg:-mt-4 lg:px-14 lg:pt-20 lg:pb-16 bg-secondary-neutral">
+        <div data-sticky-section="1" id="venture-1"
+          class="px-8 py-10 w-full lg:-mt-4 lg:px-14 lg:pt-20 lg:pb-16 bg-secondary-neutral">
           <div class="lg:max-w-[720px]">
             <h2 class="text-h2 font-lora text-left mb-6">Le développement du <i>Capital-Risque</i></h2>
-  
+
             <p class="text-justify">Dès sa création, le financement d’une startup est primordial. Les
               fondateurs, leur
               réseau amical
@@ -546,7 +209,7 @@ onMounted(() => {
               rarement suffisants. À ce stade de développement, l’autofinancement ne permettant pas à la société
               d’accompagner sa croissance, les créateurs doivent se tourner vers d’autres sources de financement pour
               assurer le développement de leur entreprise :</p>
-  
+
             <div class="flex flex-col w-full mt-10">
               <div style="border-top: solid 1px #7C868B" class="flex flex-col w-full py-4">
                 <h3 data-toggle-accordion
@@ -569,8 +232,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Les concours
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -585,8 +248,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   L’emprunt bancaire
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -601,8 +264,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Le capital-risque
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -614,14 +277,17 @@ onMounted(() => {
                     Fonds de venture capital qui prennent une participation dans l’entreprise.
                     <br>
                     <br>
-                    Les 2 premières sources de financement étant limitées, et l’emprunt auprès d’établissements bancaires contraints par les garanties exigées, le capital-risque est devenu incontournable pour les entreprises innovantes.
+                    Les 2 premières sources de financement étant limitées, et l’emprunt auprès d’établissements bancaires
+                    contraints par les garanties exigées, le capital-risque est devenu incontournable pour les entreprises
+                    innovantes.
                   </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div data-sticky-section="2" id="venture-2" class="px-8 py-10 w-full lg:-mt-4 lg:px-14 lg:pt-20 lg:pb-16 bg-white" style="border-bottom: solid 1px #F8EBD6; border-top: solid 1px #F8EBD6">
+        <div data-sticky-section="2" id="venture-2" class="px-8 py-10 w-full lg:-mt-4 lg:px-14 lg:pt-20 lg:pb-16 bg-white"
+          style="border-bottom: solid 1px #F8EBD6; border-top: solid 1px #F8EBD6">
           <div class="lg:max-w-[720px]">
             <h2 class="text-h2 font-lora text-left mb-6">Différence entre le <i>Capital-Risque et le Capital
                 Investissement</i></h2>
@@ -637,8 +303,8 @@ onMounted(() => {
                     Le capital-investissement
                     <svg class="min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
                       xmlns="http://www.w3.org/2000/svg">
-                      <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
-                        stroke-linejoin="round" />
+                      <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
                       <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
                         stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
@@ -646,7 +312,8 @@ onMounted(() => {
                   <div style="max-height: 100%" class="active duration-200 overflow-clip max-h-[0]">
                     <p class="mt-6 text-justify">Le capital-investissement, également connu sous le nom de private equity,
                       fait référence
-                      aux fonds d'investissement qui acquièrent et gèrent des participations dans des entreprises existantes.
+                      aux fonds d'investissement qui acquièrent et gèrent des participations dans des entreprises
+                      existantes.
                       Au lieu d'acheter des actions de sociétés cotées en bourse, les sociétés de capital-investissement
                       investissent dans des entreprises privées ou retirent des entreprises de la cote. L'objectif est
                       d'améliorer, de développer et de revendre ces entreprises avec un bénéfice.
@@ -665,14 +332,20 @@ onMounted(() => {
                 </div>
 
                 <div class="relative">
-                  <article class="group-hover/container:px-0 hover:!px-6 px-6 group/card relative flex flex-col justify-between rounded-md py-4 bg-primary-dark/10 overflow-clip duration-500 pointer-events-auto  w-[250px] lg:w-[350px] max-h-full md:max-h-[350px] max-lg:min-h-[350px] max-lg:w-full min-h-[300px] lg:min-h-[500px]">
+                  <article
+                    class="group-hover/container:px-0 hover:!px-6 px-6 group/card relative flex flex-col justify-between rounded-md py-4 bg-primary-dark/10 overflow-clip duration-500 pointer-events-auto  w-[250px] lg:w-[350px] max-h-full md:max-h-[350px] max-lg:min-h-[350px] max-lg:w-full min-h-[300px] lg:min-h-[500px]">
                     <img class="h-full w-full object-cover object-right pointer-events-none absolute inset-0 z-[1]"
-                      src="@/assets/img/venture_capital/venture_osivax-bg.png" alt="osivax" draggable="false" decoding="async">
+                      src="@/assets/img/venture_capital/venture_osivax-bg.png" alt="osivax" draggable="false"
+                      decoding="async">
                     <div class="flex justify-between flex-col gap-6 relative h-full z-[2] flex-1">
                       <div class="flex justify-between items-center w-full">
-                        <p class="whitespace-nowrap text-[12px] text-white font-medium flex items-center gap-2 bg-white/25 backdrop-blur-sm rounded-full select-none py-2 px-6">
-                          <svg class="min-w-[13px]" width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6.90175 11.1258H5.96364C6.03126 11.1204 6.09927 11.1155 6.16142 11.1109C4.59791 11.0059 3.28182 10.3844 2.24638 9.22564C1.20625 8.06155 0.767294 6.68748 0.886121 5.15209C0.994395 3.75043 1.59166 2.55799 2.63413 1.60043C3.67465 0.644788 4.91999 0.140145 6.3553 0.109874C6.3252 0.106425 6.2951 0.105276 6.265 0.10336C6.20051 0.0991451 6.13562 0.094547 6.07113 0.090332C6.35764 0.090332 6.64455 0.090332 6.93106 0.090332C6.8439 0.0941638 6.75673 0.0979956 6.66956 0.10221C6.64924 0.102977 6.6293 0.10451 6.60898 0.106042C8.07008 0.147808 9.33301 0.663181 10.3802 1.65446C11.4289 2.64727 11.9937 3.87075 12.0864 5.29617C12.0907 5.26206 12.0957 5.22451 12.1004 5.18658V6.01041C12.095 5.9855 12.0895 5.96021 12.0844 5.9353C11.9871 7.32777 11.4488 8.52749 10.4369 9.51264C9.42604 10.497 8.20259 11.0208 6.79191 11.1105C6.82122 11.1147 6.86149 11.1201 6.90175 11.1258ZM5.4254 7.83241C5.55009 7.83931 5.6439 7.79256 5.72637 7.71976C5.94566 7.52664 6.16377 7.33275 6.38266 7.13924C6.73445 6.82811 7.08624 6.51697 7.43842 6.20659C7.7351 5.94488 8.03217 5.68432 8.32884 5.42261C8.70292 5.0927 9.0766 4.76278 9.45067 4.43287C9.59451 4.30566 9.74187 4.18227 9.88181 4.05084C9.99321 3.94624 10.0249 3.81251 9.98383 3.66767C9.94435 3.52819 9.84936 3.43699 9.70513 3.40021C9.55699 3.36227 9.43034 3.40289 9.31855 3.50252C8.97575 3.80676 8.63138 4.10947 8.2878 4.41256C7.64168 4.98273 6.99556 5.55289 6.34904 6.12306C6.05745 6.38056 5.76585 6.63767 5.47465 6.89554C5.45276 6.91509 5.43869 6.92428 5.41132 6.89976C5.05133 6.58096 4.69015 6.26369 4.32937 5.94527C4.09836 5.74142 3.86774 5.5368 3.63713 5.33218C3.4839 5.19654 3.24547 5.18849 3.10201 5.31532C2.91713 5.47856 2.91517 5.74103 3.09967 5.90542C3.2439 6.03455 3.39048 6.16138 3.5355 6.28936C4.0753 6.76565 4.6151 7.24155 5.15374 7.71899C5.23465 7.79064 5.32494 7.83356 5.4254 7.83203V7.83241Z" fill="white"/>
+                        <p
+                          class="whitespace-nowrap text-[12px] text-white font-medium flex items-center gap-2 bg-white/25 backdrop-blur-sm rounded-full select-none py-2 px-6">
+                          <svg class="min-w-[13px]" width="13" height="12" viewBox="0 0 13 12" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              d="M6.90175 11.1258H5.96364C6.03126 11.1204 6.09927 11.1155 6.16142 11.1109C4.59791 11.0059 3.28182 10.3844 2.24638 9.22564C1.20625 8.06155 0.767294 6.68748 0.886121 5.15209C0.994395 3.75043 1.59166 2.55799 2.63413 1.60043C3.67465 0.644788 4.91999 0.140145 6.3553 0.109874C6.3252 0.106425 6.2951 0.105276 6.265 0.10336C6.20051 0.0991451 6.13562 0.094547 6.07113 0.090332C6.35764 0.090332 6.64455 0.090332 6.93106 0.090332C6.8439 0.0941638 6.75673 0.0979956 6.66956 0.10221C6.64924 0.102977 6.6293 0.10451 6.60898 0.106042C8.07008 0.147808 9.33301 0.663181 10.3802 1.65446C11.4289 2.64727 11.9937 3.87075 12.0864 5.29617C12.0907 5.26206 12.0957 5.22451 12.1004 5.18658V6.01041C12.095 5.9855 12.0895 5.96021 12.0844 5.9353C11.9871 7.32777 11.4488 8.52749 10.4369 9.51264C9.42604 10.497 8.20259 11.0208 6.79191 11.1105C6.82122 11.1147 6.86149 11.1201 6.90175 11.1258ZM5.4254 7.83241C5.55009 7.83931 5.6439 7.79256 5.72637 7.71976C5.94566 7.52664 6.16377 7.33275 6.38266 7.13924C6.73445 6.82811 7.08624 6.51697 7.43842 6.20659C7.7351 5.94488 8.03217 5.68432 8.32884 5.42261C8.70292 5.0927 9.0766 4.76278 9.45067 4.43287C9.59451 4.30566 9.74187 4.18227 9.88181 4.05084C9.99321 3.94624 10.0249 3.81251 9.98383 3.66767C9.94435 3.52819 9.84936 3.43699 9.70513 3.40021C9.55699 3.36227 9.43034 3.40289 9.31855 3.50252C8.97575 3.80676 8.63138 4.10947 8.2878 4.41256C7.64168 4.98273 6.99556 5.55289 6.34904 6.12306C6.05745 6.38056 5.76585 6.63767 5.47465 6.89554C5.45276 6.91509 5.43869 6.92428 5.41132 6.89976C5.05133 6.58096 4.69015 6.26369 4.32937 5.94527C4.09836 5.74142 3.86774 5.5368 3.63713 5.33218C3.4839 5.19654 3.24547 5.18849 3.10201 5.31532C2.91713 5.47856 2.91517 5.74103 3.09967 5.90542C3.2439 6.03455 3.39048 6.16138 3.5355 6.28936C4.0753 6.76565 4.6151 7.24155 5.15374 7.71899C5.23465 7.79064 5.32494 7.83356 5.4254 7.83203V7.83241Z"
+                              fill="white" />
                           </svg>
                           Opération financée
                         </p>
@@ -694,8 +367,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Le capital-risque
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -703,7 +376,8 @@ onMounted(() => {
                   </svg>
                 </h3>
                 <div class="duration-200 overflow-clip max-h-[0]">
-                  <p class="mt-6 text-justify">Le capital-risque est une branche du capital-investissement qui se concentre
+                  <p class="mt-6 text-justify">Le capital-risque est une branche du capital-investissement qui se
+                    concentre
                     sur les investissements dans des startups ou des entreprises en croissance rapide. Ces investissements
                     sont à haut risque, mais offrent un potentiel de rendement plus élevé. Les investisseurs en
                     capital-risque fournissent des fonds en échange de participations, dans l'espoir que ces startups
@@ -716,7 +390,8 @@ onMounted(() => {
                     <li>Une stratégie de sortie, souvent par une vente de l'entreprise ou une introduction en bourse</li>
                   </ul>
                   <br><br>
-                  Les fonds de capital-risque prennent généralement une participation minoritaire dans les entreprises dans
+                  Les fonds de capital-risque prennent généralement une participation minoritaire dans les entreprises
+                  dans
                   lesquelles ils investissent.
                   </p>
                 </div>
@@ -724,7 +399,8 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div data-sticky-section="3" id="venture-3" class="px-8 py-10 w-full lg:-mt-4 lg:px-14 lg:pt-20 lg:pb-16 bg-secondary-neutral">
+        <div data-sticky-section="3" id="venture-3"
+          class="px-8 py-10 w-full lg:-mt-4 lg:px-14 lg:pt-20 lg:pb-16 bg-secondary-neutral">
           <div class="lg:max-w-[720px]">
             <h2 class="text-h2 font-lora text-left mb-6"><i>Capital-Risque</i> : les points clés à retenir</h2>
             <p class="text-justify">Il est important de comprendre les caractéristiques clés du venture capital (ou
@@ -752,8 +428,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Industries cibles
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -772,8 +448,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Objectifs de retour sur investissements
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -792,8 +468,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Tailles des investissements
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -813,8 +489,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Horizon de liquidités
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -824,7 +500,8 @@ onMounted(() => {
                 <div class="duration-200 overflow-clip max-h-[0]">
                   <p class="mt-6 text-justify">
                     Les fonds de capital-risque ont généralement un horizon de liquidités plus court que le private equity
-                    traditionnel, avec une sortie prévue après environ 4 ans. Ils cherchent à investir dans des entreprises
+                    traditionnel, avec une sortie prévue après environ 4 ans. Ils cherchent à investir dans des
+                    entreprises
                     en croissance rapide qui peuvent atteindre rapidement une valeur élevée.
                   </p>
                 </div>
@@ -833,8 +510,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Structure du financement
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -843,7 +520,8 @@ onMounted(() => {
                 </h3>
                 <div class="duration-200 overflow-clip max-h-[0]">
                   <p class="mt-6 text-justify">
-                    Les investisseurs en capital-risque fournissent principalement des capitaux propres aux entreprises dans
+                    Les investisseurs en capital-risque fournissent principalement des capitaux propres aux entreprises
+                    dans
                     lesquelles ils investissent.
                   </p>
                 </div>
@@ -852,8 +530,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Rôle de l’investisseur
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -862,8 +540,10 @@ onMounted(() => {
                 </h3>
                 <div class="duration-200 overflow-clip max-h-[0]">
                   <p class="mt-6 text-justify">
-                    Les investisseurs en capital-risque apportent souvent des conseils, un soutien stratégique et un réseau
-                    de contacts aux startups dans lesquelles ils investissent. Ils peuvent également surveiller les dépenses
+                    Les investisseurs en capital-risque apportent souvent des conseils, un soutien stratégique et un
+                    réseau
+                    de contacts aux startups dans lesquelles ils investissent. Ils peuvent également surveiller les
+                    dépenses
                     de trésorerie et aider les entrepreneurs à prendre les bonnes décisions stratégiques.
                   </p>
                 </div>
@@ -871,7 +551,8 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div data-sticky-section="4" id="venture-4" class="px-8 py-10 w-full lg:-mt-4 lg:px-14 lg:pt-20 lg:pb-16 bg-white" style="border-top: solid 1px #F8EBD6; border-bottom: solid 1px #F8EBD6">
+        <div data-sticky-section="4" id="venture-4" class="px-8 py-10 w-full lg:-mt-4 lg:px-14 lg:pt-20 lg:pb-16 bg-white"
+          style="border-top: solid 1px #F8EBD6; border-bottom: solid 1px #F8EBD6">
           <div class="lg:max-w-[720px]">
             <h2 class="text-h2 font-lora text-left mb-6">Les autres formes de <i>Capital-Investissement</i></h2>
             <div class="flex flex-col w-full mt-10">
@@ -888,14 +569,16 @@ onMounted(() => {
                   </svg>
                 </h3>
                 <div style="max-height: 100%" class="active duration-200 overflow-clip max-h-[0]">
-                  <p class="mt-6 text-justify">Le capital-développement est une forme de capital-investissement destinée aux
+                  <p class="mt-6 text-justify">Le capital-développement est une forme de capital-investissement destinée
+                    aux
                     entreprises qui ont déjà atteint un certain niveau de rentabilité et qui souhaitent passer à une
                     nouvelle étape de leur développement. Contrairement au capital-risque, le capital-développement
                     s'adresse à des entreprises plus matures, qui ont déjà démontré leur viabilité commerciale.
                     <br><br>
                     Les investisseurs en capital-développement fournissent des fonds propres ou quasi-fonds propres à ces
                     entreprises, leur permettant d'augmenter leurs capacités de production, d'améliorer leurs activités de
-                    vente, de développer de nouveaux produits et services, de financer des acquisitions ou d'accroître leur
+                    vente, de développer de nouveaux produits et services, de financer des acquisitions ou d'accroître
+                    leur
                     fonds de roulement. Ces investissements visent à soutenir la croissance et l'expansion des entreprises
                     déjà établies, en leur donnant les moyens financiers nécessaires pour atteindre leurs objectifs de
                     développement.
@@ -906,8 +589,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Le capital-transmission
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -923,8 +606,10 @@ onMounted(() => {
                     <br><br>
                     L'objectif du capital-transmission est de permettre la continuité de l'entreprise tout en offrant une
                     sortie aux actionnaires sortants. Il peut être réalisé sous différentes formes, telles que des
-                    opérations de rachat d'entreprise par les dirigeants (management buy-out), des opérations de rachat par
-                    des investisseurs extérieurs (buy-in), ou des opérations de transmission familiale. Les investisseurs en
+                    opérations de rachat d'entreprise par les dirigeants (management buy-out), des opérations de rachat
+                    par
+                    des investisseurs extérieurs (buy-in), ou des opérations de transmission familiale. Les investisseurs
+                    en
                     capital-transmission apportent non seulement des fonds, mais également leur expertise en matière de
                     gestion et de redressement d'entreprise, afin d'assurer la pérennité et la croissance de l'entreprise.
                   </p>
@@ -934,8 +619,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Le capital retournement ou restructuration
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -943,14 +628,16 @@ onMounted(() => {
                   </svg>
                 </h3>
                 <div class="duration-200 overflow-clip max-h-[0]">
-                  <p class="mt-6 text-justify">Également connu sous le nom de capital restructuration, il intervient lorsque
+                  <p class="mt-6 text-justify">Également connu sous le nom de capital restructuration, il intervient
+                    lorsque
                     l'entreprise traverse une crise financière ou opérationnelle et nécessite un soutien financier pour se
                     redresser. Les investisseurs en capital retournement injectent des fonds propres dans l'entreprise en
                     difficulté, afin de lui permettre de surmonter ses problèmes et de retrouver une situation financière
                     saine.
                     <br><br>
                     L'objectif du capital retournement est de restructurer l'entreprise en difficulté, en mettant en place
-                    des mesures correctives pour améliorer sa rentabilité et sa compétitivité. Les investisseurs en capital
+                    des mesures correctives pour améliorer sa rentabilité et sa compétitivité. Les investisseurs en
+                    capital
                     retournement peuvent également apporter leur expertise en matière de gestion et de restructuration
                     d'entreprise, afin d'accompagner l'entreprise dans sa phase de redressement.
                   </p>
@@ -965,68 +652,120 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div data-sticky-section="5" id="venture-5" class="py-10 w-full lg:-mt-4 lg:pt-20 lg:pb-16 bg-primary-dark text-white">
+        <div data-sticky-section="5" id="venture-5"
+          class="py-10 w-full lg:-mt-4 lg:pt-20 lg:pb-16 bg-primary-dark text-white">
           <div class="lg:max-w-[720px] px-8 lg:px-14">
             <h2 class="text-h2 font-lora text-left mb-6">Les stades de maturité d’une <i>startup</i></h2>
             <p class="mt-6 text-justify">Les startups connaissent différents stades de maturité au cours de leur parcours.
               De leur phase initiale de
               développement à leur expansion à grande échelle, ces étapes jouent un rôle crucial dans la progression et la
-              réussite de l'entreprise. Dans cet article, nous explorerons en détail les différentes étapes de maturité des
+              réussite de l'entreprise. Dans cet article, nous explorerons en détail les différentes étapes de maturité
+              des
               startups, en mettant l'accent sur les phases de pré-amorçage, de seed, de série A, de série B et de série C.
             </p>
           </div>
           <div class="w-full mt-6">
             <div class="px-8 lg:px-14 flex items-center gap-2 justify-end">
-              <button data-carousel-control="left" type="button" class="flex items-center justify-center p-1 cursor-pointer bg-white w-[50px] aspect-square rounded-full duration-200 hover:opacity-60">
-                <svg class="rotate-180" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M21.1886 15.5629L15.4599 9.48416C15.1758 9.18271 14.7011 9.16864 14.3997 9.45272C14.0982 9.73681 14.0842 10.2115 14.3683 10.5129L19.6158 16.0812L14.3683 21.6494C14.0842 21.9508 14.0982 22.4255 14.3997 22.7096C14.7011 22.9937 15.1758 22.9796 15.4599 22.6782L21.1886 16.5994C21.2447 16.5407 21.2895 16.4751 21.323 16.4053C21.4202 16.2022 21.4212 15.9636 21.324 15.7591C21.2904 15.6885 21.2453 15.6221 21.1886 15.5629Z" fill="#01192A"/>
-                  <path d="M21.1886 15.5629L20.8975 15.8373L20.8997 15.8396L21.1886 15.5629ZM15.4599 9.48416L15.751 9.20982L15.751 9.20982L15.4599 9.48416ZM14.3997 9.45272L14.1253 9.16162L14.1253 9.16162L14.3997 9.45272ZM14.3683 10.5129L14.6594 10.2386L14.6594 10.2386L14.3683 10.5129ZM19.6158 16.0812L19.9069 16.3555C20.0521 16.2014 20.0521 15.9609 19.9069 15.8068L19.6158 16.0812ZM14.3683 21.6494L14.6594 21.9237H14.6594L14.3683 21.6494ZM14.3997 22.7096L14.1253 23.0007L14.3997 22.7096ZM15.4599 22.6782L15.1688 22.4038H15.1688L15.4599 22.6782ZM21.1886 16.5994L20.8997 16.3227L20.8975 16.325L21.1886 16.5994ZM21.323 16.4053L20.9622 16.2325L21.323 16.4053ZM21.324 15.7591L20.9627 15.9307L20.9627 15.9309L21.324 15.7591ZM21.4797 15.2886L15.751 9.20982L15.1688 9.75849L20.8975 15.8373L21.4797 15.2886ZM15.751 9.20982C15.3154 8.7476 14.5876 8.72603 14.1253 9.16162L14.674 9.74382C14.8147 9.61125 15.0362 9.61782 15.1688 9.75849L15.751 9.20982ZM14.1253 9.16162C13.6631 9.59722 13.6416 10.325 14.0772 10.7873L14.6594 10.2386C14.5268 10.0979 14.5333 9.8764 14.674 9.74382L14.1253 9.16162ZM14.0772 10.7873L19.3247 16.3555L19.9069 15.8068L14.6594 10.2386L14.0772 10.7873ZM14.6594 21.9237L19.9069 16.3555L19.3247 15.8068L14.0772 21.3751L14.6594 21.9237ZM14.674 22.4185C14.5333 22.2859 14.5268 22.0644 14.6594 21.9237L14.0772 21.3751C13.6416 21.8373 13.6631 22.5651 14.1253 23.0007L14.674 22.4185ZM15.1688 22.4038C15.0362 22.5445 14.8147 22.5511 14.674 22.4185L14.1253 23.0007C14.5876 23.4363 15.3154 23.4147 15.751 22.9525L15.1688 22.4038ZM20.8975 16.325L15.1688 22.4038L15.751 22.9525L21.4797 16.8737L20.8975 16.325ZM21.4776 16.876C21.5634 16.7863 21.6323 16.6855 21.6838 16.578L20.9622 16.2325C20.9468 16.2647 20.9261 16.2952 20.8997 16.3227L21.4776 16.876ZM21.6838 16.578C21.8329 16.2666 21.8346 15.9014 21.6852 15.5873L20.9627 15.9309C21.0079 16.0259 21.0076 16.1378 20.9622 16.2325L21.6838 16.578ZM20.8997 15.8396C20.9263 15.8674 20.9472 15.8982 20.9627 15.9307L21.6853 15.5875C21.6337 15.4788 21.5642 15.3769 21.4775 15.2863L20.8997 15.8396Z" fill="#01192A"/>
+              <button data-carousel-control="left" type="button"
+                class="flex items-center justify-center p-1 cursor-pointer bg-white w-[50px] aspect-square rounded-full duration-200 hover:opacity-60">
+                <svg class="rotate-180" width="33" height="33" viewBox="0 0 33 33" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M21.1886 15.5629L15.4599 9.48416C15.1758 9.18271 14.7011 9.16864 14.3997 9.45272C14.0982 9.73681 14.0842 10.2115 14.3683 10.5129L19.6158 16.0812L14.3683 21.6494C14.0842 21.9508 14.0982 22.4255 14.3997 22.7096C14.7011 22.9937 15.1758 22.9796 15.4599 22.6782L21.1886 16.5994C21.2447 16.5407 21.2895 16.4751 21.323 16.4053C21.4202 16.2022 21.4212 15.9636 21.324 15.7591C21.2904 15.6885 21.2453 15.6221 21.1886 15.5629Z"
+                    fill="#01192A" />
+                  <path
+                    d="M21.1886 15.5629L20.8975 15.8373L20.8997 15.8396L21.1886 15.5629ZM15.4599 9.48416L15.751 9.20982L15.751 9.20982L15.4599 9.48416ZM14.3997 9.45272L14.1253 9.16162L14.1253 9.16162L14.3997 9.45272ZM14.3683 10.5129L14.6594 10.2386L14.6594 10.2386L14.3683 10.5129ZM19.6158 16.0812L19.9069 16.3555C20.0521 16.2014 20.0521 15.9609 19.9069 15.8068L19.6158 16.0812ZM14.3683 21.6494L14.6594 21.9237H14.6594L14.3683 21.6494ZM14.3997 22.7096L14.1253 23.0007L14.3997 22.7096ZM15.4599 22.6782L15.1688 22.4038H15.1688L15.4599 22.6782ZM21.1886 16.5994L20.8997 16.3227L20.8975 16.325L21.1886 16.5994ZM21.323 16.4053L20.9622 16.2325L21.323 16.4053ZM21.324 15.7591L20.9627 15.9307L20.9627 15.9309L21.324 15.7591ZM21.4797 15.2886L15.751 9.20982L15.1688 9.75849L20.8975 15.8373L21.4797 15.2886ZM15.751 9.20982C15.3154 8.7476 14.5876 8.72603 14.1253 9.16162L14.674 9.74382C14.8147 9.61125 15.0362 9.61782 15.1688 9.75849L15.751 9.20982ZM14.1253 9.16162C13.6631 9.59722 13.6416 10.325 14.0772 10.7873L14.6594 10.2386C14.5268 10.0979 14.5333 9.8764 14.674 9.74382L14.1253 9.16162ZM14.0772 10.7873L19.3247 16.3555L19.9069 15.8068L14.6594 10.2386L14.0772 10.7873ZM14.6594 21.9237L19.9069 16.3555L19.3247 15.8068L14.0772 21.3751L14.6594 21.9237ZM14.674 22.4185C14.5333 22.2859 14.5268 22.0644 14.6594 21.9237L14.0772 21.3751C13.6416 21.8373 13.6631 22.5651 14.1253 23.0007L14.674 22.4185ZM15.1688 22.4038C15.0362 22.5445 14.8147 22.5511 14.674 22.4185L14.1253 23.0007C14.5876 23.4363 15.3154 23.4147 15.751 22.9525L15.1688 22.4038ZM20.8975 16.325L15.1688 22.4038L15.751 22.9525L21.4797 16.8737L20.8975 16.325ZM21.4776 16.876C21.5634 16.7863 21.6323 16.6855 21.6838 16.578L20.9622 16.2325C20.9468 16.2647 20.9261 16.2952 20.8997 16.3227L21.4776 16.876ZM21.6838 16.578C21.8329 16.2666 21.8346 15.9014 21.6852 15.5873L20.9627 15.9309C21.0079 16.0259 21.0076 16.1378 20.9622 16.2325L21.6838 16.578ZM20.8997 15.8396C20.9263 15.8674 20.9472 15.8982 20.9627 15.9307L21.6853 15.5875C21.6337 15.4788 21.5642 15.3769 21.4775 15.2863L20.8997 15.8396Z"
+                    fill="#01192A" />
                 </svg>
               </button>
-              <button data-carousel-control="right" type="button" class="flex items-center justify-center p-1 cursor-pointer bg-white w-[50px] aspect-square rounded-full duration-200 hover:opacity-60">
+              <button data-carousel-control="right" type="button"
+                class="flex items-center justify-center p-1 cursor-pointer bg-white w-[50px] aspect-square rounded-full duration-200 hover:opacity-60">
                 <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M21.1886 15.5629L15.4599 9.48416C15.1758 9.18271 14.7011 9.16864 14.3997 9.45272C14.0982 9.73681 14.0842 10.2115 14.3683 10.5129L19.6158 16.0812L14.3683 21.6494C14.0842 21.9508 14.0982 22.4255 14.3997 22.7096C14.7011 22.9937 15.1758 22.9796 15.4599 22.6782L21.1886 16.5994C21.2447 16.5407 21.2895 16.4751 21.323 16.4053C21.4202 16.2022 21.4212 15.9636 21.324 15.7591C21.2904 15.6885 21.2453 15.6221 21.1886 15.5629Z" fill="#01192A"/>
-                  <path d="M21.1886 15.5629L20.8975 15.8373L20.8997 15.8396L21.1886 15.5629ZM15.4599 9.48416L15.751 9.20982L15.751 9.20982L15.4599 9.48416ZM14.3997 9.45272L14.1253 9.16162L14.1253 9.16162L14.3997 9.45272ZM14.3683 10.5129L14.6594 10.2386L14.6594 10.2386L14.3683 10.5129ZM19.6158 16.0812L19.9069 16.3555C20.0521 16.2014 20.0521 15.9609 19.9069 15.8068L19.6158 16.0812ZM14.3683 21.6494L14.6594 21.9237H14.6594L14.3683 21.6494ZM14.3997 22.7096L14.1253 23.0007L14.3997 22.7096ZM15.4599 22.6782L15.1688 22.4038H15.1688L15.4599 22.6782ZM21.1886 16.5994L20.8997 16.3227L20.8975 16.325L21.1886 16.5994ZM21.323 16.4053L20.9622 16.2325L21.323 16.4053ZM21.324 15.7591L20.9627 15.9307L20.9627 15.9309L21.324 15.7591ZM21.4797 15.2886L15.751 9.20982L15.1688 9.75849L20.8975 15.8373L21.4797 15.2886ZM15.751 9.20982C15.3154 8.7476 14.5876 8.72603 14.1253 9.16162L14.674 9.74382C14.8147 9.61125 15.0362 9.61782 15.1688 9.75849L15.751 9.20982ZM14.1253 9.16162C13.6631 9.59722 13.6416 10.325 14.0772 10.7873L14.6594 10.2386C14.5268 10.0979 14.5333 9.8764 14.674 9.74382L14.1253 9.16162ZM14.0772 10.7873L19.3247 16.3555L19.9069 15.8068L14.6594 10.2386L14.0772 10.7873ZM14.6594 21.9237L19.9069 16.3555L19.3247 15.8068L14.0772 21.3751L14.6594 21.9237ZM14.674 22.4185C14.5333 22.2859 14.5268 22.0644 14.6594 21.9237L14.0772 21.3751C13.6416 21.8373 13.6631 22.5651 14.1253 23.0007L14.674 22.4185ZM15.1688 22.4038C15.0362 22.5445 14.8147 22.5511 14.674 22.4185L14.1253 23.0007C14.5876 23.4363 15.3154 23.4147 15.751 22.9525L15.1688 22.4038ZM20.8975 16.325L15.1688 22.4038L15.751 22.9525L21.4797 16.8737L20.8975 16.325ZM21.4776 16.876C21.5634 16.7863 21.6323 16.6855 21.6838 16.578L20.9622 16.2325C20.9468 16.2647 20.9261 16.2952 20.8997 16.3227L21.4776 16.876ZM21.6838 16.578C21.8329 16.2666 21.8346 15.9014 21.6852 15.5873L20.9627 15.9309C21.0079 16.0259 21.0076 16.1378 20.9622 16.2325L21.6838 16.578ZM20.8997 15.8396C20.9263 15.8674 20.9472 15.8982 20.9627 15.9307L21.6853 15.5875C21.6337 15.4788 21.5642 15.3769 21.4775 15.2863L20.8997 15.8396Z" fill="#01192A"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M21.1886 15.5629L15.4599 9.48416C15.1758 9.18271 14.7011 9.16864 14.3997 9.45272C14.0982 9.73681 14.0842 10.2115 14.3683 10.5129L19.6158 16.0812L14.3683 21.6494C14.0842 21.9508 14.0982 22.4255 14.3997 22.7096C14.7011 22.9937 15.1758 22.9796 15.4599 22.6782L21.1886 16.5994C21.2447 16.5407 21.2895 16.4751 21.323 16.4053C21.4202 16.2022 21.4212 15.9636 21.324 15.7591C21.2904 15.6885 21.2453 15.6221 21.1886 15.5629Z"
+                    fill="#01192A" />
+                  <path
+                    d="M21.1886 15.5629L20.8975 15.8373L20.8997 15.8396L21.1886 15.5629ZM15.4599 9.48416L15.751 9.20982L15.751 9.20982L15.4599 9.48416ZM14.3997 9.45272L14.1253 9.16162L14.1253 9.16162L14.3997 9.45272ZM14.3683 10.5129L14.6594 10.2386L14.6594 10.2386L14.3683 10.5129ZM19.6158 16.0812L19.9069 16.3555C20.0521 16.2014 20.0521 15.9609 19.9069 15.8068L19.6158 16.0812ZM14.3683 21.6494L14.6594 21.9237H14.6594L14.3683 21.6494ZM14.3997 22.7096L14.1253 23.0007L14.3997 22.7096ZM15.4599 22.6782L15.1688 22.4038H15.1688L15.4599 22.6782ZM21.1886 16.5994L20.8997 16.3227L20.8975 16.325L21.1886 16.5994ZM21.323 16.4053L20.9622 16.2325L21.323 16.4053ZM21.324 15.7591L20.9627 15.9307L20.9627 15.9309L21.324 15.7591ZM21.4797 15.2886L15.751 9.20982L15.1688 9.75849L20.8975 15.8373L21.4797 15.2886ZM15.751 9.20982C15.3154 8.7476 14.5876 8.72603 14.1253 9.16162L14.674 9.74382C14.8147 9.61125 15.0362 9.61782 15.1688 9.75849L15.751 9.20982ZM14.1253 9.16162C13.6631 9.59722 13.6416 10.325 14.0772 10.7873L14.6594 10.2386C14.5268 10.0979 14.5333 9.8764 14.674 9.74382L14.1253 9.16162ZM14.0772 10.7873L19.3247 16.3555L19.9069 15.8068L14.6594 10.2386L14.0772 10.7873ZM14.6594 21.9237L19.9069 16.3555L19.3247 15.8068L14.0772 21.3751L14.6594 21.9237ZM14.674 22.4185C14.5333 22.2859 14.5268 22.0644 14.6594 21.9237L14.0772 21.3751C13.6416 21.8373 13.6631 22.5651 14.1253 23.0007L14.674 22.4185ZM15.1688 22.4038C15.0362 22.5445 14.8147 22.5511 14.674 22.4185L14.1253 23.0007C14.5876 23.4363 15.3154 23.4147 15.751 22.9525L15.1688 22.4038ZM20.8975 16.325L15.1688 22.4038L15.751 22.9525L21.4797 16.8737L20.8975 16.325ZM21.4776 16.876C21.5634 16.7863 21.6323 16.6855 21.6838 16.578L20.9622 16.2325C20.9468 16.2647 20.9261 16.2952 20.8997 16.3227L21.4776 16.876ZM21.6838 16.578C21.8329 16.2666 21.8346 15.9014 21.6852 15.5873L20.9627 15.9309C21.0079 16.0259 21.0076 16.1378 20.9622 16.2325L21.6838 16.578ZM20.8997 15.8396C20.9263 15.8674 20.9472 15.8982 20.9627 15.9307L21.6853 15.5875C21.6337 15.4788 21.5642 15.3769 21.4775 15.2863L20.8997 15.8396Z"
+                    fill="#01192A" />
                 </svg>
               </button>
             </div>
 
-            <div class="flex justify-start snap-x snap-mandatory overflow-x-scroll overflow-y-clip scrollbar-hide mt-10 px-8 gap-8 scroll-pl-8 lg:gap-14 lg:scroll-pl-14 lg:px-14">
-              <article class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px rgba(255,255,255,.1)">
-                  <p class="font-medium text-[28px] text-white/20 select-none">01.</p>
-                  <h3 class="mt-6 mb-4 font-semibold text-xl">Phase de pré-amorçage : les premiers pas vers la réalisation de l’idée</h3>
-                  <p class="text-justify text-m">
-                    La phase de pré-amorçage, également connue sous le nom de capital amorçage, marque les premiers pas d'une startup vers la réalisation de son idée. À ce stade, l'entreprise est encore en phase de recherche, de développement et de mise au point de son produit ou service. Les besoins de financement se concentrent notamment sur les salaires, les équipements et les dépenses de fonctionnement. Les montants levés lors de la phase de pré-amorçage sont généralement de l'ordre de quelques centaines de milliers d'euros. Les investisseurs à ce stade sont souvent des amis, des membres de la famille (love-money), des business angels ou des fonds de capital-risque.
-                  </p>
+            <div
+              class="flex justify-start snap-x snap-mandatory overflow-x-scroll overflow-y-clip scrollbar-hide mt-10 px-8 gap-8 scroll-pl-8 lg:gap-14 lg:scroll-pl-14 lg:px-14">
+              <article
+                class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px rgba(255,255,255,.1)">
+                <p class="font-medium text-[28px] text-white/20 select-none">01.</p>
+                <h3 class="mt-6 mb-4 font-semibold text-xl">Phase de pré-amorçage : les premiers pas vers la réalisation
+                  de l’idée</h3>
+                <p class="text-justify text-m">
+                  La phase de pré-amorçage, également connue sous le nom de capital amorçage, marque les premiers pas
+                  d'une startup vers la réalisation de son idée. À ce stade, l'entreprise est encore en phase de
+                  recherche, de développement et de mise au point de son produit ou service. Les besoins de financement se
+                  concentrent notamment sur les salaires, les équipements et les dépenses de fonctionnement. Les montants
+                  levés lors de la phase de pré-amorçage sont généralement de l'ordre de quelques centaines de milliers
+                  d'euros. Les investisseurs à ce stade sont souvent des amis, des membres de la famille (love-money), des
+                  business angels ou des fonds de capital-risque.
+                </p>
               </article>
-              <article class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px rgba(255,255,255,.1)">
+              <article
+                class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px rgba(255,255,255,.1)">
                 <p class="font-medium text-[28px] text-white/20 select-none">02.</p>
-                <h3 class="mt-6 mb-4 font-semibold text-xl">Phase de seed : le premier tour de table pour lancer l’activité</h3>
+                <h3 class="mt-6 mb-4 font-semibold text-xl">Phase de seed : le premier tour de table pour lancer
+                  l’activité</h3>
                 <p class="text-justify text-m">
-                  La phase de seed, ou premier tour de table, intervient lorsque la startup a finalisé son produit ou service et est prête à le lancer sur le marché. Les fonds levés lors de cette étape sont principalement destinés à financer l'acquisition de clients, le recrutement d'équipes de vente et de support, ainsi que les autres dépenses liées à l'activité de l'entreprise. Les montants levés lors de la phase de seed varient généralement de quelques centaines de milliers d'euros à un million d'euros.
+                  La phase de seed, ou premier tour de table, intervient lorsque la startup a finalisé son produit ou
+                  service et est prête à le lancer sur le marché. Les fonds levés lors de cette étape sont principalement
+                  destinés à financer l'acquisition de clients, le recrutement d'équipes de vente et de support, ainsi que
+                  les autres dépenses liées à l'activité de l'entreprise. Les montants levés lors de la phase de seed
+                  varient généralement de quelques centaines de milliers d'euros à un million d'euros.
                 </p>
               </article>
-              <article class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px rgba(255,255,255,.1)">
+              <article
+                class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px rgba(255,255,255,.1)">
                 <p class="font-medium text-[28px] text-white/20 select-none">03.</p>
-                <h3 class="mt-6 mb-4 font-semibold text-xl">Phase de série A : accélérer la croissance et atteindre la rentabilité</h3>
+                <h3 class="mt-6 mb-4 font-semibold text-xl">Phase de série A : accélérer la croissance et atteindre la
+                  rentabilité</h3>
                 <p class="text-justify text-m">
-                  La phase de série A marque une étape clé dans la croissance de la startup. À ce stade, l'entreprise a déjà un produit ou service sur le marché et génère un chiffre d'affaires. L'objectif de la série A est d'accélérer la croissance de l'entreprise et de tendre vers la rentabilité. Les fonds levés lors de cette étape sont utilisés pour développer l'activité à l'échelle nationale, voire internationale. Les montants levés lors de la série A varient généralement de quelques millions d'euros.
+                  La phase de série A marque une étape clé dans la croissance de la startup. À ce stade, l'entreprise a
+                  déjà un produit ou service sur le marché et génère un chiffre d'affaires. L'objectif de la série A est
+                  d'accélérer la croissance de l'entreprise et de tendre vers la rentabilité. Les fonds levés lors de
+                  cette étape sont utilisés pour développer l'activité à l'échelle nationale, voire internationale. Les
+                  montants levés lors de la série A varient généralement de quelques millions d'euros.
                 </p>
               </article>
-              <article class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px rgba(255,255,255,.1)">
+              <article
+                class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px rgba(255,255,255,.1)">
                 <p class="font-medium text-[28px] text-white/20 select-none">04.</p>
-                <h3 class="mt-6 mb-4 font-semibold text-xl">Phase de série B : consolider la position de l’entreprise et se préparer à l’expansion</h3>
+                <h3 class="mt-6 mb-4 font-semibold text-xl">Phase de série B : consolider la position de l’entreprise et
+                  se préparer à l’expansion</h3>
                 <p class="text-justify text-m">
-                  La phase de série B intervient après la série A et vise à consolider la position de l'entreprise sur le marché. À ce stade, l'entreprise a déjà une certaine traction et un modèle économique cohérent. Les fonds levés lors de la série B sont principalement utilisés pour l'expansion de l'entreprise, que ce soit par le biais d'internationalisation, d'acquisitions ou d'intégrations verticales. Les montants levés lors de la série B peuvent atteindre plusieurs dizaines ou centaines de millions d'euros.
+                  La phase de série B intervient après la série A et vise à consolider la position de l'entreprise sur le
+                  marché. À ce stade, l'entreprise a déjà une certaine traction et un modèle économique cohérent. Les
+                  fonds levés lors de la série B sont principalement utilisés pour l'expansion de l'entreprise, que ce
+                  soit par le biais d'internationalisation, d'acquisitions ou d'intégrations verticales. Les montants
+                  levés lors de la série B peuvent atteindre plusieurs dizaines ou centaines de millions d'euros.
                 </p>
               </article>
-              <article class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px rgba(255,255,255,.1)">
+              <article
+                class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px rgba(255,255,255,.1)">
                 <p class="font-medium text-[28px] text-white/20 select-none">05.</p>
                 <h3 class="mt-6 mb-4 font-semibold text-xl">Phase de série C : accélérer et s’internationaliser</h3>
                 <p class="text-justify text-m">
-                  À ce stade, l'entreprise peut continuer à croître rapidement, attaquer de nouveaux marchés et avoir une stratégie agressive envers ses concurrents. Les montants levés lors de la série C peuvent aller de quelques dizaines à des centaines de millions d'euros. Les investissements à ce stade sont généralement réalisés par des fonds spéculatifs et marquent souvent le moment des introductions en bourse.
+                  À ce stade, l'entreprise peut continuer à croître rapidement, attaquer de nouveaux marchés et avoir une
+                  stratégie agressive envers ses concurrents. Les montants levés lors de la série C peuvent aller de
+                  quelques dizaines à des centaines de millions d'euros. Les investissements à ce stade sont généralement
+                  réalisés par des fonds spéculatifs et marquent souvent le moment des introductions en bourse.
                   <br><br>
-                  Chaque phase de financement correspond à des objectifs spécifiques et nécessite une stratégie adaptée. En comprenant les caractéristiques et les besoins de chaque étape, les entrepreneurs et les investisseurs peuvent prendre des décisions éclairées pour soutenir la croissance et la progression des startups.
+                  Chaque phase de financement correspond à des objectifs spécifiques et nécessite une stratégie adaptée.
+                  En comprenant les caractéristiques et les besoins de chaque étape, les entrepreneurs et les
+                  investisseurs peuvent prendre des décisions éclairées pour soutenir la croissance et la progression des
+                  startups.
                 </p>
               </article>
             </div>
@@ -1036,16 +775,19 @@ onMounted(() => {
           <div class="lg:max-w-[720px] px-8 lg:px-14">
             <h2 class="text-h2 font-lora text-left mb-6">Comment fonctionne le <i>Capital-Risque</i></h2>
             <p class="text-justify">
-              Le processus de capital-risque implique plusieurs étapes clés. Tout d'abord, une jeune entreprise en recherche
+              Le processus de capital-risque implique plusieurs étapes clés. Tout d'abord, une jeune entreprise en
+              recherche
               de financement soumet son projet à des investisseurs en capital-risque. Ces investisseurs, souvent des fonds
               spécialisés ou des business angels, étudient le potentiel de croissance de l'entreprise et évaluent les
               risques associés.
               <br><br>
               Si le projet est jugé prometteur, les investisseurs entament une phase de négociation avec l'entreprise. Ils
-              déterminent les conditions de l'investissement, telles que le montant des fonds à investir, la part de capital
+              déterminent les conditions de l'investissement, telles que le montant des fonds à investir, la part de
+              capital
               à acquérir et les éventuels droits de décision dans la gestion de l'entreprise.
               <br><br>
-              Une fois les négociations finalisées, les investisseurs fournissent les fonds à l'entreprise en échange d'une
+              Une fois les négociations finalisées, les investisseurs fournissent les fonds à l'entreprise en échange
+              d'une
               participation au capital. Cette injection de capital permet à l'entreprise de financer ses opérations, de
               développer ses produits ou services, d'élargir sa clientèle et de poursuivre sa croissance.
             </p>
@@ -1073,68 +815,121 @@ onMounted(() => {
 
           <div class="w-full mt-6">
             <div class="flex items-center gap-2 justify-end px-8 lg:px-14">
-              <button data-carousel-control="left" type="button" class="flex items-center justify-center p-1 cursor-pointer bg-white w-[50px] aspect-square rounded-full duration-200 hover:opacity-60">
-                <svg class="rotate-180" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M21.1886 15.5629L15.4599 9.48416C15.1758 9.18271 14.7011 9.16864 14.3997 9.45272C14.0982 9.73681 14.0842 10.2115 14.3683 10.5129L19.6158 16.0812L14.3683 21.6494C14.0842 21.9508 14.0982 22.4255 14.3997 22.7096C14.7011 22.9937 15.1758 22.9796 15.4599 22.6782L21.1886 16.5994C21.2447 16.5407 21.2895 16.4751 21.323 16.4053C21.4202 16.2022 21.4212 15.9636 21.324 15.7591C21.2904 15.6885 21.2453 15.6221 21.1886 15.5629Z" fill="#01192A"/>
-                  <path d="M21.1886 15.5629L20.8975 15.8373L20.8997 15.8396L21.1886 15.5629ZM15.4599 9.48416L15.751 9.20982L15.751 9.20982L15.4599 9.48416ZM14.3997 9.45272L14.1253 9.16162L14.1253 9.16162L14.3997 9.45272ZM14.3683 10.5129L14.6594 10.2386L14.6594 10.2386L14.3683 10.5129ZM19.6158 16.0812L19.9069 16.3555C20.0521 16.2014 20.0521 15.9609 19.9069 15.8068L19.6158 16.0812ZM14.3683 21.6494L14.6594 21.9237H14.6594L14.3683 21.6494ZM14.3997 22.7096L14.1253 23.0007L14.3997 22.7096ZM15.4599 22.6782L15.1688 22.4038H15.1688L15.4599 22.6782ZM21.1886 16.5994L20.8997 16.3227L20.8975 16.325L21.1886 16.5994ZM21.323 16.4053L20.9622 16.2325L21.323 16.4053ZM21.324 15.7591L20.9627 15.9307L20.9627 15.9309L21.324 15.7591ZM21.4797 15.2886L15.751 9.20982L15.1688 9.75849L20.8975 15.8373L21.4797 15.2886ZM15.751 9.20982C15.3154 8.7476 14.5876 8.72603 14.1253 9.16162L14.674 9.74382C14.8147 9.61125 15.0362 9.61782 15.1688 9.75849L15.751 9.20982ZM14.1253 9.16162C13.6631 9.59722 13.6416 10.325 14.0772 10.7873L14.6594 10.2386C14.5268 10.0979 14.5333 9.8764 14.674 9.74382L14.1253 9.16162ZM14.0772 10.7873L19.3247 16.3555L19.9069 15.8068L14.6594 10.2386L14.0772 10.7873ZM14.6594 21.9237L19.9069 16.3555L19.3247 15.8068L14.0772 21.3751L14.6594 21.9237ZM14.674 22.4185C14.5333 22.2859 14.5268 22.0644 14.6594 21.9237L14.0772 21.3751C13.6416 21.8373 13.6631 22.5651 14.1253 23.0007L14.674 22.4185ZM15.1688 22.4038C15.0362 22.5445 14.8147 22.5511 14.674 22.4185L14.1253 23.0007C14.5876 23.4363 15.3154 23.4147 15.751 22.9525L15.1688 22.4038ZM20.8975 16.325L15.1688 22.4038L15.751 22.9525L21.4797 16.8737L20.8975 16.325ZM21.4776 16.876C21.5634 16.7863 21.6323 16.6855 21.6838 16.578L20.9622 16.2325C20.9468 16.2647 20.9261 16.2952 20.8997 16.3227L21.4776 16.876ZM21.6838 16.578C21.8329 16.2666 21.8346 15.9014 21.6852 15.5873L20.9627 15.9309C21.0079 16.0259 21.0076 16.1378 20.9622 16.2325L21.6838 16.578ZM20.8997 15.8396C20.9263 15.8674 20.9472 15.8982 20.9627 15.9307L21.6853 15.5875C21.6337 15.4788 21.5642 15.3769 21.4775 15.2863L20.8997 15.8396Z" fill="#01192A"/>
+              <button data-carousel-control="left" type="button"
+                class="flex items-center justify-center p-1 cursor-pointer bg-white w-[50px] aspect-square rounded-full duration-200 hover:opacity-60">
+                <svg class="rotate-180" width="33" height="33" viewBox="0 0 33 33" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M21.1886 15.5629L15.4599 9.48416C15.1758 9.18271 14.7011 9.16864 14.3997 9.45272C14.0982 9.73681 14.0842 10.2115 14.3683 10.5129L19.6158 16.0812L14.3683 21.6494C14.0842 21.9508 14.0982 22.4255 14.3997 22.7096C14.7011 22.9937 15.1758 22.9796 15.4599 22.6782L21.1886 16.5994C21.2447 16.5407 21.2895 16.4751 21.323 16.4053C21.4202 16.2022 21.4212 15.9636 21.324 15.7591C21.2904 15.6885 21.2453 15.6221 21.1886 15.5629Z"
+                    fill="#01192A" />
+                  <path
+                    d="M21.1886 15.5629L20.8975 15.8373L20.8997 15.8396L21.1886 15.5629ZM15.4599 9.48416L15.751 9.20982L15.751 9.20982L15.4599 9.48416ZM14.3997 9.45272L14.1253 9.16162L14.1253 9.16162L14.3997 9.45272ZM14.3683 10.5129L14.6594 10.2386L14.6594 10.2386L14.3683 10.5129ZM19.6158 16.0812L19.9069 16.3555C20.0521 16.2014 20.0521 15.9609 19.9069 15.8068L19.6158 16.0812ZM14.3683 21.6494L14.6594 21.9237H14.6594L14.3683 21.6494ZM14.3997 22.7096L14.1253 23.0007L14.3997 22.7096ZM15.4599 22.6782L15.1688 22.4038H15.1688L15.4599 22.6782ZM21.1886 16.5994L20.8997 16.3227L20.8975 16.325L21.1886 16.5994ZM21.323 16.4053L20.9622 16.2325L21.323 16.4053ZM21.324 15.7591L20.9627 15.9307L20.9627 15.9309L21.324 15.7591ZM21.4797 15.2886L15.751 9.20982L15.1688 9.75849L20.8975 15.8373L21.4797 15.2886ZM15.751 9.20982C15.3154 8.7476 14.5876 8.72603 14.1253 9.16162L14.674 9.74382C14.8147 9.61125 15.0362 9.61782 15.1688 9.75849L15.751 9.20982ZM14.1253 9.16162C13.6631 9.59722 13.6416 10.325 14.0772 10.7873L14.6594 10.2386C14.5268 10.0979 14.5333 9.8764 14.674 9.74382L14.1253 9.16162ZM14.0772 10.7873L19.3247 16.3555L19.9069 15.8068L14.6594 10.2386L14.0772 10.7873ZM14.6594 21.9237L19.9069 16.3555L19.3247 15.8068L14.0772 21.3751L14.6594 21.9237ZM14.674 22.4185C14.5333 22.2859 14.5268 22.0644 14.6594 21.9237L14.0772 21.3751C13.6416 21.8373 13.6631 22.5651 14.1253 23.0007L14.674 22.4185ZM15.1688 22.4038C15.0362 22.5445 14.8147 22.5511 14.674 22.4185L14.1253 23.0007C14.5876 23.4363 15.3154 23.4147 15.751 22.9525L15.1688 22.4038ZM20.8975 16.325L15.1688 22.4038L15.751 22.9525L21.4797 16.8737L20.8975 16.325ZM21.4776 16.876C21.5634 16.7863 21.6323 16.6855 21.6838 16.578L20.9622 16.2325C20.9468 16.2647 20.9261 16.2952 20.8997 16.3227L21.4776 16.876ZM21.6838 16.578C21.8329 16.2666 21.8346 15.9014 21.6852 15.5873L20.9627 15.9309C21.0079 16.0259 21.0076 16.1378 20.9622 16.2325L21.6838 16.578ZM20.8997 15.8396C20.9263 15.8674 20.9472 15.8982 20.9627 15.9307L21.6853 15.5875C21.6337 15.4788 21.5642 15.3769 21.4775 15.2863L20.8997 15.8396Z"
+                    fill="#01192A" />
                 </svg>
               </button>
-              <button data-carousel-control="right" type="button" class="flex items-center justify-center p-1 cursor-pointer bg-white w-[50px] aspect-square rounded-full duration-200 hover:opacity-60">
+              <button data-carousel-control="right" type="button"
+                class="flex items-center justify-center p-1 cursor-pointer bg-white w-[50px] aspect-square rounded-full duration-200 hover:opacity-60">
                 <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M21.1886 15.5629L15.4599 9.48416C15.1758 9.18271 14.7011 9.16864 14.3997 9.45272C14.0982 9.73681 14.0842 10.2115 14.3683 10.5129L19.6158 16.0812L14.3683 21.6494C14.0842 21.9508 14.0982 22.4255 14.3997 22.7096C14.7011 22.9937 15.1758 22.9796 15.4599 22.6782L21.1886 16.5994C21.2447 16.5407 21.2895 16.4751 21.323 16.4053C21.4202 16.2022 21.4212 15.9636 21.324 15.7591C21.2904 15.6885 21.2453 15.6221 21.1886 15.5629Z" fill="#01192A"/>
-                  <path d="M21.1886 15.5629L20.8975 15.8373L20.8997 15.8396L21.1886 15.5629ZM15.4599 9.48416L15.751 9.20982L15.751 9.20982L15.4599 9.48416ZM14.3997 9.45272L14.1253 9.16162L14.1253 9.16162L14.3997 9.45272ZM14.3683 10.5129L14.6594 10.2386L14.6594 10.2386L14.3683 10.5129ZM19.6158 16.0812L19.9069 16.3555C20.0521 16.2014 20.0521 15.9609 19.9069 15.8068L19.6158 16.0812ZM14.3683 21.6494L14.6594 21.9237H14.6594L14.3683 21.6494ZM14.3997 22.7096L14.1253 23.0007L14.3997 22.7096ZM15.4599 22.6782L15.1688 22.4038H15.1688L15.4599 22.6782ZM21.1886 16.5994L20.8997 16.3227L20.8975 16.325L21.1886 16.5994ZM21.323 16.4053L20.9622 16.2325L21.323 16.4053ZM21.324 15.7591L20.9627 15.9307L20.9627 15.9309L21.324 15.7591ZM21.4797 15.2886L15.751 9.20982L15.1688 9.75849L20.8975 15.8373L21.4797 15.2886ZM15.751 9.20982C15.3154 8.7476 14.5876 8.72603 14.1253 9.16162L14.674 9.74382C14.8147 9.61125 15.0362 9.61782 15.1688 9.75849L15.751 9.20982ZM14.1253 9.16162C13.6631 9.59722 13.6416 10.325 14.0772 10.7873L14.6594 10.2386C14.5268 10.0979 14.5333 9.8764 14.674 9.74382L14.1253 9.16162ZM14.0772 10.7873L19.3247 16.3555L19.9069 15.8068L14.6594 10.2386L14.0772 10.7873ZM14.6594 21.9237L19.9069 16.3555L19.3247 15.8068L14.0772 21.3751L14.6594 21.9237ZM14.674 22.4185C14.5333 22.2859 14.5268 22.0644 14.6594 21.9237L14.0772 21.3751C13.6416 21.8373 13.6631 22.5651 14.1253 23.0007L14.674 22.4185ZM15.1688 22.4038C15.0362 22.5445 14.8147 22.5511 14.674 22.4185L14.1253 23.0007C14.5876 23.4363 15.3154 23.4147 15.751 22.9525L15.1688 22.4038ZM20.8975 16.325L15.1688 22.4038L15.751 22.9525L21.4797 16.8737L20.8975 16.325ZM21.4776 16.876C21.5634 16.7863 21.6323 16.6855 21.6838 16.578L20.9622 16.2325C20.9468 16.2647 20.9261 16.2952 20.8997 16.3227L21.4776 16.876ZM21.6838 16.578C21.8329 16.2666 21.8346 15.9014 21.6852 15.5873L20.9627 15.9309C21.0079 16.0259 21.0076 16.1378 20.9622 16.2325L21.6838 16.578ZM20.8997 15.8396C20.9263 15.8674 20.9472 15.8982 20.9627 15.9307L21.6853 15.5875C21.6337 15.4788 21.5642 15.3769 21.4775 15.2863L20.8997 15.8396Z" fill="#01192A"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M21.1886 15.5629L15.4599 9.48416C15.1758 9.18271 14.7011 9.16864 14.3997 9.45272C14.0982 9.73681 14.0842 10.2115 14.3683 10.5129L19.6158 16.0812L14.3683 21.6494C14.0842 21.9508 14.0982 22.4255 14.3997 22.7096C14.7011 22.9937 15.1758 22.9796 15.4599 22.6782L21.1886 16.5994C21.2447 16.5407 21.2895 16.4751 21.323 16.4053C21.4202 16.2022 21.4212 15.9636 21.324 15.7591C21.2904 15.6885 21.2453 15.6221 21.1886 15.5629Z"
+                    fill="#01192A" />
+                  <path
+                    d="M21.1886 15.5629L20.8975 15.8373L20.8997 15.8396L21.1886 15.5629ZM15.4599 9.48416L15.751 9.20982L15.751 9.20982L15.4599 9.48416ZM14.3997 9.45272L14.1253 9.16162L14.1253 9.16162L14.3997 9.45272ZM14.3683 10.5129L14.6594 10.2386L14.6594 10.2386L14.3683 10.5129ZM19.6158 16.0812L19.9069 16.3555C20.0521 16.2014 20.0521 15.9609 19.9069 15.8068L19.6158 16.0812ZM14.3683 21.6494L14.6594 21.9237H14.6594L14.3683 21.6494ZM14.3997 22.7096L14.1253 23.0007L14.3997 22.7096ZM15.4599 22.6782L15.1688 22.4038H15.1688L15.4599 22.6782ZM21.1886 16.5994L20.8997 16.3227L20.8975 16.325L21.1886 16.5994ZM21.323 16.4053L20.9622 16.2325L21.323 16.4053ZM21.324 15.7591L20.9627 15.9307L20.9627 15.9309L21.324 15.7591ZM21.4797 15.2886L15.751 9.20982L15.1688 9.75849L20.8975 15.8373L21.4797 15.2886ZM15.751 9.20982C15.3154 8.7476 14.5876 8.72603 14.1253 9.16162L14.674 9.74382C14.8147 9.61125 15.0362 9.61782 15.1688 9.75849L15.751 9.20982ZM14.1253 9.16162C13.6631 9.59722 13.6416 10.325 14.0772 10.7873L14.6594 10.2386C14.5268 10.0979 14.5333 9.8764 14.674 9.74382L14.1253 9.16162ZM14.0772 10.7873L19.3247 16.3555L19.9069 15.8068L14.6594 10.2386L14.0772 10.7873ZM14.6594 21.9237L19.9069 16.3555L19.3247 15.8068L14.0772 21.3751L14.6594 21.9237ZM14.674 22.4185C14.5333 22.2859 14.5268 22.0644 14.6594 21.9237L14.0772 21.3751C13.6416 21.8373 13.6631 22.5651 14.1253 23.0007L14.674 22.4185ZM15.1688 22.4038C15.0362 22.5445 14.8147 22.5511 14.674 22.4185L14.1253 23.0007C14.5876 23.4363 15.3154 23.4147 15.751 22.9525L15.1688 22.4038ZM20.8975 16.325L15.1688 22.4038L15.751 22.9525L21.4797 16.8737L20.8975 16.325ZM21.4776 16.876C21.5634 16.7863 21.6323 16.6855 21.6838 16.578L20.9622 16.2325C20.9468 16.2647 20.9261 16.2952 20.8997 16.3227L21.4776 16.876ZM21.6838 16.578C21.8329 16.2666 21.8346 15.9014 21.6852 15.5873L20.9627 15.9309C21.0079 16.0259 21.0076 16.1378 20.9622 16.2325L21.6838 16.578ZM20.8997 15.8396C20.9263 15.8674 20.9472 15.8982 20.9627 15.9307L21.6853 15.5875C21.6337 15.4788 21.5642 15.3769 21.4775 15.2863L20.8997 15.8396Z"
+                    fill="#01192A" />
                 </svg>
               </button>
             </div>
 
-            <div class="flex justify-start snap-x snap-mandatory overflow-x-scroll overflow-y-clip scrollbar-hide mt-10 px-8 gap-8 scroll-pl-8 lg:gap-14 lg:scroll-pl-14 lg:px-14">
-              <article class="flex flex-col w-full bg-secondary-lighter rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px #F8EBD6">
+            <div
+              class="flex justify-start snap-x snap-mandatory overflow-x-scroll overflow-y-clip scrollbar-hide mt-10 px-8 gap-8 scroll-pl-8 lg:gap-14 lg:scroll-pl-14 lg:px-14">
+              <article
+                class="flex flex-col w-full bg-secondary-lighter rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px #F8EBD6">
                 <p class="font-medium text-[28px] text-[#E2D9CD] select-none">01.</p>
                 <h3 class="mt-6 mb-4 font-semibold text-xl">Sourcing des opportunités d’investissement</h3>
                 <p class="text-justify text-m">
-                  La première étape du processus consiste à identifier des opportunités d'investissement intéressantes. Les investisseurs en capital-risque utilisent différentes méthodes pour repérer ces opportunités, telles que la veille médiatique, les bases de données de startups, les rencontres et les recommandations de leur réseau professionnel. L'objectif est d'identifier des entreprises prometteuses avec un fort potentiel de croissance.
+                  La première étape du processus consiste à identifier des opportunités d'investissement intéressantes.
+                  Les investisseurs en capital-risque utilisent différentes méthodes pour repérer ces opportunités, telles
+                  que la veille médiatique, les bases de données de startups, les rencontres et les recommandations de
+                  leur réseau professionnel. L'objectif est d'identifier des entreprises prometteuses avec un fort
+                  potentiel de croissance.
                 </p>
               </article>
-              <article class="flex flex-col w-full bg-secondary-lighter rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px #F8EBD6">
+              <article
+                class="flex flex-col w-full bg-secondary-lighter rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px #F8EBD6">
                 <p class="font-medium text-[28px] text-[#E2D9CD] select-none">02.</p>
-                <h3 class="mt-6 mb-4 font-semibold text-xl">Évaluation des Opportunités d’investissement</h3>
+                <h3 class="mt-6 mb-4 font-semibold text-xl">Évaluation des opportunités d’investissement</h3>
                 <p class="text-justify text-m">
-                  Une fois les opportunités d'investissement identifiées, les investisseurs en capital-risque procèdent à une évaluation approfondie de chaque entreprise. Cette évaluation comprend une analyse de l'équipe dirigeante, du modèle commercial, du marché cible, des perspectives de croissance et de la concurrence. Les investisseurs peuvent également rencontrer les fondateurs de l'entreprise pour mieux comprendre leur vision et leur stratégie.
+                  Une fois les opportunités d'investissement identifiées, les investisseurs en capital-risque procèdent à
+                  une évaluation approfondie de chaque entreprise. Cette évaluation comprend une analyse de l'équipe
+                  dirigeante, du modèle commercial, du marché cible, des perspectives de croissance et de la concurrence.
+                  Les investisseurs peuvent également rencontrer les fondateurs de l'entreprise pour mieux comprendre leur
+                  vision et leur stratégie.
                 </p>
               </article>
-              <article class="flex flex-col w-full bg-secondary-lighter rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px #F8EBD6">
+              <article
+                class="flex flex-col w-full bg-secondary-lighter rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px #F8EBD6">
                 <p class="font-medium text-[28px] text-[#E2D9CD] select-none">03.</p>
-                <h3 class="mt-6 mb-4 font-semibold text-xl">Due Diligence</h3>
+                <h3 class="mt-6 mb-4 font-semibold text-xl">Due diligence</h3>
                 <p class="text-justify text-m">
-                  La due diligence est une étape essentielle du processus d'investissement en capital-risque. Elle implique une vérification approfondie de tous les aspects de l'entreprise, tels que les états financiers, les contrats, les brevets, les litiges en cours, les aspects juridiques et les risques potentiels. Cette étape est souvent réalisée en collaboration avec des experts externes, tels que des avocats et des comptables, pour garantir une évaluation objective de l'entreprise.
+                  La due diligence est une étape essentielle du processus d'investissement en capital-risque. Elle
+                  implique une vérification approfondie de tous les aspects de l'entreprise, tels que les états
+                  financiers, les contrats, les brevets, les litiges en cours, les aspects juridiques et les risques
+                  potentiels. Cette étape est souvent réalisée en collaboration avec des experts externes, tels que des
+                  avocats et des comptables, pour garantir une évaluation objective de l'entreprise.
                 </p>
               </article>
-              <article class="flex flex-col w-full bg-secondary-lighter rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px #F8EBD6">
+              <article
+                class="flex flex-col w-full bg-secondary-lighter rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px #F8EBD6">
                 <p class="font-medium text-[28px] text-[#E2D9CD] select-none">04.</p>
                 <h3 class="mt-6 mb-4 font-semibold text-xl">Négociation des termes de l’investissement</h3>
                 <p class="text-justify text-m">
-                  Une fois que les investisseurs ont décidé d'investir dans une entreprise, ils entament des négociations sur les termes de l'investissement. Cela comprend la valorisation de l'entreprise, les droits des actionnaires, les modalités de gouvernance et les mécanismes de sortie potentiels. Les investisseurs cherchent à obtenir les meilleures conditions possibles pour protéger leur investissement et maximiser leur retour sur investissement.
+                  Une fois que les investisseurs ont décidé d'investir dans une entreprise, ils entament des négociations
+                  sur les termes de l'investissement. Cela comprend la valorisation de l'entreprise, les droits des
+                  actionnaires, les modalités de gouvernance et les mécanismes de sortie potentiels. Les investisseurs
+                  cherchent à obtenir les meilleures conditions possibles pour protéger leur investissement et maximiser
+                  leur retour sur investissement.
                 </p>
               </article>
-              <article class="flex flex-col w-full bg-secondary-lighter rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px #F8EBD6">
+              <article
+                class="flex flex-col w-full bg-secondary-lighter rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px #F8EBD6">
                 <p class="font-medium text-[28px] text-[#E2D9CD] select-none">05.</p>
-                <h3 class="mt-6 mb-4 font-semibold text-xl">Closing de l’Investissement</h3>
+                <h3 class="mt-6 mb-4 font-semibold text-xl">Closing de l’investissement</h3>
                 <p class="text-justify text-m">
-                  Une fois les termes de l'investissement convenus, les investisseurs procèdent à la clôture de l'investissement. Cela implique la rédaction et la signature des documents juridiques, tels que les accords d'investissement, les statuts de l'entreprise et les accords de gouvernance. Une fois cette étape terminée, les fonds sont transférés à l'entreprise et l'investissement est officiellement réalisé.
+                  Une fois les termes de l'investissement convenus, les investisseurs procèdent à la clôture de
+                  l'investissement. Cela implique la rédaction et la signature des documents juridiques, tels que les
+                  accords d'investissement, les statuts de l'entreprise et les accords de gouvernance. Une fois cette
+                  étape terminée, les fonds sont transférés à l'entreprise et l'investissement est officiellement réalisé.
                 </p>
               </article>
-              <article class="flex flex-col w-full bg-secondary-lighter rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px #F8EBD6">
+              <article
+                class="flex flex-col w-full bg-secondary-lighter rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px #F8EBD6">
                 <p class="font-medium text-[28px] text-[#E2D9CD] select-none">06.</p>
-                <h3 class="mt-6 mb-4 font-semibold text-xl">Suivi de l’Investissement</h3>
+                <h3 class="mt-6 mb-4 font-semibold text-xl">Suivi de l’investissement</h3>
                 <p class="text-justify text-m">
-                  Après l'investissement, les investisseurs suivent de près l'évolution de l'entreprise. Ils participent généralement aux réunions du conseil d'administration et fournissent un soutien opérationnel et stratégique à l'entreprise lorsque cela est nécessaire. Les investisseurs surveillent les performances financières de l'entreprise et travaillent en étroite collaboration avec l'équipe dirigeante pour maximiser la valeur de leur investissement.
+                  Après l'investissement, les investisseurs suivent de près l'évolution de l'entreprise. Ils participent
+                  généralement aux réunions du conseil d'administration et fournissent un soutien opérationnel et
+                  stratégique à l'entreprise lorsque cela est nécessaire. Les investisseurs surveillent les performances
+                  financières de l'entreprise et travaillent en étroite collaboration avec l'équipe dirigeante pour
+                  maximiser la valeur de leur investissement.
                 </p>
               </article>
-              <article class="flex flex-col w-full bg-secondary-lighter rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px #F8EBD6">
+              <article
+                class="flex flex-col w-full bg-secondary-lighter rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px #F8EBD6">
                 <p class="font-medium text-[28px] text-[#E2D9CD] select-none">07.</p>
-                <h3 class="mt-6 mb-4 font-semibold text-xl">Sortie de l’Investissement</h3>
+                <h3 class="mt-6 mb-4 font-semibold text-xl">Sortie de l’investissement</h3>
                 <p class="text-justify text-m">
-                  La sortie de l'investissement est l'étape finale du processus d'investissement en capital-risque. Elle intervient lorsque l'entreprise atteint un stade de développement suffisamment avancé pour permettre aux investisseurs de réaliser un retour sur investissement. Les options de sortie comprennent la vente de la participation à un autre investisseur, l'introduction en bourse de l'entreprise ou son acquisition par une autre entreprise.
+                  La sortie de l'investissement est l'étape finale du processus d'investissement en capital-risque. Elle
+                  intervient lorsque l'entreprise atteint un stade de développement suffisamment avancé pour permettre aux
+                  investisseurs de réaliser un retour sur investissement. Les options de sortie comprennent la vente de la
+                  participation à un autre investisseur, l'introduction en bourse de l'entreprise ou son acquisition par
+                  une autre entreprise.
                 </p>
               </article>
             </div>
@@ -1146,8 +941,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   L’importance du VC pour l’Écosystème des startups
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -1165,7 +960,8 @@ onMounted(() => {
                     de contacts pour aider les startups à surmonter les défis et à maximiser leurs chances de réussite.
                     <br><br>
                     Enfin, le Venture Capital favorise l'innovation, la création d'emplois et la croissance économique. Il
-                    encourage les entrepreneurs à prendre des risques et à développer de nouvelles idées, ce qui contribue à
+                    encourage les entrepreneurs à prendre des risques et à développer de nouvelles idées, ce qui contribue
+                    à
                     dynamiser l'économie et à créer de la valeur.
                   </p>
                 </div>
@@ -1173,78 +969,127 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div data-sticky-section="7" id="venture-7" class="py-10 w-full lg:-mt-4 lg:pt-20 lg:pb-16 bg-primary-dark text-white">
+        <div data-sticky-section="7" id="venture-7"
+          class="py-10 w-full lg:-mt-4 lg:pt-20 lg:pb-16 bg-primary-dark text-white">
           <div class="lg:max-w-[720px] px-8 lg:px-14">
             <h2 class="text-h2 font-lora text-left mb-6">L’histoire du VC</h2>
           </div>
           <div class="w-full">
             <div class="px-8 lg:px-14 flex items-center gap-2 justify-end">
-              <button data-carousel-control="left" type="button" class="flex items-center justify-center p-1 cursor-pointer bg-white w-[50px] aspect-square rounded-full duration-200 hover:opacity-60">
-                <svg class="rotate-180" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M21.1886 15.5629L15.4599 9.48416C15.1758 9.18271 14.7011 9.16864 14.3997 9.45272C14.0982 9.73681 14.0842 10.2115 14.3683 10.5129L19.6158 16.0812L14.3683 21.6494C14.0842 21.9508 14.0982 22.4255 14.3997 22.7096C14.7011 22.9937 15.1758 22.9796 15.4599 22.6782L21.1886 16.5994C21.2447 16.5407 21.2895 16.4751 21.323 16.4053C21.4202 16.2022 21.4212 15.9636 21.324 15.7591C21.2904 15.6885 21.2453 15.6221 21.1886 15.5629Z" fill="#01192A"/>
-                  <path d="M21.1886 15.5629L20.8975 15.8373L20.8997 15.8396L21.1886 15.5629ZM15.4599 9.48416L15.751 9.20982L15.751 9.20982L15.4599 9.48416ZM14.3997 9.45272L14.1253 9.16162L14.1253 9.16162L14.3997 9.45272ZM14.3683 10.5129L14.6594 10.2386L14.6594 10.2386L14.3683 10.5129ZM19.6158 16.0812L19.9069 16.3555C20.0521 16.2014 20.0521 15.9609 19.9069 15.8068L19.6158 16.0812ZM14.3683 21.6494L14.6594 21.9237H14.6594L14.3683 21.6494ZM14.3997 22.7096L14.1253 23.0007L14.3997 22.7096ZM15.4599 22.6782L15.1688 22.4038H15.1688L15.4599 22.6782ZM21.1886 16.5994L20.8997 16.3227L20.8975 16.325L21.1886 16.5994ZM21.323 16.4053L20.9622 16.2325L21.323 16.4053ZM21.324 15.7591L20.9627 15.9307L20.9627 15.9309L21.324 15.7591ZM21.4797 15.2886L15.751 9.20982L15.1688 9.75849L20.8975 15.8373L21.4797 15.2886ZM15.751 9.20982C15.3154 8.7476 14.5876 8.72603 14.1253 9.16162L14.674 9.74382C14.8147 9.61125 15.0362 9.61782 15.1688 9.75849L15.751 9.20982ZM14.1253 9.16162C13.6631 9.59722 13.6416 10.325 14.0772 10.7873L14.6594 10.2386C14.5268 10.0979 14.5333 9.8764 14.674 9.74382L14.1253 9.16162ZM14.0772 10.7873L19.3247 16.3555L19.9069 15.8068L14.6594 10.2386L14.0772 10.7873ZM14.6594 21.9237L19.9069 16.3555L19.3247 15.8068L14.0772 21.3751L14.6594 21.9237ZM14.674 22.4185C14.5333 22.2859 14.5268 22.0644 14.6594 21.9237L14.0772 21.3751C13.6416 21.8373 13.6631 22.5651 14.1253 23.0007L14.674 22.4185ZM15.1688 22.4038C15.0362 22.5445 14.8147 22.5511 14.674 22.4185L14.1253 23.0007C14.5876 23.4363 15.3154 23.4147 15.751 22.9525L15.1688 22.4038ZM20.8975 16.325L15.1688 22.4038L15.751 22.9525L21.4797 16.8737L20.8975 16.325ZM21.4776 16.876C21.5634 16.7863 21.6323 16.6855 21.6838 16.578L20.9622 16.2325C20.9468 16.2647 20.9261 16.2952 20.8997 16.3227L21.4776 16.876ZM21.6838 16.578C21.8329 16.2666 21.8346 15.9014 21.6852 15.5873L20.9627 15.9309C21.0079 16.0259 21.0076 16.1378 20.9622 16.2325L21.6838 16.578ZM20.8997 15.8396C20.9263 15.8674 20.9472 15.8982 20.9627 15.9307L21.6853 15.5875C21.6337 15.4788 21.5642 15.3769 21.4775 15.2863L20.8997 15.8396Z" fill="#01192A"/>
+              <button data-carousel-control="left" type="button"
+                class="flex items-center justify-center p-1 cursor-pointer bg-white w-[50px] aspect-square rounded-full duration-200 hover:opacity-60">
+                <svg class="rotate-180" width="33" height="33" viewBox="0 0 33 33" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M21.1886 15.5629L15.4599 9.48416C15.1758 9.18271 14.7011 9.16864 14.3997 9.45272C14.0982 9.73681 14.0842 10.2115 14.3683 10.5129L19.6158 16.0812L14.3683 21.6494C14.0842 21.9508 14.0982 22.4255 14.3997 22.7096C14.7011 22.9937 15.1758 22.9796 15.4599 22.6782L21.1886 16.5994C21.2447 16.5407 21.2895 16.4751 21.323 16.4053C21.4202 16.2022 21.4212 15.9636 21.324 15.7591C21.2904 15.6885 21.2453 15.6221 21.1886 15.5629Z"
+                    fill="#01192A" />
+                  <path
+                    d="M21.1886 15.5629L20.8975 15.8373L20.8997 15.8396L21.1886 15.5629ZM15.4599 9.48416L15.751 9.20982L15.751 9.20982L15.4599 9.48416ZM14.3997 9.45272L14.1253 9.16162L14.1253 9.16162L14.3997 9.45272ZM14.3683 10.5129L14.6594 10.2386L14.6594 10.2386L14.3683 10.5129ZM19.6158 16.0812L19.9069 16.3555C20.0521 16.2014 20.0521 15.9609 19.9069 15.8068L19.6158 16.0812ZM14.3683 21.6494L14.6594 21.9237H14.6594L14.3683 21.6494ZM14.3997 22.7096L14.1253 23.0007L14.3997 22.7096ZM15.4599 22.6782L15.1688 22.4038H15.1688L15.4599 22.6782ZM21.1886 16.5994L20.8997 16.3227L20.8975 16.325L21.1886 16.5994ZM21.323 16.4053L20.9622 16.2325L21.323 16.4053ZM21.324 15.7591L20.9627 15.9307L20.9627 15.9309L21.324 15.7591ZM21.4797 15.2886L15.751 9.20982L15.1688 9.75849L20.8975 15.8373L21.4797 15.2886ZM15.751 9.20982C15.3154 8.7476 14.5876 8.72603 14.1253 9.16162L14.674 9.74382C14.8147 9.61125 15.0362 9.61782 15.1688 9.75849L15.751 9.20982ZM14.1253 9.16162C13.6631 9.59722 13.6416 10.325 14.0772 10.7873L14.6594 10.2386C14.5268 10.0979 14.5333 9.8764 14.674 9.74382L14.1253 9.16162ZM14.0772 10.7873L19.3247 16.3555L19.9069 15.8068L14.6594 10.2386L14.0772 10.7873ZM14.6594 21.9237L19.9069 16.3555L19.3247 15.8068L14.0772 21.3751L14.6594 21.9237ZM14.674 22.4185C14.5333 22.2859 14.5268 22.0644 14.6594 21.9237L14.0772 21.3751C13.6416 21.8373 13.6631 22.5651 14.1253 23.0007L14.674 22.4185ZM15.1688 22.4038C15.0362 22.5445 14.8147 22.5511 14.674 22.4185L14.1253 23.0007C14.5876 23.4363 15.3154 23.4147 15.751 22.9525L15.1688 22.4038ZM20.8975 16.325L15.1688 22.4038L15.751 22.9525L21.4797 16.8737L20.8975 16.325ZM21.4776 16.876C21.5634 16.7863 21.6323 16.6855 21.6838 16.578L20.9622 16.2325C20.9468 16.2647 20.9261 16.2952 20.8997 16.3227L21.4776 16.876ZM21.6838 16.578C21.8329 16.2666 21.8346 15.9014 21.6852 15.5873L20.9627 15.9309C21.0079 16.0259 21.0076 16.1378 20.9622 16.2325L21.6838 16.578ZM20.8997 15.8396C20.9263 15.8674 20.9472 15.8982 20.9627 15.9307L21.6853 15.5875C21.6337 15.4788 21.5642 15.3769 21.4775 15.2863L20.8997 15.8396Z"
+                    fill="#01192A" />
                 </svg>
               </button>
-              <button data-carousel-control="right" type="button" class="flex items-center justify-center p-1 cursor-pointer bg-white w-[50px] aspect-square rounded-full duration-200 hover:opacity-60">
+              <button data-carousel-control="right" type="button"
+                class="flex items-center justify-center p-1 cursor-pointer bg-white w-[50px] aspect-square rounded-full duration-200 hover:opacity-60">
                 <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M21.1886 15.5629L15.4599 9.48416C15.1758 9.18271 14.7011 9.16864 14.3997 9.45272C14.0982 9.73681 14.0842 10.2115 14.3683 10.5129L19.6158 16.0812L14.3683 21.6494C14.0842 21.9508 14.0982 22.4255 14.3997 22.7096C14.7011 22.9937 15.1758 22.9796 15.4599 22.6782L21.1886 16.5994C21.2447 16.5407 21.2895 16.4751 21.323 16.4053C21.4202 16.2022 21.4212 15.9636 21.324 15.7591C21.2904 15.6885 21.2453 15.6221 21.1886 15.5629Z" fill="#01192A"/>
-                  <path d="M21.1886 15.5629L20.8975 15.8373L20.8997 15.8396L21.1886 15.5629ZM15.4599 9.48416L15.751 9.20982L15.751 9.20982L15.4599 9.48416ZM14.3997 9.45272L14.1253 9.16162L14.1253 9.16162L14.3997 9.45272ZM14.3683 10.5129L14.6594 10.2386L14.6594 10.2386L14.3683 10.5129ZM19.6158 16.0812L19.9069 16.3555C20.0521 16.2014 20.0521 15.9609 19.9069 15.8068L19.6158 16.0812ZM14.3683 21.6494L14.6594 21.9237H14.6594L14.3683 21.6494ZM14.3997 22.7096L14.1253 23.0007L14.3997 22.7096ZM15.4599 22.6782L15.1688 22.4038H15.1688L15.4599 22.6782ZM21.1886 16.5994L20.8997 16.3227L20.8975 16.325L21.1886 16.5994ZM21.323 16.4053L20.9622 16.2325L21.323 16.4053ZM21.324 15.7591L20.9627 15.9307L20.9627 15.9309L21.324 15.7591ZM21.4797 15.2886L15.751 9.20982L15.1688 9.75849L20.8975 15.8373L21.4797 15.2886ZM15.751 9.20982C15.3154 8.7476 14.5876 8.72603 14.1253 9.16162L14.674 9.74382C14.8147 9.61125 15.0362 9.61782 15.1688 9.75849L15.751 9.20982ZM14.1253 9.16162C13.6631 9.59722 13.6416 10.325 14.0772 10.7873L14.6594 10.2386C14.5268 10.0979 14.5333 9.8764 14.674 9.74382L14.1253 9.16162ZM14.0772 10.7873L19.3247 16.3555L19.9069 15.8068L14.6594 10.2386L14.0772 10.7873ZM14.6594 21.9237L19.9069 16.3555L19.3247 15.8068L14.0772 21.3751L14.6594 21.9237ZM14.674 22.4185C14.5333 22.2859 14.5268 22.0644 14.6594 21.9237L14.0772 21.3751C13.6416 21.8373 13.6631 22.5651 14.1253 23.0007L14.674 22.4185ZM15.1688 22.4038C15.0362 22.5445 14.8147 22.5511 14.674 22.4185L14.1253 23.0007C14.5876 23.4363 15.3154 23.4147 15.751 22.9525L15.1688 22.4038ZM20.8975 16.325L15.1688 22.4038L15.751 22.9525L21.4797 16.8737L20.8975 16.325ZM21.4776 16.876C21.5634 16.7863 21.6323 16.6855 21.6838 16.578L20.9622 16.2325C20.9468 16.2647 20.9261 16.2952 20.8997 16.3227L21.4776 16.876ZM21.6838 16.578C21.8329 16.2666 21.8346 15.9014 21.6852 15.5873L20.9627 15.9309C21.0079 16.0259 21.0076 16.1378 20.9622 16.2325L21.6838 16.578ZM20.8997 15.8396C20.9263 15.8674 20.9472 15.8982 20.9627 15.9307L21.6853 15.5875C21.6337 15.4788 21.5642 15.3769 21.4775 15.2863L20.8997 15.8396Z" fill="#01192A"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M21.1886 15.5629L15.4599 9.48416C15.1758 9.18271 14.7011 9.16864 14.3997 9.45272C14.0982 9.73681 14.0842 10.2115 14.3683 10.5129L19.6158 16.0812L14.3683 21.6494C14.0842 21.9508 14.0982 22.4255 14.3997 22.7096C14.7011 22.9937 15.1758 22.9796 15.4599 22.6782L21.1886 16.5994C21.2447 16.5407 21.2895 16.4751 21.323 16.4053C21.4202 16.2022 21.4212 15.9636 21.324 15.7591C21.2904 15.6885 21.2453 15.6221 21.1886 15.5629Z"
+                    fill="#01192A" />
+                  <path
+                    d="M21.1886 15.5629L20.8975 15.8373L20.8997 15.8396L21.1886 15.5629ZM15.4599 9.48416L15.751 9.20982L15.751 9.20982L15.4599 9.48416ZM14.3997 9.45272L14.1253 9.16162L14.1253 9.16162L14.3997 9.45272ZM14.3683 10.5129L14.6594 10.2386L14.6594 10.2386L14.3683 10.5129ZM19.6158 16.0812L19.9069 16.3555C20.0521 16.2014 20.0521 15.9609 19.9069 15.8068L19.6158 16.0812ZM14.3683 21.6494L14.6594 21.9237H14.6594L14.3683 21.6494ZM14.3997 22.7096L14.1253 23.0007L14.3997 22.7096ZM15.4599 22.6782L15.1688 22.4038H15.1688L15.4599 22.6782ZM21.1886 16.5994L20.8997 16.3227L20.8975 16.325L21.1886 16.5994ZM21.323 16.4053L20.9622 16.2325L21.323 16.4053ZM21.324 15.7591L20.9627 15.9307L20.9627 15.9309L21.324 15.7591ZM21.4797 15.2886L15.751 9.20982L15.1688 9.75849L20.8975 15.8373L21.4797 15.2886ZM15.751 9.20982C15.3154 8.7476 14.5876 8.72603 14.1253 9.16162L14.674 9.74382C14.8147 9.61125 15.0362 9.61782 15.1688 9.75849L15.751 9.20982ZM14.1253 9.16162C13.6631 9.59722 13.6416 10.325 14.0772 10.7873L14.6594 10.2386C14.5268 10.0979 14.5333 9.8764 14.674 9.74382L14.1253 9.16162ZM14.0772 10.7873L19.3247 16.3555L19.9069 15.8068L14.6594 10.2386L14.0772 10.7873ZM14.6594 21.9237L19.9069 16.3555L19.3247 15.8068L14.0772 21.3751L14.6594 21.9237ZM14.674 22.4185C14.5333 22.2859 14.5268 22.0644 14.6594 21.9237L14.0772 21.3751C13.6416 21.8373 13.6631 22.5651 14.1253 23.0007L14.674 22.4185ZM15.1688 22.4038C15.0362 22.5445 14.8147 22.5511 14.674 22.4185L14.1253 23.0007C14.5876 23.4363 15.3154 23.4147 15.751 22.9525L15.1688 22.4038ZM20.8975 16.325L15.1688 22.4038L15.751 22.9525L21.4797 16.8737L20.8975 16.325ZM21.4776 16.876C21.5634 16.7863 21.6323 16.6855 21.6838 16.578L20.9622 16.2325C20.9468 16.2647 20.9261 16.2952 20.8997 16.3227L21.4776 16.876ZM21.6838 16.578C21.8329 16.2666 21.8346 15.9014 21.6852 15.5873L20.9627 15.9309C21.0079 16.0259 21.0076 16.1378 20.9622 16.2325L21.6838 16.578ZM20.8997 15.8396C20.9263 15.8674 20.9472 15.8982 20.9627 15.9307L21.6853 15.5875C21.6337 15.4788 21.5642 15.3769 21.4775 15.2863L20.8997 15.8396Z"
+                    fill="#01192A" />
                 </svg>
               </button>
             </div>
 
-            <div class="flex justify-start snap-x snap-mandatory overflow-x-scroll overflow-y-clip scrollbar-hide mt-10 px-8 gap-8 scroll-pl-8 lg:gap-14 lg:scroll-pl-14 lg:px-14">
-              <article class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px rgba(255,255,255,.1)">
-                  <p class="font-medium text-[28px] text-white/20 select-none">01.</p>
-                  <h3 class="mt-6 mb-4 font-semibold text-xl">Les origines</h3>
-                  <p class="text-justify text-m">
-                    L'histoire du capital risque remonte à bien avant le XXe siècle. En fait, des formes de financement risqué existaient déjà au XVe siècle, où des monarques, des investisseurs et des riches industriels finançaient des projets incertains. Toutefois, le concept de capital risque tel que nous le connaissons aujourd'hui n'a réellement émergé qu'au XXe siècle.
-                  </p>
+            <div
+              class="flex justify-start snap-x snap-mandatory overflow-x-scroll overflow-y-clip scrollbar-hide mt-10 px-8 gap-8 scroll-pl-8 lg:gap-14 lg:scroll-pl-14 lg:px-14">
+              <article
+                class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px rgba(255,255,255,.1)">
+                <p class="font-medium text-[28px] text-white/20 select-none">01.</p>
+                <h3 class="mt-6 mb-4 font-semibold text-xl">Les origines</h3>
+                <p class="text-justify text-m">
+                  L'histoire du capital risque remonte à bien avant le XXe siècle. En fait, des formes de financement
+                  risqué existaient déjà au XVe siècle, où des monarques, des investisseurs et des riches industriels
+                  finançaient des projets incertains. Toutefois, le concept de capital risque tel que nous le connaissons
+                  aujourd'hui n'a réellement émergé qu'au XXe siècle.
+                </p>
               </article>
-              <article class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px rgba(255,255,255,.1)">
+              <article
+                class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px rgba(255,255,255,.1)">
                 <p class="font-medium text-[28px] text-white/20 select-none">02.</p>
                 <h3 class="mt-6 mb-4 font-semibold text-xl">L’émergence du VC au XXe siècle</h3>
                 <p class="text-justify text-m">
-                  Après la Seconde Guerre mondiale, le capital risque commence à se formaliser en tant qu'industrie à part entière. C'est à cette époque que Georges Doriot, un investisseur français ayant étudié à Harvard, devient l'un des premiers venture capitalists. Dans les années 1940 et 1950, Doriot investit dans de jeunes entreprises prometteuses, posant ainsi les bases du capital risque moderne.
+                  Après la Seconde Guerre mondiale, le capital risque commence à se formaliser en tant qu'industrie à part
+                  entière. C'est à cette époque que Georges Doriot, un investisseur français ayant étudié à Harvard,
+                  devient l'un des premiers venture capitalists. Dans les années 1940 et 1950, Doriot investit dans de
+                  jeunes entreprises prometteuses, posant ainsi les bases du capital risque moderne.
                   <br><br>
-                  Le développement du capital risque est favorisé par l'accumulation de capitaux aux États-Unis après la Seconde Guerre mondiale. Ces capitaux trouvent leur place dans de nouvelles entreprises investissant dans des startups. Cela permet de financer des projets innovants et favorise la croissance économique.
+                  Le développement du capital risque est favorisé par l'accumulation de capitaux aux États-Unis après la
+                  Seconde Guerre mondiale. Ces capitaux trouvent leur place dans de nouvelles entreprises investissant
+                  dans des startups. Cela permet de financer des projets innovants et favorise la croissance économique.
                 </p>
               </article>
-              <article class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px rgba(255,255,255,.1)">
+              <article
+                class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px rgba(255,255,255,.1)">
                 <p class="font-medium text-[28px] text-white/20 select-none">03.</p>
                 <h3 class="mt-6 mb-4 font-semibold text-xl">L’âge d’or du Capital-Risque</h3>
                 <p class="text-justify text-m">
-                  Les années 1990 sont une période de croissance fulgurante pour le capital risque aux États-Unis. Le succès de la bourse de croissance Nasdaq stimule les investissements dans les jeunes entreprises, notamment dans le domaine de la technologie. Des sociétés emblématiques comme AOL, Amazon, Yahoo et eBay sont financées grâce au capital risque. Les biotechnologies bénéficient également de cet engouement, avec des sociétés telles que Amgen, Genentech et Decode Genetics.
+                  Les années 1990 sont une période de croissance fulgurante pour le capital risque aux États-Unis. Le
+                  succès de la bourse de croissance Nasdaq stimule les investissements dans les jeunes entreprises,
+                  notamment dans le domaine de la technologie. Des sociétés emblématiques comme AOL, Amazon, Yahoo et eBay
+                  sont financées grâce au capital risque. Les biotechnologies bénéficient également de cet engouement,
+                  avec des sociétés telles que Amgen, Genentech et Decode Genetics.
                   <br><br>
-                  Au début du XXIe siècle, les fonds levés par les sociétés de capital risque connaissent une augmentation significative. En 2004, environ 20,9 milliards de dollars sont mobilisés, dont une part importante dans le cadre de seed rounds, qui permettent de financer les jeunes entreprises dès leur création.
+                  Au début du XXIe siècle, les fonds levés par les sociétés de capital risque connaissent une augmentation
+                  significative. En 2004, environ 20,9 milliards de dollars sont mobilisés, dont une part importante dans
+                  le cadre de seed rounds, qui permettent de financer les jeunes entreprises dès leur création.
                 </p>
               </article>
-              <article class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px rgba(255,255,255,.1)">
+              <article
+                class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px rgba(255,255,255,.1)">
                 <p class="font-medium text-[28px] text-white/20 select-none">04.</p>
                 <h3 class="mt-6 mb-4 font-semibold text-xl">Le Capital-Risque dans le monde</h3>
                 <p class="text-justify text-m">
-                  Le capital risque ne se limite pas aux États-Unis. Il est également présent dans d'autres pays, notamment au Canada, en Chine, au Japon et en Europe.
+                  Le capital risque ne se limite pas aux États-Unis. Il est également présent dans d'autres pays,
+                  notamment au Canada, en Chine, au Japon et en Europe.
                   <br><br>
                   Au Canada, le capital risque se développe dans les années qui ont suivi son émergence aux États-Unis.
                   <br><br>
-                  En Chine, le capital risque fait son apparition en 1985. Initialement entièrement public, il vise à reproduire les succès américains dans ce domaine. Le Japon s'est également inspiré des pratiques américaines pour développer son secteur de capital-risque. Toutefois, les investissements par capital risque au Japon restent relativement faibles par rapport aux États-Unis.
+                  En Chine, le capital risque fait son apparition en 1985. Initialement entièrement public, il vise à
+                  reproduire les succès américains dans ce domaine. Le Japon s'est également inspiré des pratiques
+                  américaines pour développer son secteur de capital-risque. Toutefois, les investissements par capital
+                  risque au Japon restent relativement faibles par rapport aux États-Unis.
                   <br><br>
-                  En Europe, les investissements dans le capital risque ont considérablement augmenté ces dernières années. En France, par exemple, les capitaux investis ont connu une hausse significative avec 758 millions d'euros investis dans 499 sociétés en 2015.
+                  En Europe, les investissements dans le capital risque ont considérablement augmenté ces dernières
+                  années. En France, par exemple, les capitaux investis ont connu une hausse significative avec 758
+                  millions d'euros investis dans 499 sociétés en 2015.
                 </p>
               </article>
-              <article class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]" style="border: solid 1px rgba(255,255,255,.1)">
+              <article
+                class="flex flex-col w-full bg-primary-light rounded-lg snap-start p-6 max-w-[90%] min-w-[90%] lg:p-12 lg:max-w-[570px] lg:min-w-[570px]"
+                style="border: solid 1px rgba(255,255,255,.1)">
                 <p class="font-medium text-[28px] text-white/20 select-none">05.</p>
                 <h3 class="mt-6 mb-4 font-semibold text-xl">Le Marché du Venture Capital</h3>
                 <p class="text-justify text-m">
-                  Le marché du Venture Capital connaît une croissance significative ces dernières années. Aux États-Unis, le marché du VC est particulièrement dynamique, avec de nombreux fonds et investisseurs actifs dans la Silicon Valley. En France, le marché du capital-risque se développe également rapidement, soutenu par des entrepreneurs à succès tels que Xavier Niel et Marc Simoncini.
+                  Le marché du Venture Capital connaît une croissance significative ces dernières années. Aux États-Unis,
+                  le marché du VC est particulièrement dynamique, avec de nombreux fonds et investisseurs actifs dans la
+                  Silicon Valley. En France, le marché du capital-risque se développe également rapidement, soutenu par
+                  des entrepreneurs à succès tels que Xavier Niel et Marc Simoncini.
                   <br><br>
-                  Les montants investis en Venture Capital varient considérablement, allant de quelques milliers d'euros à plusieurs millions d'euros. Ces montants dépendent des besoins de l'entreprise, du stade de développement et du potentiel de croissance.
+                  Les montants investis en Venture Capital varient considérablement, allant de quelques milliers d'euros à
+                  plusieurs millions d'euros. Ces montants dépendent des besoins de l'entreprise, du stade de
+                  développement et du potentiel de croissance.
                 </p>
               </article>
             </div>
           </div>
         </div>
-        <div data-sticky-section="8" id="venture-8" class="px-8 py-10 w-full lg:-mt-4 lg:px-14 lg:pt-20 lg:pb-16 bg-white" style="border-bottom: solid 1px #F8EBD6">
+        <div data-sticky-section="8" id="venture-8" class="px-8 py-10 w-full lg:-mt-4 lg:px-14 lg:pt-20 lg:pb-16 bg-white"
+          style="border-bottom: solid 1px #F8EBD6">
           <div class="lg:max-w-[720px]">
             <h2 class="text-h2 font-lora text-left mb-6">Les <i>acteurs</i> du VC</h2>
             <div class="flex flex-col w-full mt-10">
@@ -1283,8 +1128,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Le Corporate Venture
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -1293,7 +1138,8 @@ onMounted(() => {
                 </h3>
                 <div class="duration-200 overflow-clip max-h-[0]">
                   <p class="mt-6 text-justify">
-                    Le Corporate Venture est une forme de capital-risque dans laquelle des grandes entreprises investissent
+                    Le Corporate Venture est une forme de capital-risque dans laquelle des grandes entreprises
+                    investissent
                     directement dans des startups. Cela leur permet d'accéder à de nouvelles technologies, d'innover et de
                     rester compétitives sur leur marché.
                     <br><br>
@@ -1309,8 +1155,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Business Angel
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -1325,9 +1171,11 @@ onMounted(() => {
                     expérience, leur réseau et leurs conseils pour aider la startup à réussir. Ils jouent un rôle clé dans
                     l'écosystème des startups en France.
                     <br><br>
-                    Les Business Angels sont souvent plus flexibles que les fonds de capital-risque. Ils peuvent prendre des
+                    Les Business Angels sont souvent plus flexibles que les fonds de capital-risque. Ils peuvent prendre
+                    des
                     décisions plus rapidement et sont prêts à investir dans des entreprises à un stade plus précoce de
-                    développement. Leur expérience personnelle en tant qu'entrepreneurs peut être extrêmement précieuse pour
+                    développement. Leur expérience personnelle en tant qu'entrepreneurs peut être extrêmement précieuse
+                    pour
                     les startups, car ils comprennent les défis auxquels elles sont confrontées et peuvent fournir des
                     conseils pratiques.
                   </p>
@@ -1336,7 +1184,8 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div data-sticky-section="9" id="venture-9" class="px-8 py-10 w-full lg:-mt-4 lg:px-14 lg:pt-20 lg:pb-16 bg-secondary-neutral">
+        <div data-sticky-section="9" id="venture-9"
+          class="px-8 py-10 w-full lg:-mt-4 lg:px-14 lg:pt-20 lg:pb-16 bg-secondary-neutral">
           <div class="lg:max-w-[720px]">
             <h2 class="text-h2 font-lora text-left mb-6">Pourquoi Investir dans une startup ?</h2>
             <p class="text-justify">
@@ -1364,15 +1213,19 @@ onMounted(() => {
                   </svg>
                 </h3>
                 <div style="max-height: 100%" class="active duration-200 overflow-clip max-h-[0]">
-                  <p class="mt-6 text-justify">L'une des principales raisons d'investir dans le capital-risque d'entreprise
+                  <p class="mt-6 text-justify">L'une des principales raisons d'investir dans le capital-risque
+                    d'entreprise
                     est l'accès à des opportunités d'investissement pré-IPO très compétitives. Le nombre d'entreprises
                     cotées en bourse aux États-Unis a atteint son apogée à la fin des années 1990 et a depuis diminué de
-                    manière constante. Si vous investissez exclusivement sur les marchés publics, cela pourrait ne pas être
+                    manière constante. Si vous investissez exclusivement sur les marchés publics, cela pourrait ne pas
+                    être
                     une bonne nouvelle pour vous. De nombreuses entreprises connaissent maintenant leur "hyper-croissance"
                     alors qu'elles sont encore privées (c'est-à-dire avant leur introduction en bourse). Des entreprises
                     telles que Slack, Lyft et Uber sont quelques exemples de sociétés ayant connu une croissance
-                    exceptionnelle sur le marché privé et des introductions en bourse décevantes. Aujourd'hui, il n'est pas
-                    rare que les entreprises fassent leur introduction en bourse avec des valorisations allant d'un milliard
+                    exceptionnelle sur le marché privé et des introductions en bourse décevantes. Aujourd'hui, il n'est
+                    pas
+                    rare que les entreprises fassent leur introduction en bourse avec des valorisations allant d'un
+                    milliard
                     à plusieurs dizaines de milliards de dollars. Si vous attendez l'introduction en bourse pour investir,
                     cela peut être une manière difficile de gagner de l'argent. Le capital-risque offre un accès aux
                     opportunités privées, pré-IPO, lorsque les valorisations sont plus basses, ce qui se traduit par des
@@ -1385,8 +1238,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Diversifier votre portefeuille
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -1396,7 +1249,8 @@ onMounted(() => {
                 <div class="duration-200 overflow-clip max-h-[0]">
                   <p class="mt-6 text-justify">La diversification de votre portefeuille sur des classes d'actifs
                     alternatives telles que le capital-risque et l'immobilier peut également être bénéfique. Le
-                    capital-risque ne présente pas la même volatilité à court terme que les marchés cotés. Les rendements du
+                    capital-risque ne présente pas la même volatilité à court terme que les marchés cotés. Les rendements
+                    du
                     capital-risque ont historiquement été solides et ont une corrélation faible avec les rendements des
                     actions. Selon Cambridge Associates, il est recommandé aux investisseurs institutionnels de consacrer
                     jusqu'à 15 % de leur portefeuille à des entreprises privées en phase de démarrage à fort potentiel de
@@ -1408,8 +1262,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Soutenir l’innovation et aligner vos investissements avec vos valeurs
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -1423,9 +1277,11 @@ onMounted(() => {
                     financées par les investisseurs d’Anaxago :
                   <ul class="pl-10 list-disc">
                     <li>
-                      Wandercraft : cette Medtech s’est donnée pour mission de remplacer les fauteuils roulants grâce à son
+                      Wandercraft : cette Medtech s’est donnée pour mission de remplacer les fauteuils roulants grâce à
+                      son
                       exosquelette unique au monde. Anaxago a participé à deux financements, en 2015 et 2019. Des
-                      investisseurs institutionnels reconnus (dont BPIFrance et Idinvest Partners) ont rejoint l’aventure au
+                      investisseurs institutionnels reconnus (dont BPIFrance et Idinvest Partners) ont rejoint l’aventure
+                      au
                       gré des différents tours de table.
                     </li>
                     <li> Acticor Biotech : a développé un nouveau médicament "first in class" destiné au traitement de la
@@ -1443,7 +1299,9 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div data-sticky-section="10" id="venture-10" class="px-8 py-10 w-lg:-mt-4 lg:px-14 lg:pt-20 fullblg:py-16 bg-white" style="border-bottom: solid 1px #F8EBD6; border-top: solid 1px #F8EBD6">
+        <div data-sticky-section="10" id="venture-10"
+          class="px-8 py-10 w-lg:-mt-4 lg:px-14 lg:pt-20 fullblg:py-16 bg-white"
+          style="border-bottom: solid 1px #F8EBD6; border-top: solid 1px #F8EBD6">
           <div class="lg:max-w-[720px]">
             <h2 class="text-h2 font-lora text-left mb-6">Investir dans une startup : <i>une fiscalité attractive</i></h2>
             <p class="text-justify">
@@ -1470,13 +1328,13 @@ onMounted(() => {
                   <p class="mt-6 text-justify">
                     L’entreprise doit répondre à certaines conditions dont :
                   </p>
-                    <br>
-                    <ul class="pl-10 list-disc">
-                      <li>Réaliser un CA inférieur à 50 millions d’euros ou son bilan inférieur à 43 millions d’euros                      </li>
-                      <li>Employer moins de 250 salariés</li>
-                      <li>Ne pas être âgée de plus de 7 ans</li>
-                    </ul>
-                    <br>
+                  <br>
+                  <ul class="pl-10 list-disc">
+                    <li>Réaliser un CA inférieur à 50 millions d’euros ou son bilan inférieur à 43 millions d’euros </li>
+                    <li>Employer moins de 250 salariés</li>
+                    <li>Ne pas être âgée de plus de 7 ans</li>
+                  </ul>
+                  <br>
                   <p class="text-justify">
                     Actuellement, le plafond de la réduction (12 500 €), pour investir dans des startups correspond à un
                     investissement maximal de 50 000 €, pour une personne seule. Pour en savoir plus sur ce mécanisme,
@@ -1488,8 +1346,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Les Fonds de Capital-Investment (FCPR, FCPI, FIP)
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -1505,13 +1363,16 @@ onMounted(() => {
                   <br>
                   <ul class="pl-10 list-disc">
                     <li>50 % pour les fonds communs de placement à risques (FCPR)</li>
-                    <li>70 % pour les fonds communs de placement dans l’innovation (FCPI) et les fonds d’investissement de proximité (FIP)</li>
+                    <li>70 % pour les fonds communs de placement dans l’innovation (FCPI) et les fonds d’investissement de
+                      proximité (FIP)</li>
                   </ul>
                   <br>
                   <p class="text-justify">
-                    Actuellement, le plafond de la réduction par catégorie (2 160 €), correspond à un investissement maximal
+                    Actuellement, le plafond de la réduction par catégorie (2 160 €), correspond à un investissement
+                    maximal
                     de 12 000 €, pour une personne seule.
-                    Ces réductions sont octroyées dans la limite du plafond annuel des niches fiscales de 10 000 € par an et
+                    Ces réductions sont octroyées dans la limite du plafond annuel des niches fiscales de 10 000 € par an
+                    et
                     par foyer fiscal.
                   </p>
                 </div>
@@ -1520,8 +1381,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   L’enveloppe PEA / PEA-PME
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -1530,9 +1391,11 @@ onMounted(() => {
                 </h3>
                 <div class="duration-200 overflow-clip max-h-[0]">
                   <p class="mt-6 text-justify">
-                    Toute personne physique, domiciliée fiscalement en France qui s’engage à conserver ses titres pendant 5
+                    Toute personne physique, domiciliée fiscalement en France qui s’engage à conserver ses titres pendant
+                    5
                     ans, bénéficie d’une exonération de l’impôt sur le revenu sur les revenus et plus-values réalisées.
-                    Depuis la loi PACTE, la plupart des titres proposés pour investir dans une start-up, y sont éligibles :
+                    Depuis la loi PACTE, la plupart des titres proposés pour investir dans une start-up, y sont éligibles
+                    :
                   </p>
                   <br>
                   <ul class="pl-10 list-disc">
@@ -1543,7 +1406,8 @@ onMounted(() => {
                   </ul>
                   <br>
                   <p class="text-justify">Anaxago a développé une forte expertise dans le domaine de l’investissement
-                    en capital dans de jeunes sociétés, notamment dans les secteurs innovants de la santé, de la finance et
+                    en capital dans de jeunes sociétés, notamment dans les secteurs innovants de la santé, de la finance
+                    et
                     de la « proptech ». Nous négocions opération par opération des conditions juridiques préférentielles
                     afin de protéger vos intérêts. Notre part de responsabilités dans la sélection de projets proposés au
                     Club Investisseurs se traduit par un investissement de nos capitaux dans chaque aventure
@@ -1553,7 +1417,8 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div data-sticky-section="11" id="venture-11" class="flex flex-col px-8 py-10 w-full lg:-mt-4 lg:px-14 lg:pt-20 fullblg:py-16 bg-secondary-neutral">
+        <div data-sticky-section="11" id="venture-11"
+          class="flex flex-col px-8 py-10 w-full lg:-mt-4 lg:px-14 lg:pt-20 fullblg:py-16 bg-secondary-neutral">
           <div class="lg:max-w-[720px]">
             <h2 class="text-h2 font-lora text-left mb-6">Les risques</h2>
             <div class="flex flex-col w-full mt-10">
@@ -1580,8 +1445,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Illiquidité des investissements
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -1592,7 +1457,8 @@ onMounted(() => {
                   <p class="mt-6 text-justify">
                     Les fonds investis dans des entreprises en démarrage sont souvent bloqués pour une période prolongée,
                     parfois jusqu'à 10 ans. Cela signifie que les investisseurs ne peuvent pas facilement convertir ces
-                    investissements en cash en cas de besoin, ce qui peut poser des problèmes en cas de changements imprévus
+                    investissements en cash en cas de besoin, ce qui peut poser des problèmes en cas de changements
+                    imprévus
                     dans leurs situations financières personnelles.
                   </p>
                 </div>
@@ -1601,8 +1467,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Risques sectoriels et de marché
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -1611,7 +1477,8 @@ onMounted(() => {
                 </h3>
                 <div class="duration-200 overflow-clip max-h-[0]">
                   <p class="mt-6 text-justify">Les tendances du marché et les évolutions sectorielles peuvent avoir un
-                    impact significatif sur les investissements en VC. Par exemple, un changement technologique majeur dans
+                    impact significatif sur les investissements en VC. Par exemple, un changement technologique majeur
+                    dans
                     un secteur donné peut rendre obsolètes certaines startups. De même, les fluctuations économiques
                     globales peuvent affecter le financement et la croissance des entreprises en démarrage.
                   </p>
@@ -1621,8 +1488,8 @@ onMounted(() => {
                 <h3 data-toggle-accordion
                   class="flex justify-between gap-3 lg:gap-6 items-center text-l font-semibold cursor-pointer duration-200 select-none hover:opacity-70">
                   Risques sectoriels et de marché
-                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                  <svg class="scale-y-[-1] min-w-[12px] duration-200" width="12" height="12" viewBox="0 0 12 12"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.89453 10.8145L5.75342 2.33055" stroke="#222222" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round" />
                     <path d="M0.960938 5.42578L5.94204 1.00114L10.9231 5.42578" stroke="#222222" stroke-width="1.5"
@@ -1630,8 +1497,10 @@ onMounted(() => {
                   </svg>
                 </h3>
                 <div class="duration-200 overflow-clip max-h-[0]">
-                  <p class="mt-6 text-justify">La réussite d'une entreprise en démarrage dépend fortement de ses fondateurs
-                    et de son équipe de gestion. Un risque majeur pour les investisseurs en VC est donc la dépendance à une
+                  <p class="mt-6 text-justify">La réussite d'une entreprise en démarrage dépend fortement de ses
+                    fondateurs
+                    et de son équipe de gestion. Un risque majeur pour les investisseurs en VC est donc la dépendance à
+                    une
                     petite équipe, qui peut manquer d'expérience dans la gestion d'une entreprise à grande échelle. Les
                     changements dans cette équipe peuvent également affecter de manière significative les performances de
                     l'entreprise.
@@ -1639,9 +1508,8 @@ onMounted(() => {
                 </div>
               </div>
             </div>
-            <div class="w-fit mx-auto mt-6 lg:ml-10 lg:mt-10">
-              <a href="#"
-                class="tw-cta tw-cta--secondary text-white w-full !py-3 max-w-[310px] whitespace-nowrap">
+            <div class="w-fit mx-auto mt-6 lg:ml-0 lg:mt-10">
+              <a href="#" class="tw-cta tw-cta--secondary text-white w-full !py-3 max-w-[310px] whitespace-nowrap">
                 Guide : Choisir sa plateforme
               </a>
             </div>
@@ -1652,23 +1520,25 @@ onMounted(() => {
   </section>
 
 
-  <!--- -------- ---> 
+  <!--- -------- --->
 
   <section class="relative bg-white gap-10 lg:gap-20 py-8 lg:py-16">
     <div class="flex flex-col max-w-[1184px] px-5 mx-auto">
-      
+
     </div>
   </section>
 
   <section class="flex flex-col items-center justify-center relative bg-secondary-neutral gap-10 lg:gap-20 py-8 lg:py-16">
     <h2 class="text-h2 font-lora font-medium text-center">Nos investisseurs <i>parlent de nous</i></h2>
 
-    
+
   </section>
 
   <section class="flex items-center justify-center relative py-14 px-5 lg:py-[100px]">
-    <img class="h-full w-full top-0 left-0 z-[-1] absolute object-cover object-bottom" src="@/assets/img/venture_capital/venture_footer-banner.png" alt="" draggable="false" decoding="async">
-    <a href="https://www.anaxago.com/operations-en-cours?type=investissement-participatif&product=innovation" class="tw-cta tw-cta--primary !bg-[#FDF4E8] w-full !py-3 max-w-[287px]">Découvrir nos opportunités</a>
+    <img class="h-full w-full top-0 left-0 z-[-1] absolute object-cover object-bottom"
+      src="@/assets/img/venture_capital/venture_footer-banner.png" alt="" draggable="false" decoding="async">
+    <a href="https://www.anaxago.com/operations-en-cours?type=investissement-participatif&product=innovation"
+      class="tw-cta tw-cta--primary !bg-[#FDF4E8] w-full !py-3 max-w-[287px]">Découvrir nos opportunités</a>
   </section>
 
 
