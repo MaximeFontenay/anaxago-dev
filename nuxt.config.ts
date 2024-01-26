@@ -9,4 +9,7 @@ export default defineNuxtConfig({
       Poppins: true,
     }
   },
+  css: [
+    '~/assets/style.scss'
+  ]
 })
