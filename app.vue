@@ -285,7 +285,7 @@ onMounted(() => {
       </p>
     </div>
   </section>
-2 
+
   <section class="bg-secondary-neutral relative py-10 lg:py-16"
     style="border-top: 1px solid #F2ECE5;border-bottom: 1px solid #F2ECE5;">
     <div class="max-w-[1184px] px-6 mx-auto mb-8 flex max-lg:flex-col gap-8 lg:mb-12">
